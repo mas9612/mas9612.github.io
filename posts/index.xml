@@ -238,7 +238,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
 			<guid>https://mas9612.github.io/posts/k8s-auth/</guid>
 			<description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version.</description>
+Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version.</description>
 			<content type="html"><![CDATA[
 
 <p>When we use Kubernetes API, the request is checked by following order after TLS is established[1].</p>
@@ -254,14 +254,11 @@ Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl versi
 <h2 id="environment">Environment</h2>
 
 <ul>
-<li>Kubernetes cluster bootstrapped with minikube
-<code>shell
-$ kubectl version
-Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;13&quot;, GitVersion:&quot;v1.13.1&quot;, GitCommit:&quot;eec55b9ba98609a46fee712359c7b5b365bdd920&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-13T19:44:19Z&quot;, GoVersion:&quot;go1.11.2&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;}
-Server Version: version.Info{Major:&quot;1&quot;, Minor:&quot;12&quot;, GitVersion:&quot;v1.12.4&quot;, GitCommit:&quot;f49fa022dbe63faafd0da106ef7e05a29721d3f1&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-14T06:59:37Z&quot;, GoVersion:&quot;go1.10.4&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
-</code></li>
+<li>Kubernetes cluster bootstrapped with minikube</li>
 </ul>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl version
+Client Version: version.Info<span class="o">{</span>Major:<span class="s2">&#34;1&#34;</span>, Minor:<span class="s2">&#34;13&#34;</span>, GitVersion:<span class="s2">&#34;v1.13.1&#34;</span>, GitCommit:<span class="s2">&#34;eec55b9ba98609a46fee712359c7b5b365bdd920&#34;</span>, GitTreeState:<span class="s2">&#34;clean&#34;</span>, BuildDate:<span class="s2">&#34;2018-12-13T19:44:19Z&#34;</span>, GoVersion:<span class="s2">&#34;go1.11.2&#34;</span>, Compiler:<span class="s2">&#34;gc&#34;</span>, Platform:<span class="s2">&#34;darwin/amd64&#34;</span><span class="o">}</span>
+Server Version: version.Info<span class="o">{</span>Major:<span class="s2">&#34;1&#34;</span>, Minor:<span class="s2">&#34;12&#34;</span>, GitVersion:<span class="s2">&#34;v1.12.4&#34;</span>, GitCommit:<span class="s2">&#34;f49fa022dbe63faafd0da106ef7e05a29721d3f1&#34;</span>, GitTreeState:<span class="s2">&#34;clean&#34;</span>, BuildDate:<span class="s2">&#34;2018-12-14T06:59:37Z&#34;</span>, GoVersion:<span class="s2">&#34;go1.10.4&#34;</span>, Compiler:<span class="s2">&#34;gc&#34;</span>, Platform:<span class="s2">&#34;linux/amd64&#34;</span><span class="o">}</span></code></pre></div>
 <h2 id="authentication">Authentication</h2>
 
 <p>In this test, we used X509 Client Certs (Client certificate authentication) as authentication strategy.
@@ -512,10 +509,13 @@ OpenSSL <span class="m">1</span>.1.1  <span class="m">11</span> Sep <span class=
 <p>秘密鍵の作成は， <code>genpkey</code> サブコマンドを使用する．
 <code>genrsa</code> サブコマンドでもできるようだが，マニュアルに <code>genrsa</code> 含めいくつかのコマンドは <code>genpkey</code> に置き換えられたという記述があるので，今回は <code>genpkey</code> を使用する．</p>
 
-<p>今回は次のような鍵を作成する．
-* 公開鍵アルゴリズム: RSA
-* 鍵長: 2048bit
-* 秘密鍵を暗号化するためのアルゴリズム: AES 128bit</p>
+<p>今回は次のような鍵を作成する．</p>
+
+<ul>
+<li>公開鍵アルゴリズム: RSA</li>
+<li>鍵長: 2048bit</li>
+<li>秘密鍵を暗号化するためのアルゴリズム: AES 128bit</li>
+</ul>
 
 <p>この条件で秘密鍵を作成するには次のようなコマンドを使用する．</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -aes128 -out ca.key</code></pre></div>
@@ -526,11 +526,14 @@ OpenSSL <span class="m">1</span>.1.1  <span class="m">11</span> Sep <span class=
 ................................................+++++
 Enter PEM pass phrase:
 Verifying - Enter PEM pass phrase:</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-algorithm rsa</code> : 公開鍵アルゴリズムとしてRSAを使用する
-* <code>-pkeyopt rsa_keygen_bits:2048</code> : RSAの鍵長を2048bitにする
-* <code>-aes128</code> : 秘密鍵をAES 128bitで暗号化する
-* <code>-out ca.key</code> : <code>ca.key</code> という名前で秘密鍵を生成する</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-algorithm rsa</code> : 公開鍵アルゴリズムとしてRSAを使用する</li>
+<li><code>-pkeyopt rsa_keygen_bits:2048</code> : RSAの鍵長を2048bitにする</li>
+<li><code>-aes128</code> : 秘密鍵をAES 128bitで暗号化する</li>
+<li><code>-out ca.key</code> : <code>ca.key</code> という名前で秘密鍵を生成する</li>
+</ul>
 
 <h3 id="csrを作成">CSRを作成</h3>
 
@@ -567,18 +570,24 @@ Please enter the following <span class="s1">&#39;extra&#39;</span> attributes
 to be sent with your certificate request
 A challenge password <span class="o">[]</span>:.
 An optional company name <span class="o">[]</span>:.</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-new</code> : 新しいCSRを作成するときに指定する
-* <code>-key ca.key</code> : 秘密鍵を指定する．この鍵とペアになる公開鍵が署名される
-* <code>-out ca.csr</code> : <code>ca.csr</code> という名前でCSRを作成する</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-new</code> : 新しいCSRを作成するときに指定する</li>
+<li><code>-key ca.key</code> : 秘密鍵を指定する．この鍵とペアになる公開鍵が署名される</li>
+<li><code>-out ca.csr</code> : <code>ca.csr</code> という名前でCSRを作成する</li>
+</ul>
 
 <h3 id="tls証明書を作成">TLS証明書を作成</h3>
 
 <p>CSRが作成できたら，最後にTLS証明書を作成する．</p>
 
-<p>今回は，次の2種類の方法を試す．
-* 自己署名: 自分の秘密鍵を使って署名する
-* 別に用意したCAによる署名: CAの秘密鍵を使って署名する</p>
+<p>今回は，次の2種類の方法を試す．</p>
+
+<ul>
+<li>自己署名: 自分の秘密鍵を使って署名する</li>
+<li>別に用意したCAによる署名: CAの秘密鍵を使って署名する</li>
+</ul>
 
 <h4 id="自己署名">自己署名</h4>
 
@@ -591,12 +600,15 @@ Signature ok
 <span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
 Getting Private key
 Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-req</code> : このオプションを指定すると，CSRを読み込んでTLS証明書を作成する
-* <code>-in ca.csr</code> : 読み込むCSRファイルを指定
-* <code>-out ca.crt</code> : <code>ca.crt</code> という名前でTLS証明書を出力する
-* <code>-signkey ca.key</code> : <code>ca.key</code> を使って署名を行う
-* <code>-days 365</code> : TLS証明書の期限を365日にする</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-req</code> : このオプションを指定すると，CSRを読み込んでTLS証明書を作成する</li>
+<li><code>-in ca.csr</code> : 読み込むCSRファイルを指定</li>
+<li><code>-out ca.crt</code> : <code>ca.crt</code> という名前でTLS証明書を出力する</li>
+<li><code>-signkey ca.key</code> : <code>ca.key</code> を使って署名を行う</li>
+<li><code>-days 365</code> : TLS証明書の期限を365日にする</li>
+</ul>
 
 <h4 id="caによる署名">CAによる署名</h4>
 
@@ -616,10 +628,13 @@ Signature ok
 <span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
 Getting CA Private Key
 Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
-<p>CA関連のオプションは次の通り．
-* <code>-CA ca.crt</code> : 署名に使用するCAのTLS証明書を指定する
-* <code>-CAkey ca.key</code> : 署名に使用するCA秘密鍵を指定する
-* <code>-CAcreateserial</code> : CAのシリアルナンバーファイルが存在しない場合，自動で作成する</p>
+<p>CA関連のオプションは次の通り．</p>
+
+<ul>
+<li><code>-CA ca.crt</code> : 署名に使用するCAのTLS証明書を指定する</li>
+<li><code>-CAkey ca.key</code> : 署名に使用するCA秘密鍵を指定する</li>
+<li><code>-CAcreateserial</code> : CAのシリアルナンバーファイルが存在しない場合，自動で作成する</li>
+</ul>
 
 <h2 id="秘密鍵やcsr-tls証明書の内容を確認する">秘密鍵やCSR，TLS証明書の内容を確認する</h2>
 
@@ -687,12 +702,15 @@ XBL28/gGVoW6NtW7HMiM2zkPE0ETC/Hi8ef9CVjE414F5OpIgppBjYxjjmDEDita
 ...（省略）
 m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
 -----END RSA PRIVATE KEY-----</code></pre></div>
-<p>いろいろ出力されるが，NやEに対応するのは次の部分．
-* N: modulus
-* E: publicExponent
-* D: privateExponent
-* prime1: p
-* prime2: q</p>
+<p>いろいろ出力されるが，NやEに対応するのは次の部分．</p>
+
+<ul>
+<li>N: modulus</li>
+<li>E: publicExponent</li>
+<li>D: privateExponent</li>
+<li>prime1: p</li>
+<li>prime2: q</li>
+</ul>
 
 <p>また， <code>-noout</code> オプションを指定すると，秘密鍵をエンコーディングした内容は出力されなくなる（ <code>BEGIN RSA PRIVATE KEY</code> から <code>END RSA PRIVATE KEY</code> の部分）．</p>
 
@@ -1102,10 +1120,11 @@ uint32: 00 00 00 7b
 
 <ul>
 <li>一時的なリダイレクト</li>
-<li>恒久的なリダイレクト
-一般的に用いられるリダイレクトのステータスコードは <code>301</code> や <code>302</code> である（個人的な考えですが）．
-しかし，他にもいくつかリダイレクトのステータスコードは存在する．</li>
+<li>恒久的なリダイレクト</li>
 </ul>
+
+<p>一般的に用いられるリダイレクトのステータスコードは <code>301</code> や <code>302</code> である（個人的な考えですが）．
+しかし，他にもいくつかリダイレクトのステータスコードは存在する．</p>
 
 <p>また，似たような意味を持つステータスコードもあるので，整理するために少し調査した．</p>
 
@@ -1169,11 +1188,14 @@ uint32: 00 00 00 7b
 <p>それぞれのステータスコードに対する挙動を確認するため，簡単なサーバプログラムをGoで作成し，そのサーバに4種類のクライアントで接続した．
 作成したサーバプログラムは <a href="https://github.com/mas9612/http-redirect-test">mas9612/http-redirect-test</a> に置いている．</p>
 
-<p>用いたクライアント
-* curl 7.43.0
-* Safari 11.1.2
-* Google Chrome 67.0.3396.99
-* Firefox 59.0.2</p>
+<p>用いたクライアント</p>
+
+<ul>
+<li>curl 7.43.0</li>
+<li>Safari 11.1.2</li>
+<li>Google Chrome 67.0.3396.99</li>
+<li>Firefox 59.0.2</li>
+</ul>
 
 <p>上記それぞれのクライアントから，GETとPOST2つのメソッドで作成したサーバに接続した．
 結果を次の表に示す．</p>
@@ -1330,9 +1352,12 @@ KeepAliveTimeout 10
 
 <h3 id="keep-aliveの設定">Keep-Aliveの設定</h3>
 
-<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．
-* <code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off
-* <code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</p>
+<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．</p>
+
+<ul>
+<li><code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off</li>
+<li><code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</li>
+</ul>
 
 <p>Keep-Aliveによるコネクション持続時間は，On/Offの設定同様 <code>keepalive_timeout</code> で設定する．</p>
 

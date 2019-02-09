@@ -13,8 +13,8 @@
 
 
 <meta itemprop="datePublished" content="2018-07-05T00:00:00&#43;09:00" />
-<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
-<meta itemprop="wordCount" content="516">
+<meta itemprop="dateModified" content="2019-02-09T23:12:38&#43;09:00" />
+<meta itemprop="wordCount" content="514">
 
 
 
@@ -24,7 +24,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mas9612.github.io/posts/http-keep-alive/" />
 <meta property="article:published_time" content="2018-07-05T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T23:12:38&#43;09:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="HTTP Keep-Aliveについて"/>
 <meta name="twitter:description" content="HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ"/>
@@ -109,9 +109,12 @@ KeepAliveTimeout 10
 
 <h3 id="keep-aliveの設定">Keep-Aliveの設定<a href="#keep-aliveの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
-<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．
-* <code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off
-* <code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</p>
+<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．</p>
+
+<ul>
+<li><code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off</li>
+<li><code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</li>
+</ul>
 
 <p>Keep-Aliveによるコネクション持続時間は，On/Offの設定同様 <code>keepalive_timeout</code> で設定する．</p>
 
@@ -131,7 +134,7 @@ KeepAliveTimeout 10
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>516 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>514 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-07-04 15:00 &#43;0000</p>
 			</footer>
 		</article>

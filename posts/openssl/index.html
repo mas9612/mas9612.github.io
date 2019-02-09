@@ -13,8 +13,8 @@
 
 
 <meta itemprop="datePublished" content="2018-11-14T00:00:00&#43;09:00" />
-<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
-<meta itemprop="wordCount" content="2489">
+<meta itemprop="dateModified" content="2019-02-09T23:12:38&#43;09:00" />
+<meta itemprop="wordCount" content="2464">
 
 
 
@@ -24,7 +24,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mas9612.github.io/posts/openssl/" />
 <meta property="article:published_time" content="2018-11-14T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T23:12:38&#43;09:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="OpenSSLでTLS証明書を作る"/>
 <meta name="twitter:description" content="etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった． ちゃんとした手順をあまり理解できていなかったため，備忘録"/>
@@ -97,10 +97,13 @@ OpenSSL <span class="m">1</span>.1.1  <span class="m">11</span> Sep <span class=
 <p>秘密鍵の作成は， <code>genpkey</code> サブコマンドを使用する．
 <code>genrsa</code> サブコマンドでもできるようだが，マニュアルに <code>genrsa</code> 含めいくつかのコマンドは <code>genpkey</code> に置き換えられたという記述があるので，今回は <code>genpkey</code> を使用する．</p>
 
-<p>今回は次のような鍵を作成する．
-* 公開鍵アルゴリズム: RSA
-* 鍵長: 2048bit
-* 秘密鍵を暗号化するためのアルゴリズム: AES 128bit</p>
+<p>今回は次のような鍵を作成する．</p>
+
+<ul>
+<li>公開鍵アルゴリズム: RSA</li>
+<li>鍵長: 2048bit</li>
+<li>秘密鍵を暗号化するためのアルゴリズム: AES 128bit</li>
+</ul>
 
 <p>この条件で秘密鍵を作成するには次のようなコマンドを使用する．</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -aes128 -out ca.key</code></pre></div>
@@ -111,11 +114,14 @@ OpenSSL <span class="m">1</span>.1.1  <span class="m">11</span> Sep <span class=
 ................................................+++++
 Enter PEM pass phrase:
 Verifying - Enter PEM pass phrase:</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-algorithm rsa</code> : 公開鍵アルゴリズムとしてRSAを使用する
-* <code>-pkeyopt rsa_keygen_bits:2048</code> : RSAの鍵長を2048bitにする
-* <code>-aes128</code> : 秘密鍵をAES 128bitで暗号化する
-* <code>-out ca.key</code> : <code>ca.key</code> という名前で秘密鍵を生成する</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-algorithm rsa</code> : 公開鍵アルゴリズムとしてRSAを使用する</li>
+<li><code>-pkeyopt rsa_keygen_bits:2048</code> : RSAの鍵長を2048bitにする</li>
+<li><code>-aes128</code> : 秘密鍵をAES 128bitで暗号化する</li>
+<li><code>-out ca.key</code> : <code>ca.key</code> という名前で秘密鍵を生成する</li>
+</ul>
 
 <h3 id="csrを作成">CSRを作成<a href="#csrを作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
@@ -152,18 +158,24 @@ Please enter the following <span class="s1">&#39;extra&#39;</span> attributes
 to be sent with your certificate request
 A challenge password <span class="o">[]</span>:.
 An optional company name <span class="o">[]</span>:.</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-new</code> : 新しいCSRを作成するときに指定する
-* <code>-key ca.key</code> : 秘密鍵を指定する．この鍵とペアになる公開鍵が署名される
-* <code>-out ca.csr</code> : <code>ca.csr</code> という名前でCSRを作成する</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-new</code> : 新しいCSRを作成するときに指定する</li>
+<li><code>-key ca.key</code> : 秘密鍵を指定する．この鍵とペアになる公開鍵が署名される</li>
+<li><code>-out ca.csr</code> : <code>ca.csr</code> という名前でCSRを作成する</li>
+</ul>
 
 <h3 id="tls証明書を作成">TLS証明書を作成<a href="#tls証明書を作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>CSRが作成できたら，最後にTLS証明書を作成する．</p>
 
-<p>今回は，次の2種類の方法を試す．
-* 自己署名: 自分の秘密鍵を使って署名する
-* 別に用意したCAによる署名: CAの秘密鍵を使って署名する</p>
+<p>今回は，次の2種類の方法を試す．</p>
+
+<ul>
+<li>自己署名: 自分の秘密鍵を使って署名する</li>
+<li>別に用意したCAによる署名: CAの秘密鍵を使って署名する</li>
+</ul>
 
 <h4 id="自己署名">自己署名<a href="#自己署名" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 
@@ -176,12 +188,15 @@ Signature ok
 <span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
 Getting Private key
 Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
-<p>オプションの意味は次の通り．
-* <code>-req</code> : このオプションを指定すると，CSRを読み込んでTLS証明書を作成する
-* <code>-in ca.csr</code> : 読み込むCSRファイルを指定
-* <code>-out ca.crt</code> : <code>ca.crt</code> という名前でTLS証明書を出力する
-* <code>-signkey ca.key</code> : <code>ca.key</code> を使って署名を行う
-* <code>-days 365</code> : TLS証明書の期限を365日にする</p>
+<p>オプションの意味は次の通り．</p>
+
+<ul>
+<li><code>-req</code> : このオプションを指定すると，CSRを読み込んでTLS証明書を作成する</li>
+<li><code>-in ca.csr</code> : 読み込むCSRファイルを指定</li>
+<li><code>-out ca.crt</code> : <code>ca.crt</code> という名前でTLS証明書を出力する</li>
+<li><code>-signkey ca.key</code> : <code>ca.key</code> を使って署名を行う</li>
+<li><code>-days 365</code> : TLS証明書の期限を365日にする</li>
+</ul>
 
 <h4 id="caによる署名">CAによる署名<a href="#caによる署名" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 
@@ -201,10 +216,13 @@ Signature ok
 <span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
 Getting CA Private Key
 Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
-<p>CA関連のオプションは次の通り．
-* <code>-CA ca.crt</code> : 署名に使用するCAのTLS証明書を指定する
-* <code>-CAkey ca.key</code> : 署名に使用するCA秘密鍵を指定する
-* <code>-CAcreateserial</code> : CAのシリアルナンバーファイルが存在しない場合，自動で作成する</p>
+<p>CA関連のオプションは次の通り．</p>
+
+<ul>
+<li><code>-CA ca.crt</code> : 署名に使用するCAのTLS証明書を指定する</li>
+<li><code>-CAkey ca.key</code> : 署名に使用するCA秘密鍵を指定する</li>
+<li><code>-CAcreateserial</code> : CAのシリアルナンバーファイルが存在しない場合，自動で作成する</li>
+</ul>
 
 <h2 id="秘密鍵やcsr-tls証明書の内容を確認する">秘密鍵やCSR，TLS証明書の内容を確認する<a href="#秘密鍵やcsr-tls証明書の内容を確認する" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
@@ -272,12 +290,15 @@ XBL28/gGVoW6NtW7HMiM2zkPE0ETC/Hi8ef9CVjE414F5OpIgppBjYxjjmDEDita
 ...（省略）
 m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
 -----END RSA PRIVATE KEY-----</code></pre></div>
-<p>いろいろ出力されるが，NやEに対応するのは次の部分．
-* N: modulus
-* E: publicExponent
-* D: privateExponent
-* prime1: p
-* prime2: q</p>
+<p>いろいろ出力されるが，NやEに対応するのは次の部分．</p>
+
+<ul>
+<li>N: modulus</li>
+<li>E: publicExponent</li>
+<li>D: privateExponent</li>
+<li>prime1: p</li>
+<li>prime2: q</li>
+</ul>
 
 <p>また， <code>-noout</code> オプションを指定すると，秘密鍵をエンコーディングした内容は出力されなくなる（ <code>BEGIN RSA PRIVATE KEY</code> から <code>END RSA PRIVATE KEY</code> の部分）．</p>
 
@@ -294,7 +315,7 @@ m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2489 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2464 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-11-13 15:00 &#43;0000</p>
 			</footer>
 		</article>

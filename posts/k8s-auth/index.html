@@ -11,12 +11,12 @@
 <meta itemprop="name" content="Kubernetes Authentication">
 <meta itemprop="description" content="When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version.">
+Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version.">
 
 
 <meta itemprop="datePublished" content="2019-01-13T00:00:00&#43;09:00" />
-<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
-<meta itemprop="wordCount" content="826">
+<meta itemprop="dateModified" content="2019-02-09T23:12:38&#43;09:00" />
+<meta itemprop="wordCount" content="825">
 
 
 
@@ -24,16 +24,16 @@ Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl versi
 <meta property="og:title" content="Kubernetes Authentication" />
 <meta property="og:description" content="When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version." />
+Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mas9612.github.io/posts/k8s-auth/" />
 <meta property="article:published_time" content="2019-01-13T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T23:12:38&#43;09:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kubernetes Authentication"/>
 <meta name="twitter:description" content="When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version."/>
+Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -93,14 +93,11 @@ Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl versi
 <h2 id="environment">Environment<a href="#environment" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <ul>
-<li>Kubernetes cluster bootstrapped with minikube
-<code>shell
-$ kubectl version
-Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;13&quot;, GitVersion:&quot;v1.13.1&quot;, GitCommit:&quot;eec55b9ba98609a46fee712359c7b5b365bdd920&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-13T19:44:19Z&quot;, GoVersion:&quot;go1.11.2&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;}
-Server Version: version.Info{Major:&quot;1&quot;, Minor:&quot;12&quot;, GitVersion:&quot;v1.12.4&quot;, GitCommit:&quot;f49fa022dbe63faafd0da106ef7e05a29721d3f1&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-14T06:59:37Z&quot;, GoVersion:&quot;go1.10.4&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
-</code></li>
+<li>Kubernetes cluster bootstrapped with minikube</li>
 </ul>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl version
+Client Version: version.Info<span class="o">{</span>Major:<span class="s2">&#34;1&#34;</span>, Minor:<span class="s2">&#34;13&#34;</span>, GitVersion:<span class="s2">&#34;v1.13.1&#34;</span>, GitCommit:<span class="s2">&#34;eec55b9ba98609a46fee712359c7b5b365bdd920&#34;</span>, GitTreeState:<span class="s2">&#34;clean&#34;</span>, BuildDate:<span class="s2">&#34;2018-12-13T19:44:19Z&#34;</span>, GoVersion:<span class="s2">&#34;go1.11.2&#34;</span>, Compiler:<span class="s2">&#34;gc&#34;</span>, Platform:<span class="s2">&#34;darwin/amd64&#34;</span><span class="o">}</span>
+Server Version: version.Info<span class="o">{</span>Major:<span class="s2">&#34;1&#34;</span>, Minor:<span class="s2">&#34;12&#34;</span>, GitVersion:<span class="s2">&#34;v1.12.4&#34;</span>, GitCommit:<span class="s2">&#34;f49fa022dbe63faafd0da106ef7e05a29721d3f1&#34;</span>, GitTreeState:<span class="s2">&#34;clean&#34;</span>, BuildDate:<span class="s2">&#34;2018-12-14T06:59:37Z&#34;</span>, GoVersion:<span class="s2">&#34;go1.10.4&#34;</span>, Compiler:<span class="s2">&#34;gc&#34;</span>, Platform:<span class="s2">&#34;linux/amd64&#34;</span><span class="o">}</span></code></pre></div>
 <h2 id="authentication">Authentication<a href="#authentication" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <p>In this test, we used X509 Client Certs (Client certificate authentication) as authentication strategy.
@@ -257,7 +254,7 @@ No resources found.</code></pre></div>
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>826 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>825 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-01-12 15:00 &#43;0000</p>
 			</footer>
 		</article>

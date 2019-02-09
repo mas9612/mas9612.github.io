@@ -28,7 +28,7 @@
       <guid>https://mas9612.github.io/posts/k8s-auth/</guid>
       <description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version.</description>
+Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version.</description>
     </item>
     
     <item>
