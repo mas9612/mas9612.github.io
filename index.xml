@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mas9612&#39;s note</title>
+    <link>https://example.com/</link>
+    <description>Recent content on mas9612&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 13 Jan 2019 00:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GoでのファイルI/O</title>
+      <link>https://example.com/posts/go-file-io/</link>
+      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/go-file-io/</guid>
+      <description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Authentication</title>
+      <link>https://example.com/posts/k8s-auth/</link>
+      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/k8s-auth/</guid>
+      <description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
+ Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
+Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version.</description>
+    </item>
+    
+    <item>
+      <title>pipeによるプロセス間通信</title>
+      <link>https://example.com/posts/pipe/</link>
+      <pubDate>Sat, 08 Dec 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/pipe/</guid>
+      <description>fork() で作成した子プロセスと親プロセスの間で情報のやり取りをするために，IPC（Inter Process Communication）の一つであるパイプを利用</description>
+    </item>
+    
+    <item>
+      <title>OpenSSLでTLS証明書を作る</title>
+      <link>https://example.com/posts/openssl/</link>
+      <pubDate>Wed, 14 Nov 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/openssl/</guid>
+      <description>etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった． ちゃんとした手順をあまり理解できていなかったため，備忘録</description>
+    </item>
+    
+    <item>
+      <title>etcd入門</title>
+      <link>https://example.com/posts/etcd/</link>
+      <pubDate>Sat, 27 Oct 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/etcd/</guid>
+      <description>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア</description>
+    </item>
+    
+    <item>
+      <title>GoのType AssertionとType Switches</title>
+      <link>https://example.com/posts/go-type-assertion/</link>
+      <pubDate>Tue, 02 Oct 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/go-type-assertion/</guid>
+      <description>Goでは，型を interface{} として宣言してあげることで，とりあえずどんな値でも格納することが出来る． SlackのEvent API等，メッセージの形式がE</description>
+    </item>
+    
+    <item>
+      <title>Goでバイナリを作る</title>
+      <link>https://example.com/posts/build-binary-with-go/</link>
+      <pubDate>Fri, 27 Jul 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/build-binary-with-go/</guid>
+      <description>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた． テストで書いてみたプログラムは次の通り． とりあえず</description>
+    </item>
+    
+    <item>
+      <title>HTTPリダイレクトについて調査した</title>
+      <link>https://example.com/posts/http-redirect/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/http-redirect/</guid>
+      <description>HTTPのリダイレクトには，大きく分けて次の二つ存在する． 一時的なリダイレクト 恒久的なリダイレクト 一般的に用いられるリダイレクトのステータス</description>
+    </item>
+    
+    <item>
+      <title>HTTP Keep-Aliveについて</title>
+      <link>https://example.com/posts/http-keep-alive/</link>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/http-keep-alive/</guid>
+      <description>HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ</description>
+    </item>
+    
+    <item>
+      <title>USENIX 2018の論文読み</title>
+      <link>https://example.com/posts/read-usenix-2018-papers/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0900</pubDate>
+      
+      <guid>https://example.com/posts/read-usenix-2018-papers/</guid>
+      <description>軽く読んだので，雑なまとめ． ほぼ自分用のメモ． Elastic Scaling of Stateful Network Functions https://www.usenix.org/conference/nsdi18/presentation/woo NFV（Network Functions Virtualization）におけるスケーリングの弾力</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://example.com/posts/go-file-io/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/k8s-auth/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/pipe/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/openssl/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/etcd/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/go-type-assertion/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/build-binary-with-go/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/http-redirect/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/http-keep-alive/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/read-usenix-2018-papers/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/ryu-openflow-02/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/ryu-openflow-01/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/seccon-begginners-ctf-2018/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/first-docker-engine-api/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/go-mysql/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/go-net-socket/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/web-auto-deploy/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/delete-hatena-keyword/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/first-vim-plugin/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/tmux-copy-keybind/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/pandoc-presen-pdf/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/lilypond-setting/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/cpp-vector/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/python-mysql/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/python-opencv/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/linux-package-management/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/python-base64/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/python-sqlite/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/python-datetime/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://example.com/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://example.com/posts/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://example.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://example.com/</loc>
+    <lastmod>2019-02-09T19:46:37+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
