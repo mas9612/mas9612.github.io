@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="HTTP Keep-Aliveについて">
+<meta itemprop="description" content="HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ">
+
+
+<meta itemprop="datePublished" content="2018-07-05T00:00:00&#43;09:00" />
+<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
+<meta itemprop="wordCount" content="516">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="HTTP Keep-Aliveについて" />
+<meta property="og:description" content="HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mas9612.github.io/posts/http-keep-alive/" />
+<meta property="article:published_time" content="2018-07-05T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTTP Keep-Aliveについて"/>
+<meta name="twitter:description" content="HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>HTTP Keep-Aliveについて</title>
+	<link rel="stylesheet" href="https://mas9612.github.io/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://mas9612.github.io/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://mas9612.github.io/posts/">Blog</a>
+					<a href="https://mas9612.github.io/aboutme/">AboutMe</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://mas9612.github.io/posts/">Blog</a></li>
+			<li><a href="https://mas9612.github.io/aboutme/">AboutMe</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jul 5, 2018</span></div>
+				<h1>HTTP Keep-Aliveについて</h1>
+			</header>
+			<div class="content">
+				
+
+<p>HTTP Keep-Aliveについて調査した．
+とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい．</p>
+
+<ul>
+<li>1つのTCPコネクションで複数リクエストを処理できるしくみ</li>
+<li>HTTP/1.1ではKeep-Aliveがデフォルトでオン
+
+<ul>
+<li>オフにするにはそれを明示的に指定する必要がある
+
+<ul>
+<li><code>Connection: close</code> ヘッダを指定</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2 id="apache">Apache<a href="#apache" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="keep-aliveの設定-keepalive-ディレクティブで-keep-aliveを有効にするかどうかを設定できる">Keep-Aliveの設定<code>KeepAlive</code> ディレクティブで，Keep-Aliveを有効にするかどうかを設定できる．<a href="#keep-aliveの設定-keepalive-ディレクティブで-keep-aliveを有効にするかどうかを設定できる" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Keep-Aliveによるコネクション持続時間は， <code>KeepAliveTimeout</code> ディレクティブで設定する．</p>
+
+<p>例) コネクション持続時間を10秒に設定する</p>
+
+<pre><code>KeepAlive On
+KeepAliveTimeout 10
+</code></pre>
+
+<p>また，1つのKeep-Aliveによるコネクションで処理できるコネクション数を制限するには， <code>MaxKeepAliveRequests</code> ディレクトティブを使用する．
+例えば， <code>MaxKeepAliveRequests 10</code> と設定すると，1つのコネクションで10個までのコネクションを処理することができる．</p>
+
+<h2 id="nginx">Nginx<a href="#nginx" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<h3 id="keep-aliveの設定">Keep-Aliveの設定<a href="#keep-aliveの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．
+* <code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off
+* <code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</p>
+
+<p>Keep-Aliveによるコネクション持続時間は，On/Offの設定同様 <code>keepalive_timeout</code> で設定する．</p>
+
+<p>例) コネクション持続時間を10秒に設定する</p>
+
+<pre><code>keepalive_timeout 10
+</code></pre>
+
+<h2 id="references">References<a href="#references" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc2068">RFC2068</a></li>
+<li><a href="https://tools.ietf.org/id/draft-thomson-hybi-http-timeout-01.html">Hypertext Transfer Protocol (HTTP) Keep-Alive Header</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/en/mod/core.html">Apache Core Features</a></li>
+</ul>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>516 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-07-04 15:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://mas9612.github.io/posts/http-redirect/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>HTTPリダイレクトについて調査した</span>
+			</a>
+			<a class="prev-post" href="https://mas9612.github.io/posts/read-usenix-2018-papers/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>USENIX 2018の論文読み</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://mas9612.github.io/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://mas9612.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://mas9612.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

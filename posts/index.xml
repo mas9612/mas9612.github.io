@@ -1,107 +1,1464 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on mas9612&#39;s note</title>
-    <link>https://example.com/posts/</link>
-    <description>Recent content in Posts on mas9612&#39;s note</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 13 Jan 2019 00:00:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://example.com/posts/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>GoでのファイルI/O</title>
-      <link>https://example.com/posts/go-file-io/</link>
-      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/go-file-io/</guid>
-      <description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes Authentication</title>
-      <link>https://example.com/posts/k8s-auth/</link>
-      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/k8s-auth/</guid>
-      <description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
+	<channel>
+		<title>Posts on mas9612&#39;s note</title>
+		<link>https://mas9612.github.io/posts/</link>
+		<description>Recent content in Posts on mas9612&#39;s note</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 13 Jan 2019 00:00:00 +0900</lastBuildDate>
+		<atom:link href="https://mas9612.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>GoでのファイルI/O</title>
+			<link>https://mas9612.github.io/posts/go-file-io/</link>
+			<pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/go-file-io/</guid>
+			<description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
+			<content type="html"><![CDATA[
+
+<p>GoでのファイルI/Oについて，改めてまとめた．
+いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる．</p>
+
+<h2 id="ファイルオープン">ファイルオープン</h2>
+
+<p>読み書きを行う前に，まずファイルオープンしないとどうにもならないのでそこから．
+osパッケージを見ると，2つのファイルオープンメソッドがあることがわかる．</p>
+
+<ul>
+<li><code>os.Open</code></li>
+<li><code>os.OpenFile</code></li>
+</ul>
+
+<h3 id="os-open">os.Open</h3>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>引数に与えられた名前のファイルを <strong>読み取り専用</strong> でオープンする．
+そのため，もしファイルが存在しなければエラーとなる（ <code>*PathError</code> が返却される）</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.Open attempts to open given file as read only mode.
+</span><span class="c1">// Therefore, if it doesn&#39;t exist, then *os.PathError will occur.
+</span><span class="c1"></span><span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;thisdoesntexist.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;file not found&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>上の例では便利メソッドとして <code>os.IsNotExist</code> を使っている．
+このメソッドに <code>os.Open</code> から返却されたエラーを渡すと，ファイルが存在しないために発生したエラーかどうかを教えてくれる．
+<code>os.IsNotExist</code> の返り値が <code>true</code> なら，ファイルが存在しないという意味になる．</p>
+
+<h3 id="os-openfile">os.OpenFile</h3>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">OpenFile</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">flag</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">perm</span> <span class="nx">FileMode</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>引数に与えられた名前のファイルを，指定したモード，パーミッションでオープンする．
+<code>flag</code> の指定方法次第で，追記モードや，存在しない場合に作成する，等が可能になる．</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.OpenFile attempts to open given file as given mode and permission.
+</span><span class="c1">// In this example, open &#34;newfile.txt&#34; as write-only mode and it permission is 0600 (r/w only allowed to file owner)
+</span><span class="c1"></span><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span></code></pre></div>
+<h2 id="おそらく-最も基本となる方法">（おそらく）最も基本となる方法</h2>
+
+<p>ファイルをオープンし，バイト型のスライスを使ってデータの読み書きを行う方法．</p>
+
+<h3 id="read">Read</h3>
+
+<p>前提として，ファイルからの読み取りができるモードでオープンされている必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="c1">// *File.Read reads slice of bytes up to len(slice) from file.
+</span><span class="c1"></span><span class="nx">buffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes read by *File.Read()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;file content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">buffer</span><span class="p">))</span></code></pre></div>
+<h3 id="write">Write</h3>
+
+<p>前提として，ファイルに書き込みができるモードでオープンされている必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.OpenFile attempts to open given file as given mode and permission.
+</span><span class="c1">// In this example, open &#34;newfile.txt&#34; as write-only mode and it permission is 0600 (r/w only allowed to file owner)
+</span><span class="c1"></span><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="c1">// *File.Write writes slice of bytes to file.
+</span><span class="c1"></span><span class="nx">byteData</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hello world\n&#34;</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">byteData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written by os.Write()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span></code></pre></div>
+<p>また，バイト型のスライスの代わりにstringを書き込むこともできる．
+stringの書き込みには <code>WriteString</code> メソッドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// *File.WriteString writes strings to file instead of slice of bytes.
+</span><span class="c1"></span><span class="nx">stringData</span> <span class="o">:=</span> <span class="s">&#34;We can write not only []byte but also string :)&#34;</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">stringData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written by os.WriteString()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span></code></pre></div>
+<h3 id="ファイルの内容すべてを読み込む">ファイルの内容すべてを読み込む</h3>
+
+<p>io/ioutilパッケージの <code>ReadAll</code> メソッドを使用すると，ファイルの内容すべてを読み込むことができる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Reader</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="nf">Read</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">ReadAll</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>ReadAllの引数に与える <code>io.Reader</code> は， <code>Read</code> メソッドを持つインタフェースと定義されている．
+そのため，通常通りオープンしたファイルをそのまま渡すことができる．</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read all contents by ioutil.ReadAll(): %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span></code></pre></div>
+<h2 id="バッファありのファイルi-o">バッファありのファイルI/O</h2>
+
+<p>bufioパッケージのメソッドを使用すると，読み書きの際に内部でバッファを使ってくれる．
+そのため，そのままデータを読み書きするよりも効率的に処理を行うことができる．</p>
+
+<p>ファイルI/Oに使えそうなものは次の3種類．</p>
+
+<ul>
+<li>bufio.Reader</li>
+<li>bufio.Scanner</li>
+<li>bufio.Writer</li>
+</ul>
+
+<h3 id="bufio-reader">bufio.Reader</h3>
+
+<p>基本的な使い方は通常のファイルと似ているが，いくつか便利なメソッドが定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">reader</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="nx">buffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1">// basic Read method
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">buffer</span><span class="p">))</span>
+
+<span class="c1">// ReadBytes reads until delimiter found.
+</span><span class="c1">// Read contents is slice of bytes.
+</span><span class="c1">// In this example, read until first &#39;\n&#39; character found.
+</span><span class="c1"></span><span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span>
+
+<span class="c1">// ReadString reads until delimiter found.
+</span><span class="c1">// Read contents is string.
+</span><span class="c1">// In this example, read until first &#39;\n&#39; character found.
+</span><span class="c1"></span><span class="nx">str</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">ReadString</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nx">str</span><span class="p">)</span></code></pre></div>
+<h3 id="bufio-scanner">bufio.Scanner</h3>
+
+<p>bufio.Readerと似ているが，こちらは改行区切りのテキストを扱う時に便利なものになっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">scanner</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewScanner</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Scan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">scanner</span><span class="p">.</span><span class="nf">Text</span><span class="p">())</span>
+<span class="p">}</span></code></pre></div>
+<p><code>Text</code> メソッドを呼ぶと，改行文字まで（＝1行分の文字）を返してくれる．</p>
+
+<p><code>Scan</code> が <code>true</code> の間は，まだ読んでいない行があるということを示している．
+なので， <code>Scan</code> が <code>false</code> になるまでループを回してあげれば結果的にファイルの内容すべてを読むことができる．</p>
+
+<h3 id="bufio-writer">bufio.Writer</h3>
+
+<p>Readerと同様，io.Writerと似ている．
+注意しなければならない点として，最後に <code>Writer.Flush</code> を呼び出す必要がある点がある．
+これを呼び出さないと正常に書き込みされないので注意する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="nx">writer</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+
+<span class="nx">byteData</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hello world\n&#34;</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">writer</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">byteData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+
+<span class="nx">stringData</span> <span class="o">:=</span> <span class="s">&#34;Write string :)&#34;</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">writer</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">stringData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+
+<span class="nx">writer</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span></code></pre></div>
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="https://godoc.org/os">os - GoDoc</a></li>
+<li><a href="https://godoc.org/io">io - GoDoc</a></li>
+<li><a href="https://godoc.org/io/ioutil">ioutil - GoDoc</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Kubernetes Authentication</title>
+			<link>https://mas9612.github.io/posts/k8s-auth/</link>
+			<pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/k8s-auth/</guid>
+			<description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
 Environment  Kubernetes cluster bootstrapped with minikube shell $ kubectl version Client Version: version.</description>
-    </item>
-    
-    <item>
-      <title>pipeによるプロセス間通信</title>
-      <link>https://example.com/posts/pipe/</link>
-      <pubDate>Sat, 08 Dec 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/pipe/</guid>
-      <description>fork() で作成した子プロセスと親プロセスの間で情報のやり取りをするために，IPC（Inter Process Communication）の一つであるパイプを利用</description>
-    </item>
-    
-    <item>
-      <title>OpenSSLでTLS証明書を作る</title>
-      <link>https://example.com/posts/openssl/</link>
-      <pubDate>Wed, 14 Nov 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/openssl/</guid>
-      <description>etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった． ちゃんとした手順をあまり理解できていなかったため，備忘録</description>
-    </item>
-    
-    <item>
-      <title>etcd入門</title>
-      <link>https://example.com/posts/etcd/</link>
-      <pubDate>Sat, 27 Oct 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/etcd/</guid>
-      <description>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア</description>
-    </item>
-    
-    <item>
-      <title>GoのType AssertionとType Switches</title>
-      <link>https://example.com/posts/go-type-assertion/</link>
-      <pubDate>Tue, 02 Oct 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/go-type-assertion/</guid>
-      <description>Goでは，型を interface{} として宣言してあげることで，とりあえずどんな値でも格納することが出来る． SlackのEvent API等，メッセージの形式がE</description>
-    </item>
-    
-    <item>
-      <title>Goでバイナリを作る</title>
-      <link>https://example.com/posts/build-binary-with-go/</link>
-      <pubDate>Fri, 27 Jul 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/build-binary-with-go/</guid>
-      <description>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた． テストで書いてみたプログラムは次の通り． とりあえず</description>
-    </item>
-    
-    <item>
-      <title>HTTPリダイレクトについて調査した</title>
-      <link>https://example.com/posts/http-redirect/</link>
-      <pubDate>Mon, 16 Jul 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/http-redirect/</guid>
-      <description>HTTPのリダイレクトには，大きく分けて次の二つ存在する． 一時的なリダイレクト 恒久的なリダイレクト 一般的に用いられるリダイレクトのステータス</description>
-    </item>
-    
-    <item>
-      <title>HTTP Keep-Aliveについて</title>
-      <link>https://example.com/posts/http-keep-alive/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/http-keep-alive/</guid>
-      <description>HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ</description>
-    </item>
-    
-    <item>
-      <title>USENIX 2018の論文読み</title>
-      <link>https://example.com/posts/read-usenix-2018-papers/</link>
-      <pubDate>Tue, 03 Jul 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://example.com/posts/read-usenix-2018-papers/</guid>
-      <description>軽く読んだので，雑なまとめ． ほぼ自分用のメモ． Elastic Scaling of Stateful Network Functions https://www.usenix.org/conference/nsdi18/presentation/woo NFV（Network Functions Virtualization）におけるスケーリングの弾力</description>
-    </item>
-    
-  </channel>
+			<content type="html"><![CDATA[
+
+<p>When we use Kubernetes API, the request is checked by following order after TLS is established[1].</p>
+
+<ol>
+<li>Authentication: Checked whether user is granted to access API</li>
+<li>Authorization: Checked whether user is granted to do requested action to specified object</li>
+<li>Admission Control: Modify or reject request</li>
+</ol>
+
+<p>To test and study Kubernetes authentication flow, I was tested it with minikube.</p>
+
+<h2 id="environment">Environment</h2>
+
+<ul>
+<li>Kubernetes cluster bootstrapped with minikube
+<code>shell
+$ kubectl version
+Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;13&quot;, GitVersion:&quot;v1.13.1&quot;, GitCommit:&quot;eec55b9ba98609a46fee712359c7b5b365bdd920&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-13T19:44:19Z&quot;, GoVersion:&quot;go1.11.2&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;}
+Server Version: version.Info{Major:&quot;1&quot;, Minor:&quot;12&quot;, GitVersion:&quot;v1.12.4&quot;, GitCommit:&quot;f49fa022dbe63faafd0da106ef7e05a29721d3f1&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2018-12-14T06:59:37Z&quot;, GoVersion:&quot;go1.10.4&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+</code></li>
+</ul>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>In this test, we used X509 Client Certs (Client certificate authentication) as authentication strategy.
+For more information about it or other authentication strategy, see [2].</p>
+
+<p><strong>Procedure:</strong></p>
+
+<ol>
+<li>Create client key and CSR (Certificate Signing Request)</li>
+<li>Sign CSR created in previous step with CA key</li>
+<li>Register client key and certificate to kubectl config</li>
+</ol>
+
+<p>In minikube, client certificate authentication is enabled by default.
+So we don&rsquo;t need to enable it manually.
+Let&rsquo;s create client key and certificate.</p>
+
+<h3 id="create-client-key-and-csr">Create client key and CSR</h3>
+
+<p>First, we must create client key and CSR (Certificate Signing Request).
+We can create these with <code>openssl</code> command.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># generate RSA private key (Algorithm: RSA, Key bits: 2048, Key name: client.key)</span>
+$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -out client.key
+
+<span class="c1"># generate CSR (Username: mas9612, Group: users)</span>
+$ openssl req -new -key client.key -out client.csr -subj <span class="s2">&#34;/CN=mas9612/O=users&#34;</span></code></pre></div>
+<p>When issuing CSR, we must pass username and group at <code>-subj</code> option.
+<code>CN</code> means username, <code>O</code> means group. User can be associated with multiple groups.
+To add user more than one groups, simply add <code>O</code> section to <code>-subj</code> option.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># user mas9612 is now a member of &#34;users&#34; and &#34;member&#34; groups</span>
+$ openssl req -new -key client.key -out client.csr -subj <span class="s2">&#34;/CN=mas9612/O=users/O=member&#34;</span></code></pre></div>
+<h3 id="sign-csr-with-ca-key">Sign CSR with CA key</h3>
+
+<p>After create CSR, we must sign it with CA (Certificate Authority) key.</p>
+
+<p>First, we must fetch CA key and certificate from minikube VM.
+We can do that with following commands.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ minikube ssh
+$ sudo cp /var/lib/minikube/certs/ca.crt /var/lib/minikube/certs/ca.key ~
+$ sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> ~/ca.crt ~/ca.key
+$ <span class="nb">exit</span>
+
+$ scp -i <span class="k">$(</span>minikube ssh-key<span class="k">)</span> docker@<span class="k">$(</span>minikube ip<span class="k">)</span>:~/ca.crt .
+$ scp -i <span class="k">$(</span>minikube ssh-key<span class="k">)</span> docker@<span class="k">$(</span>minikube ip<span class="k">)</span>:~/ca.key .</code></pre></div>
+<p>Finally, sign CSR with fetch key and certificate.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial <span class="se">\
+</span><span class="se"></span>    -out client.crt -days <span class="m">3650</span></code></pre></div>
+<p>To check created certificate, run following command.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -in client.crt -text -noout</code></pre></div>
+<h2 id="register-client-key-and-certificate-to-kubectl-config">Register client key and certificate to kubectl config</h2>
+
+<p>After create client key and certificate, we should register it to kubectl config to use it easily.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># create &#34;testuser&#34; with given key and certificate</span>
+$ kubectl config set-credentials testuser --client-key<span class="o">=</span>./client.key --client-certificate<span class="o">=</span>./client.crt
+
+<span class="c1"># bind &#34;testuser&#34; and minikube cluster as &#34;authtest&#34; context</span>
+$ kubectl config set-context authtest --cluster<span class="o">=</span>minikube --user<span class="o">=</span>testuser
+
+<span class="c1"># change to use &#34;authtest&#34; context instead of minikube default</span>
+$ kubectl config use-context authtest</code></pre></div>
+<p>After register credentials, we can use kubectl command as created user.
+But now, we aren&rsquo;t granted to use any API so any request will be rejected.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get pods
+Error from server <span class="o">(</span>Forbidden<span class="o">)</span>: pods is forbidden: User <span class="s2">&#34;mas9612&#34;</span> cannot list resource <span class="s2">&#34;pods&#34;</span> in API group <span class="s2">&#34;&#34;</span> in the namespace <span class="s2">&#34;default&#34;</span></code></pre></div>
+<p>To allow API request, we must assign appropriate Role to User.</p>
+
+<h2 id="authorization">Authorization</h2>
+
+<p>In the previous section, we tried to create new user and to query running pod information.
+We confirmed that user is properly created but any operation is not allowed.</p>
+
+<p>In this section, we will examine Kubernetes RBAC API.</p>
+
+<h3 id="role-clusterrole-rolebinding-clusterrolebinding-5">Role/ClusterRole, RoleBinding/ClusterRoleBinding[5]</h3>
+
+<p>Kubernetes RBAC API has 4 types: Role, ClusterRole, RoleBinding, ClusterRoleBinding.</p>
+
+<p>Types prefixed by <code>Cluster-</code> have cluster-wide effect.
+In contrast, types non-prefixed by <code>Cluster-</code> have only specific namespace (e.g. <code>default</code> namespace)</p>
+
+<p>Role/ClusterRole contains rules that represent a set of permissions.
+Default permission is all deny so you must add some rule to allow operation (e.g. list pods, create new deployment, etc.).</p>
+
+<p>RoleBinding/ClusterRoleBinding grants the permissions to a user (or a set of users).</p>
+
+<p>So if we want to add some permission to user, first create appropriate Role and then bind it to user by RoleBinding.</p>
+
+<h3 id="create-role">Create Role</h3>
+
+<p>Let&rsquo;s create Role to list running pods in default namespace.
+Create <code>client-role.yml</code> with the following content.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">kind<span class="p">:</span><span class="w"> </span>Role<span class="w">
+</span><span class="w"></span>apiVersion<span class="p">:</span><span class="w"> </span>rbac.authorization.k8s.io/v1<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>test-role<span class="w">
+</span><span class="w"></span>rules<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>apiGroups<span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">    </span>resources<span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">    </span>verbs<span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;watch&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;list&#34;</span><span class="p">]</span></code></pre></div>
+<p>After create manifest, apply it with kubectl:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># make sure that we&#39;re using minikube context</span>
+$ kubectl config use-context minikube
+
+$ kubectl apply -f client-role.yml
+role.rbac.authorization.k8s.io/test-role created
+
+<span class="c1"># check Role is created properly</span>
+$ kubectl get role
+NAME        AGE
+test-role   102s</code></pre></div>
+<h3 id="create-rolebinding">Create RoleBinding</h3>
+
+<p>Next, we create RoleBinding to bind User and Role.
+Create <code>client-rolebinding.yml</code> with the following content.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">kind<span class="p">:</span><span class="w"> </span>RoleBinding<span class="w">
+</span><span class="w"></span>apiVersion<span class="p">:</span><span class="w"> </span>rbac.authorization.k8s.io/v1<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>client-read-access<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w"></span>subjects<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>kind<span class="p">:</span><span class="w"> </span>User<span class="w">
+</span><span class="w">    </span>name<span class="p">:</span><span class="w"> </span>mas9612<span class="w">
+</span><span class="w">    </span>apiGroup<span class="p">:</span><span class="w"> </span>rbac.authorization.k8s.io<span class="w">
+</span><span class="w"></span>roleRef<span class="p">:</span><span class="w">
+</span><span class="w">  </span>kind<span class="p">:</span><span class="w"> </span>Role<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>test-role<span class="w">
+</span><span class="w">  </span>apiGroup<span class="p">:</span><span class="w"> </span>rbac.authorization.k8s.io</code></pre></div>
+<p>Please change username to that you created.</p>
+
+<p>After create manifest, apply it with kubectl:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl apply -f client-rolebinding.yml
+rolebinding.rbac.authorization.k8s.io/client-read-access created
+
+$ kubectl get rolebindings
+NAME                 AGE
+client-read-access   48s</code></pre></div>
+<p>Finally, change context to <code>auth-test</code> and try to query pods again!</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl config use-context auth-test
+Switched to context <span class="s2">&#34;auth-test&#34;</span>.
+
+$ kubectl get pods
+No resources found.</code></pre></div>
+<h2 id="references">References</h2>
+
+<ul>
+<li>[1] <a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">Controlling Access to the Kubernetes API - Kubernetes</a></li>
+<li>[2] <a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Authenticating - Kubernetes</a></li>
+<li>[3] <a href="https://kubernetes.io/docs/concepts/cluster-administration/certificates/#openssl">Certificates - Kubernetes</a></li>
+<li>[4] <a href="https://kubernetes.io/docs/reference/access-authn-authz/authorization/">Authorization Overview - Kubernetes</a></li>
+<li>[5] <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Using RBAC Authorization - Kubernetes</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>pipeによるプロセス間通信</title>
+			<link>https://mas9612.github.io/posts/pipe/</link>
+			<pubDate>Sat, 08 Dec 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/pipe/</guid>
+			<description>fork() で作成した子プロセスと親プロセスの間で情報のやり取りをするために，IPC（Inter Process Communication）の一つであるパイプを利用</description>
+			<content type="html"><![CDATA[
+
+<p><code>fork()</code> で作成した子プロセスと親プロセスの間で情報のやり取りをするために，IPC（Inter Process Communication）の一つであるパイプを利用した．
+一度理解してしまえば特に難しいものではなかったので，文章としてまとめておく．</p>
+
+<h2 id="パイプの概要">パイプの概要</h2>
+
+<p>シェルを使用していると，「何かのコマンドの出力をgrepしたい」というとき等，あるコマンドの出力を別のコマンドの入力として扱いたいということが多々ある．このような場合，「パイプ」という機能を使って次のようにコマンドを実行することで実現できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ cat something.txt <span class="p">|</span> grep Hello</code></pre></div>
+<p>上記のコマンドを実行すると，catコマンドの出力から， <code>Hello</code> を含んでいる行のみを画面に出力させることができる．
+（上記の例ではパイプを使わずともgrepコマンド単体で同じことが可能であるが）</p>
+
+<p>このように，パイプの入口・出口となるファイルディスクリプタを接続することができるという機能を持つ．</p>
+
+<h2 id="パイプの利用">パイプの利用</h2>
+
+<p>次のような簡単なサンプルプログラムを作成した．</p>
+
+<script src="https://gist.github.com/mas9612/31ed12c2d4d3f8ea13938600c46b3dce.js"></script>
+
+<p>特に難しいことはやっておらず，ただ単に <code>fork()</code> した後，親プロセスから子プロセスに文字列を送るだけのプログラム．</p>
+
+<p>パイプを使うため， <code>fork()</code> を呼び出す前に <code>pipe()</code> を呼び出しておく．
+<code>pipe()</code> システムコールを呼び出すと，引数に与えた配列の0番目に「読み取り用」，1番目に「書き込み用」のファイルディスクリプタを格納してくれる．
+これらに対して書き込み・読み取りをすると，それぞれ対応するファイルディスクリプタから読み取り・書き込みを行うことができる．</p>
+
+<p><code>pipe()</code> を呼び出した跡は通常通り <code>fork()</code> を呼び出す．
+これにより，子プロセスが作成され， <code>pipe()</code> によって作成されたファイルディスクリプタのペアも複製される．
+その後，親プロセスと子プロセスで，次の必要ないファイルディスクリプタをそれぞれクローズしておく．</p>
+
+<ul>
+<li>親プロセス→読み取り用のファイルディスクリプタ（ <code>fds[0]</code> ）
+
+<ul>
+<li>親プロセスからは書き込みのみを行うため</li>
+</ul></li>
+<li>子プロセス→書き込み用のファイルディスクリプタ（ <code>fds[1]</code> ）
+
+<ul>
+<li>子プロセスからは読み取りのみを行うため</li>
+</ul></li>
+</ul>
+
+<p>あとは，通常通り <code>read()</code> や <code>write()</code> を呼び出すだけ．</p>
+
+<p>今回は， <code>fork()</code> した後でも親・子ともに同じプログラムを実行していたが， <code>execve()</code> 等を使って子プロセスでは別のプログラムを動作させることももちろん可能．
+この場合，子プロセスで標準入力からデータを読み込みたい場合は， <code>dup2()</code> を使って <code>fds[0]</code> を <code>0</code> （標準入力）に複製してあげると良い．</p>
+
+<h2 id="参考文献">参考文献</h2>
+
+<ul>
+<li>Michael Kerrisk，Linuxプログラミングインタフェース，2012年12月 発行，ISBN978-4-87311-585-6</li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>OpenSSLでTLS証明書を作る</title>
+			<link>https://mas9612.github.io/posts/openssl/</link>
+			<pubDate>Wed, 14 Nov 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/openssl/</guid>
+			<description>etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった． ちゃんとした手順をあまり理解できていなかったため，備忘録</description>
+			<content type="html"><![CDATA[
+
+<p>etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった．
+ちゃんとした手順をあまり理解できていなかったため，備忘録として残しておく．</p>
+
+<h2 id="tls証明書発行までの流れ">TLS証明書発行までの流れ</h2>
+
+<p>TLS証明書は次にような流れで発行する．</p>
+
+<ol>
+<li>秘密鍵を作成</li>
+<li>CSRを作成</li>
+<li>TLS証明書を作成</li>
+</ol>
+
+<p>これ以降，上記の具体的な手順について説明する．</p>
+
+<p>今回使用したOpenSSLのバージョンは次の通り．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl version
+OpenSSL <span class="m">1</span>.1.1  <span class="m">11</span> Sep <span class="m">2018</span></code></pre></div>
+<h3 id="秘密鍵を作成">秘密鍵を作成</h3>
+
+<p>秘密鍵の作成は， <code>genpkey</code> サブコマンドを使用する．
+<code>genrsa</code> サブコマンドでもできるようだが，マニュアルに <code>genrsa</code> 含めいくつかのコマンドは <code>genpkey</code> に置き換えられたという記述があるので，今回は <code>genpkey</code> を使用する．</p>
+
+<p>今回は次のような鍵を作成する．
+* 公開鍵アルゴリズム: RSA
+* 鍵長: 2048bit
+* 秘密鍵を暗号化するためのアルゴリズム: AES 128bit</p>
+
+<p>この条件で秘密鍵を作成するには次のようなコマンドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -aes128 -out ca.key</code></pre></div>
+<p>コマンドを実行するとパスフレーズを求められるので，適当なものを入力する．
+実行すると次のようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -aes128 -out ca.key
+..........................................................+++++
+................................................+++++
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:</code></pre></div>
+<p>オプションの意味は次の通り．
+* <code>-algorithm rsa</code> : 公開鍵アルゴリズムとしてRSAを使用する
+* <code>-pkeyopt rsa_keygen_bits:2048</code> : RSAの鍵長を2048bitにする
+* <code>-aes128</code> : 秘密鍵をAES 128bitで暗号化する
+* <code>-out ca.key</code> : <code>ca.key</code> という名前で秘密鍵を生成する</p>
+
+<h3 id="csrを作成">CSRを作成</h3>
+
+<p>TLS証明書を作成するには，まずCSR (Certificate Signing Request) を作成する必要がある．
+このCSRを元に，CA (Certificate Authority) がTLS証明書を作成するという流れになる．</p>
+
+<p>この手順では，前手順で作成した秘密鍵を使ってCSRを作成する．
+これは <code>req</code> サブコマンドで行うことができる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl req -new -key ca.key -out ca.csr</code></pre></div>
+<p>実行すると次のようになる．
+まずパスフレーズを聞かれるので，秘密鍵を作成したときに入力したのと同じものを入力する．</p>
+
+<p>その後，いくつか情報を聞かれるので必要に応じて入力する．
+このとき，何も入力せずにEnterを押すとデフォルト値が使用されるが，フィールドを空にしておきたい場合は <code>.</code> （ピリオド）を入力してからEnterを押すようにする．
+<code>.</code> をつけることにより，このフィールドは空だと明示的に指定できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl req -new -key ca.key -out ca.csr
+Enter pass phrase <span class="k">for</span> ca.key:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span class="s1">&#39;.&#39;</span>, the field will be left blank.
+-----
+Country Name <span class="o">(</span><span class="m">2</span> letter code<span class="o">)</span> <span class="o">[</span>AU<span class="o">]</span>:JP
+State or Province Name <span class="o">(</span>full name<span class="o">)</span> <span class="o">[</span>Some-State<span class="o">]</span>:.
+Locality Name <span class="o">(</span>eg, city<span class="o">)</span> <span class="o">[]</span>:.
+Organization Name <span class="o">(</span>eg, company<span class="o">)</span> <span class="o">[</span>Internet Widgits Pty Ltd<span class="o">]</span>:.
+Organizational Unit Name <span class="o">(</span>eg, section<span class="o">)</span> <span class="o">[]</span>:.
+Common Name <span class="o">(</span>e.g. server FQDN or YOUR name<span class="o">)</span> <span class="o">[]</span>:mas9612.net
+Email Address <span class="o">[]</span>:.
+
+Please enter the following <span class="s1">&#39;extra&#39;</span> attributes
+to be sent with your certificate request
+A challenge password <span class="o">[]</span>:.
+An optional company name <span class="o">[]</span>:.</code></pre></div>
+<p>オプションの意味は次の通り．
+* <code>-new</code> : 新しいCSRを作成するときに指定する
+* <code>-key ca.key</code> : 秘密鍵を指定する．この鍵とペアになる公開鍵が署名される
+* <code>-out ca.csr</code> : <code>ca.csr</code> という名前でCSRを作成する</p>
+
+<h3 id="tls証明書を作成">TLS証明書を作成</h3>
+
+<p>CSRが作成できたら，最後にTLS証明書を作成する．</p>
+
+<p>今回は，次の2種類の方法を試す．
+* 自己署名: 自分の秘密鍵を使って署名する
+* 別に用意したCAによる署名: CAの秘密鍵を使って署名する</p>
+
+<h4 id="自己署名">自己署名</h4>
+
+<p>自己署名を行うには，次のようなコマンドを実行する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in ca.csr -out ca.crt -signkey ca.key -days <span class="m">365</span></code></pre></div>
+<p>コマンドを実行すると次のようになる．
+ここでもパスフレーズを聞かれるので，秘密鍵作成時のものを入力する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in ca.csr -out ca.crt -signkey ca.key -days <span class="m">365</span>
+Signature ok
+<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
+Getting Private key
+Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
+<p>オプションの意味は次の通り．
+* <code>-req</code> : このオプションを指定すると，CSRを読み込んでTLS証明書を作成する
+* <code>-in ca.csr</code> : 読み込むCSRファイルを指定
+* <code>-out ca.crt</code> : <code>ca.crt</code> という名前でTLS証明書を出力する
+* <code>-signkey ca.key</code> : <code>ca.key</code> を使って署名を行う
+* <code>-days 365</code> : TLS証明書の期限を365日にする</p>
+
+<h4 id="caによる署名">CAによる署名</h4>
+
+<p>次に，CAによる署名を試してみる．
+といっても，自分で何かCAを運用しているわけではないので，今回は先程作った秘密鍵とTLS証明書をCAのものと仮定し，それを使って署名をするということを試す．</p>
+
+<p>まず，先ほどとは別の秘密鍵とCSRを作成しておく．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl genpkey -algorithm rsa -pkeyopt rsa_keygen_bits:2048 -aes128 -out etcd0.key
+$ openssl req -new -key ca.key -out etcd0.csr</code></pre></div>
+<p>CSRまで作成できたら，それをCAの証明書で署名する手順に移る．
+これも自己署名と同様に， <code>x509</code> サブコマンドを使うと簡単にできる．
+次のようなコマンドを実行する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in etcd0.csr -out etcd0-ca.crt -days <span class="m">365</span> -CA ca.crt -CAkey ca.key -CAcreateserial</code></pre></div>
+<p>実行すると次のようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in etcd0.csr -out etcd0-ca.crt -days <span class="m">365</span> -CA ca.crt -CAkey ca.key -CAcreateserial
+Signature ok
+<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> JP, <span class="nv">CN</span> <span class="o">=</span> mas9612.net
+Getting CA Private Key
+Enter pass phrase <span class="k">for</span> ca.key:</code></pre></div>
+<p>CA関連のオプションは次の通り．
+* <code>-CA ca.crt</code> : 署名に使用するCAのTLS証明書を指定する
+* <code>-CAkey ca.key</code> : 署名に使用するCA秘密鍵を指定する
+* <code>-CAcreateserial</code> : CAのシリアルナンバーファイルが存在しない場合，自動で作成する</p>
+
+<h2 id="秘密鍵やcsr-tls証明書の内容を確認する">秘密鍵やCSR，TLS証明書の内容を確認する</h2>
+
+<p>上記の手順でTLS証明書までの作成ができた．
+作成した各種ファイルは，opensslコマンドを使用することでその内容を確認することができる．</p>
+
+<p>ここではそれについて説明する．</p>
+
+<h3 id="秘密鍵の内容確認">秘密鍵の内容確認</h3>
+
+<p>秘密鍵の内容を確認するには， <code>rsa</code> サブコマンドを使用する．</p>
+
+<p>普通に秘密鍵を読み込むには， <code>-in</code> オプションに秘密鍵のファイル名を指定するだけでできる．
+なお，このコマンドを実行してもただ単にファイルの内容がそのまま表示されるだけである．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl rsa -in ca.key
+Enter pass phrase <span class="k">for</span> ca.key:
+writing RSA key
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAoTo44Vgr5vUZvhlfhDGrUK3DBVKexWoG5Hq29oMhEc5HCSTk
+XBL28/gGVoW6NtW7HMiM2zkPE0ETC/Hi8ef9CVjE414F5OpIgppBjYxjjmDEDita
+...（省略）
+bBxlNDpyMteIfxg1cix3U2V+D1mWhBAKqF95xJNASQZtfeabZHZzCH7YbO0eGFIv
+m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
+-----END RSA PRIVATE KEY-----</code></pre></div>
+<p>これに <code>-text</code> オプションを指定すると，秘密鍵の内容を調べてNやE，Dを値を表示してくれる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl rsa -in ca.key -text
+Enter pass phrase <span class="k">for</span> ca.key:
+RSA Private-Key: <span class="o">(</span><span class="m">2048</span> bit, <span class="m">2</span> primes<span class="o">)</span>
+modulus:
+    <span class="m">00</span>:a1:3a:38:e1:58:2b:e6:f5:19:be:19:5f:84:31:
+    ...（省略）
+    <span class="m">43</span>:c8:f7:b1:7f:e0:9f:5f:9c:25:83:55:1d:d4:b7:
+    de:9f
+publicExponent: <span class="m">65537</span> <span class="o">(</span>0x10001<span class="o">)</span>
+privateExponent:
+    <span class="m">58</span>:d7:6d:5a:77:2c:91:f2:c3:81:a6:17:a5:0f:7d:
+    ...（省略）
+    b4:d7:70:bb:59:56:df:92:9f:99:40:a4:42:97:4d:
+    c9
+prime1:
+    <span class="m">00</span>:d1:a0:9d:d8:96:8d:8d:48:d0:76:c8:76:8e:b9:
+    ...（諸略）
+    a0:30:e1:b3:b5:d2:e8:d4:00:f3:65:93:ab:d5:b3:
+    2f:0e:aa:bd:94:75:2d:a2:05
+prime2:
+    <span class="m">00</span>:c4:e4:ac:2a:c5:59:aa:a1:d2:3c:2a:8c:dd:bf:
+    ...（省略）
+    bf:32:c3:4b:98:dc:57🆎53
+exponent1:
+    4c:d1:5f:06:8f:a5:2f:b1:0f:33:78:22:7a:0a:ef:
+    ...（省略）
+    ac:16:45:82:b1:ae:17:41
+exponent2:
+    <span class="m">41</span>:b8:e3:0f:53:d8:de:70:2d:b1:0f:b2:fd:c2:17:
+    ...（省略）
+    ee:9d:e9:fa:18:72:db:29
+coefficient:
+    2f:ba:6e:47:c5:bb:60:2e:4f:35:4f:c2:d1:12:61:
+    ...（省略）
+    <span class="m">79</span>:bf:13:92:23:b5:1a:5b
+writing RSA key
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAoTo44Vgr5vUZvhlfhDGrUK3DBVKexWoG5Hq29oMhEc5HCSTk
+XBL28/gGVoW6NtW7HMiM2zkPE0ETC/Hi8ef9CVjE414F5OpIgppBjYxjjmDEDita
+...（省略）
+m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
+-----END RSA PRIVATE KEY-----</code></pre></div>
+<p>いろいろ出力されるが，NやEに対応するのは次の部分．
+* N: modulus
+* E: publicExponent
+* D: privateExponent
+* prime1: p
+* prime2: q</p>
+
+<p>また， <code>-noout</code> オプションを指定すると，秘密鍵をエンコーディングした内容は出力されなくなる（ <code>BEGIN RSA PRIVATE KEY</code> から <code>END RSA PRIVATE KEY</code> の部分）．</p>
+
+<h3 id="csrの内容確認">CSRの内容確認</h3>
+
+<p>CSRの内容確認には， <code>req</code> サブコマンドを使用する．
+秘密鍵の内容確認と同じように， <code>-in</code> ， <code>-text</code> ， <code>-noout</code> が使える．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl req -in ca.csr -text -noout</code></pre></div>
+<h3 id="tls証明書の内容確認">TLS証明書の内容確認</h3>
+
+<p>TLS証明書の内容確認には， <code>x509</code> サブコマンドを使用する．
+これも同じように， <code>-in</code> ， <code>-text</code> ， <code>-noout</code> が使える．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -in ca.crt -text -noout</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>etcd入門</title>
+			<link>https://mas9612.github.io/posts/etcd/</link>
+			<pubDate>Sat, 27 Oct 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/etcd/</guid>
+			<description>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア</description>
+			<content type="html"><![CDATA[
+
+<p>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく．
+今回のモチベーションとして，Kubernetesのアーキテクチャを詳しく勉強したい，Terraformのstate保存をローカルではなくetcdにしたいという2つがある．</p>
+
+<p>まず，インストールとクラスタの作成について見ていく．</p>
+
+<h2 id="インストール">インストール</h2>
+
+<p>クラスタ作成のためには，まずetcd本体のバイナリが必要になる．
+<a href="https://github.com/etcd-io/etcd/releases">GitHubのreleaseページ</a>から，自分のOSにあったバイナリをダウンロードしてくる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl -LO https://github.com/etcd-io/etcd/releases/download/v3.3.10/etcd-v3.3.10-linux-amd64.tar.gz</code></pre></div>
+<p>ダウンロードしたファイルは圧縮されており，それを解凍するといくつかのファイルの中に2つのバイナリが確認できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ tar xzf etcd-v3.3.10-linux-amd64.tar.gz
+$ <span class="nb">cd</span> etcd-v3.3.10-linux-amd64.tar.gz
+$ ll etcd*
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcd
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcdctl</code></pre></div>
+<p><code>etcd</code> はetcd本体， <code>etcdctl</code> はetcdのクライアントとなるプログラム．
+これら2つをPATHが通っている場所に置いてあげる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo mv etcd* /usr/local/bin/
+$ ll /usr/local/bin/etcd*
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcd
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcdctl</code></pre></div>
+<p>これでインストールは完了．
+きちんとインストールされているか一応確認する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --version
+etcd Version: <span class="m">3</span>.3.10
+Git SHA: 27fc7e2
+Go Version: go1.10.4
+Go OS/Arch: linux/amd64</code></pre></div>
+<h2 id="クラスタの作成">クラスタの作成</h2>
+
+<p>まず，1台のみでetcdクラスタを作成して簡単に使い方を把握し，その後複数メンバでのetcdクラスタを作成していく．</p>
+
+<h3 id="1台のetcdクラスタ作成">1台のetcdクラスタ作成</h3>
+
+<p>基本的に<a href="https://github.com/etcd-io/etcd#running-etcd">GitHubに書いてある手順</a>通りに試していく．</p>
+
+<p>1台のみでetcdクラスタを作成するときは，特に何も考えずに <code>etcd</code> コマンドを実行する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd</code></pre></div>
+<p><code>etcd</code> コマンドを実行すると，多くのログが出力される．
+ここで，作成したetcdクラスタを使って，データの登録と取得を試してみる．</p>
+
+<p>etcdクラスタとのやり取りには， <code>etcdctl</code> コマンドを使用する．
+<code>etcd</code> コマンドを実行しているシェルとは別にもう1つシェルを起動し，そこで <code>etcdctl</code> コマンドを使用していく．
+なお，etcd APIにはバージョンがいくつかあるが，今回はバージョン3を使用する．
+<strong><code>etcdctl</code> を普通に使うとv2 APIが使われてしまうので，v3 APIを使うために <code>ETCDCTL_API</code> という環境変数の値を <code>3</code> に設定する必要があることに注意する．</strong>
+公式のREADMEのように <code>etcdctl</code> コマンドを実行するごとに毎回 <code>ETCDCTL_API</code> を指定してもよいが，毎回記述するのも面倒なのであらかじめexportしておく．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span></code></pre></div>
+<p>etcdクラスタにデータを登録するには，putコマンドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
+$ etcdctl put &lt;key&gt; &lt;value&gt;
+
+$ etcdctl put mykey <span class="s2">&#34;this is awesome&#34;</span>
+OK</code></pre></div>
+<p>putコマンドを実行して， <code>OK</code> と表示されれば成功している．</p>
+
+<p>登録した値を取得するにはgetコマンドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
+$ etcdctl get &lt;key&gt;
+
+$ etcdctl get mykey
+mykey
+this is awesome</code></pre></div>
+<p>指定したキーの名前とデータが続けて出力されれば成功．</p>
+
+<p>次に，複数台のetcdクラスタを作成してみる．
+その前に，今使っていたetcdクラスタを停止させておく．
+<code>etcd</code> コマンドを実行していたシェルに戻り，Ctrl-Cで終了する．</p>
+
+<h3 id="複数メンバでのetcdクラスタ作成">複数メンバでのetcdクラスタ作成</h3>
+
+<p>今回は1つのノードの中にetcdを複数立ち上げることで，複数メンバで構成されるetcdクラスタを作成する．
+もちろん，複数のノードを使ってノード1台につきetcdを1つ動作させるという形で作成することもできる．</p>
+
+<p>公式には，etcdはTCP 2379番・2380番のポートを使用する．</p>
+
+<ul>
+<li>2379/tcp: クライアントとの通信</li>
+<li>2380/tcp: etcdメンバ間の通信</li>
+</ul>
+
+<p>今回は同じノード内に複数etcdを立ち上げるため，それぞれのetcdでポートが競合しないようにしておく．
+今回は3つのetcdメンバを動作させ，それぞれの名前，ポートは次の表のようにした．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">メンバ</th>
+<th align="right">クライアント通信用</th>
+<th align="right">メンバ間通信用</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">etcd1</td>
+<td align="right">2379</td>
+<td align="right">2380</td>
+</tr>
+
+<tr>
+<td align="left">etcd2</td>
+<td align="right">12379</td>
+<td align="right">12380</td>
+</tr>
+
+<tr>
+<td align="left">etcd3</td>
+<td align="right">22379</td>
+<td align="right">22380</td>
+</tr>
+</tbody>
+</table>
+
+<p>実際に3つのetcdメンバを動かしていく．
+ターミナルのウィンドウを3つ開いて，それぞれのターミナルにつき1つのetcdメンバを起動する．
+それぞれのターミナルで，次のようなコマンドを実行する．</p>
+
+<p>1つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd1 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:2380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:2380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:2379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:2379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>2つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd2 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:12380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:12380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:12379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:12379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>3つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd3 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:22379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:22379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>正しくコマンドを入力できていれば，正常にetcdクラスタが起動しているはず．
+出力されるログでエラー等が出ていなければひとまずOK．</p>
+
+<p>コマンドラインオプションをたくさん使っているので複雑に見えるが，一度理解してしまうとそこまで難しくはないと思う．
+今回指定しているコマンドラインオプションは，大きく分けて次の2つに分かれている．</p>
+
+<ul>
+<li>新しいクラスタを作成するときに使用するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#clustering-flags">Clustering flags</a>）</li>
+<li>他のメンバやクライアントとの通信や，etcdの設定に関するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#member-flags">Member flags</a>）</li>
+</ul>
+
+<p>Clustering flagsでは，新しいクラスタを一から作成するときに必要となる情報を指定する．
+今回使用したものは次の通り．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">flags</th>
+<th align="left">description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><code>--initial-advertise-peer-urls</code></td>
+<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--advertise-client-urls</code></td>
+<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster</code></td>
+<td align="left">クラスタを構成するetcdメンバの情報をカンマ区切りで指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster-state</code></td>
+<td align="left">新しいクラスタを作成する場合は <code>new</code> を指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster-token</code></td>
+<td align="left">クラスタ作成中に用いられるトークン．複数クラスタを管理している際，意図せず別のクラスタに影響を与えるのを防ぐ</td>
+</tr>
+</tbody>
+</table>
+
+<p>Member flagsでは，作成するメンバに関する情報等の設定ができる．
+今回使用したものは次の通り．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">flags</th>
+<th align="left">description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><code>--name</code></td>
+<td align="left">メンバ名</td>
+</tr>
+
+<tr>
+<td align="left"><code>--listen-peer-urls</code></td>
+<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--listen-client-urls</code></td>
+<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
+</tr>
+</tbody>
+</table>
+
+<p>注意点として， <code>--initial-cluster</code> で指定しているメンバ情報は， <code>--name</code> と <code>--listen-peer-urls</code> で指定した名前とURLに一致させなければならない．
+もし一致していないと，クラスタ起動時にエラーとなる．</p>
+
+<p>次のコマンドで，きちんと3つのメンバが表示されたら成功．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcdctl member list
+29727fd1bdf9fb62, started, etcd1, http://localhost:2380, http://localhost:2379
+44dd3cd8faa339d0, started, etcd3, http://localhost:22380, http://localhost:22379
+b59b01c27098773e, started, etcd2, http://localhost:12380, http://localhost:12379</code></pre></div>
+<p>次は，作成したクラスタを使ってもう少しetcdctlの使い方を勉強し，その後TLSの設定やDiscoveryを使ったクラスタ作成，無停止でのメンバアップグレード等について勉強していく予定．</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>GoのType AssertionとType Switches</title>
+			<link>https://mas9612.github.io/posts/go-type-assertion/</link>
+			<pubDate>Tue, 02 Oct 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/go-type-assertion/</guid>
+			<description>Goでは，型を interface{} として宣言してあげることで，とりあえずどんな値でも格納することが出来る． SlackのEvent API等，メッセージの形式がE</description>
+			<content type="html"><![CDATA[
+
+<p>Goでは，型を <code>interface{}</code> として宣言してあげることで，とりあえずどんな値でも格納することが出来る．
+SlackのEvent API等，メッセージの形式がEventごとに異なるといった場合に使うと便利．</p>
+
+<p>Example</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">eventHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">event</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span>
+    <span class="nx">decoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nf">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">event</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>この例だと，変数 <code>event</code> に受け取ったイベントが格納される．
+<code>event</code> は <code>map[string]interface{}</code> として宣言されているので， <code>event[&quot;token&quot;]</code> のように値を取得しても返ってくるのは <code>interface{}</code> 型である．
+そのため，値を使いたいときに適切な型へ変換してあげる必要がある．</p>
+
+<p>このような場合に，Goの言語仕様として用意されているType AssertionやType Switchesというものを使ってあげるとうまく型変換が出来る．</p>
+
+<h2 id="type-assertions">Type assertions</h2>
+
+<p>Type assertionsを使うと， <code>interface{}</code> から指定した型に変換することが出来る．
+Type assertionsでは，次のような順番で処理が行われる．</p>
+
+<ol>
+<li>値がnilであるかどうかを検査</li>
+<li>指定した型に変換して値を返却</li>
+</ol>
+
+<p>書き方は次の2つある．</p>
+
+<h3 id="1-基本形">1. 基本形</h3>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="mi">7</span>   <span class="c1">// interface{}としてxを宣言
+</span><span class="c1"></span><span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>            <span class="o">//</span> <span class="nx">Type</span> <span class="nx">assertionsを使ってint型に変換</span></code></pre></div>
+<p>Type assertionsが成功すると，指定した型に変換された値が返り値として返される（上の例だと <code>int</code> に変換された <code>7</code> が返ってくる）．
+もし次の例のように正しく変換できなかった場合は，panicが発生する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span> <span class="c1">// interface{}としてxを宣言
+</span><span class="c1"></span><span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>                <span class="o">//</span> <span class="nx">xの値</span> <span class="s">&#34;hello&#34;</span> <span class="nx">はint型に変換できない</span> <span class="p">=&gt;</span> <span class="nx">panic発生</span></code></pre></div>
+<h3 id="2-別の書き方">2. 別の書き方</h3>
+
+<p>別の書き方として，次のように返り値を2つ受け取るバージョンがある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="mi">7</span>   <span class="c1">// interface{}としてxを宣言
+</span><span class="c1"></span><span class="nx">i</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>        <span class="o">//</span> <span class="nx">okには正しく変換できたかどうかがboolで格納される</span><span class="err">．</span><span class="nx">成功した場合はtrue</span></code></pre></div>
+<p>この書き方を使うと，失敗したときでもpanicは発生せず， <code>ok</code> に <code>false</code> が設定されるだけとなる．
+この時，1つめの返り値は指定した型のゼロ値となる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span> <span class="c1">// interface{}としてxを宣言
+</span><span class="c1"></span><span class="nx">i</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>            <span class="c1">// xの値 &#34;hello&#34; はint型に変換できない =&gt; okはfalse
+</span><span class="c1"></span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>              <span class="o">//</span> <span class="mi">0</span><span class="err">（</span><span class="nx">intのゼロ値</span><span class="err">）</span><span class="nx">が出力される</span></code></pre></div>
+<h2 id="type-switches">Type Switches</h2>
+
+<p>ドキュメントでは，Type SwitchesはType assertionの特別形であると説明されている．
+Type assertionでは変換したい型名を指定していたが，Type Switchesでは代わりに <code>type</code> を指定する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span>
+<span class="k">switch</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="kt">int</span><span class="p">:</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;x is int&#34;</span><span class="p">)</span>
+    <span class="k">case</span> <span class="kt">string</span><span class="p">:</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;x is string&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<p>これを使うと，複数の型候補がある場合にswitch文を使って分岐させることが出来る．</p>
+
+<h2 id="参考文献">参考文献</h2>
+
+<ul>
+<li><a href="https://golang.org/ref/spec#Type_assertions">Type assertions</a></li>
+<li><a href="https://golang.org/ref/spec#Switch_statements">Switch Statements</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Goでバイナリを作る</title>
+			<link>https://mas9612.github.io/posts/build-binary-with-go/</link>
+			<pubDate>Fri, 27 Jul 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/build-binary-with-go/</guid>
+			<description>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた． テストで書いてみたプログラムは次の通り． とりあえず</description>
+			<content type="html"><![CDATA[<p>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた．</p>
+
+<p>テストで書いてみたプログラムは次の通り．
+とりあえずint型の変数をいくつか対象としてバイト変換を試してみた．</p>
+
+<script src="https://gist.github.com/mas9612/ea067ea7436b28e2054a12c7630758b1.js"></script>
+
+<p>何らかの型（構造体やint等のプリミティブ型）からバイト型のスライスに変換するには， <code>encoding/binary</code> パッケージの <code>Write</code> メソッドを使用すると良い．</p>
+
+<p><code>binary.Write()</code> メソッドは次のような定義になっている．</p>
+
+<pre><code>func Write(w io.Writer, order ByteOrder, data interface{}) error
+</code></pre>
+
+<p>第3引数に指定したデータを，第2引数で指定したバイトオーダーで第1引数の <code>w</code> に書き込む．</p>
+
+<p>このメソッドを使うために，まず <code>io.Writer</code> インタフェースを実装したものが必要になる．
+バイト型のデータを書き込みたいので， <code>bytes</code> パッケージの <code>Buffer</code> を使用することにする．</p>
+
+<pre><code>buf := new(bytes.Buffer)
+</code></pre>
+
+<p>注意点として， <code>new()</code> を使う点が挙げられる．
+<code>bytes.Buffer</code> の <code>Write()</code> メソッドはポインタ型（ <code>*bytes.Buffer</code> ）がレシーバとなっているため， <code>new()</code> を使ってポインタを取得してあげる必要がある．</p>
+
+<p>これで <code>io.Writer</code> を用意できたので， <code>binary.Write()</code> を使ってデータを書き込む．
+適当にint型の変数を用意して <code>binary.Write()</code> による書き込みを行う．
+なお，今回はネットワークパケットを作りたいので，第2引数のバイトオーダはビッグエンディアンを指定する．</p>
+
+<pre><code>var val32bit int32
+val32bit = 123
+
+err = binary.Write(buf, binary.BigEndian, val32bit)
+if err != nil {
+    log.Fatalln(err)
+}
+fmt.Printf(&quot;uint32: % x\n&quot;, buf.Bytes())
+</code></pre>
+
+<p>これで無事書き込みができた．</p>
+
+<p>サンプルプログラムの実行結果</p>
+
+<pre><code>uint8: 7b
+uint16: 00 7b
+uint32: 00 00 00 7b
+</code></pre>
+
+<p>今回はint型のみを扱ったが，構造体を書き込みたいときも同じようにして扱うことができるようだ．</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>HTTPリダイレクトについて調査した</title>
+			<link>https://mas9612.github.io/posts/http-redirect/</link>
+			<pubDate>Mon, 16 Jul 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/http-redirect/</guid>
+			<description>HTTPのリダイレクトには，大きく分けて次の二つ存在する． 一時的なリダイレクト 恒久的なリダイレクト 一般的に用いられるリダイレクトのステータス</description>
+			<content type="html"><![CDATA[
+
+<p>HTTPのリダイレクトには，大きく分けて次の二つ存在する．</p>
+
+<ul>
+<li>一時的なリダイレクト</li>
+<li>恒久的なリダイレクト
+一般的に用いられるリダイレクトのステータスコードは <code>301</code> や <code>302</code> である（個人的な考えですが）．
+しかし，他にもいくつかリダイレクトのステータスコードは存在する．</li>
+</ul>
+
+<p>また，似たような意味を持つステータスコードもあるので，整理するために少し調査した．</p>
+
+<h2 id="今回対象とするリダイレクトのステータスコード">今回対象とするリダイレクトのステータスコード</h2>
+
+<p>今回は，次の4つを対象とする．</p>
+
+<ul>
+<li><code>301 Moved Permanently</code></li>
+<li><code>302 Found</code></li>
+<li><code>307 Temporary Redirect</code></li>
+<li><code>308 Permanent Redirect</code></li>
+</ul>
+
+<p>それぞれのステータスコードについて，RFCを参考に概要を以下に示す．
+308以外はRFC 7231，308はRFC 7238で定義されている．</p>
+
+<h3 id="301-moved-permanently">301 Moved Permanently</h3>
+
+<ul>
+<li>恒久的なリダイレクトを表す</li>
+<li><strong>歴史的な経緯から，301を受け取ったクライアントはリクエストメソッドをPOSTからGETに変更する可能性がある</strong>
+
+<ul>
+<li>これを望まない場合，代わりに307を用いることができる</li>
+<li>しかし，307とは意味が異なる（恒久的↔一時的）
+
+<ul>
+<li>308が新しく定義された</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 id="302-found">302 Found</h3>
+
+<ul>
+<li>一時的なリダイレクトを表す</li>
+<li><strong>歴史的な経緯から，301を受け取ったクライアントはリクエストメソッドをPOSTからGETに変更する可能性がある</strong>
+
+<ul>
+<li>これを望まない場合，代わりに307を用いることができる</li>
+</ul></li>
+</ul>
+
+<h3 id="307-temporary-redirect">307 Temporary Redirect</h3>
+
+<ul>
+<li>一時的なリダイレクトを表す</li>
+<li>これを受け取ったクライアントはリクエストメソッドを変更してはいけない</li>
+</ul>
+
+<h3 id="308-permanent-redirect">308 Permanent Redirect</h3>
+
+<ul>
+<li>恒久的なリダイレクトを表す</li>
+<li>これを受け取ったクライアントはリクエストメソッドを変更してはいけない</li>
+</ul>
+
+<h2 id="挙動の確認">挙動の確認</h2>
+
+<p>それぞれのステータスコードに対する挙動を確認するため，簡単なサーバプログラムをGoで作成し，そのサーバに4種類のクライアントで接続した．
+作成したサーバプログラムは <a href="https://github.com/mas9612/http-redirect-test">mas9612/http-redirect-test</a> に置いている．</p>
+
+<p>用いたクライアント
+* curl 7.43.0
+* Safari 11.1.2
+* Google Chrome 67.0.3396.99
+* Firefox 59.0.2</p>
+
+<p>上記それぞれのクライアントから，GETとPOST2つのメソッドで作成したサーバに接続した．
+結果を次の表に示す．</p>
+
+<h3 id="method-get">Method GET</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">client</th>
+<th align="center">301</th>
+<th align="center">302</th>
+<th align="center">307</th>
+<th align="center">308</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">curl</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+</tr>
+
+<tr>
+<td align="center">Safari</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+</tr>
+
+<tr>
+<td align="center">Chrome</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+</tr>
+
+<tr>
+<td align="center">Firefox</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="method-post">Method POST</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">client</th>
+<th align="center">301</th>
+<th align="center">302</th>
+<th align="center">307</th>
+<th align="center">308</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">curl</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+</tr>
+
+<tr>
+<td align="center">Safari</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+</tr>
+
+<tr>
+<td align="center">Chrome</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+</tr>
+
+<tr>
+<td align="center">Firefox</td>
+<td align="center">GET</td>
+<td align="center">GET</td>
+<td align="center">POST</td>
+<td align="center">POST</td>
+</tr>
+</tbody>
+</table>
+
+<p>実験結果より，curl以外のクライアントは，POSTリクエストの応答結果が301と302の時，リダイレクト先へのリクエストメソッドをGETに変更していることがわかった．
+また，RFCの定義どおり，307と308はきちんとリクエストメソッドが維持されていることが確認できた．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc7231">RFC 7231</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7538">RFC 7238</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>HTTP Keep-Aliveについて</title>
+			<link>https://mas9612.github.io/posts/http-keep-alive/</link>
+			<pubDate>Thu, 05 Jul 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/http-keep-alive/</guid>
+			<description>HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ</description>
+			<content type="html"><![CDATA[
+
+<p>HTTP Keep-Aliveについて調査した．
+とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい．</p>
+
+<ul>
+<li>1つのTCPコネクションで複数リクエストを処理できるしくみ</li>
+<li>HTTP/1.1ではKeep-Aliveがデフォルトでオン
+
+<ul>
+<li>オフにするにはそれを明示的に指定する必要がある
+
+<ul>
+<li><code>Connection: close</code> ヘッダを指定</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2 id="apache">Apache</h2>
+
+<h3 id="keep-aliveの設定-keepalive-ディレクティブで-keep-aliveを有効にするかどうかを設定できる">Keep-Aliveの設定<code>KeepAlive</code> ディレクティブで，Keep-Aliveを有効にするかどうかを設定できる．</h3>
+
+<p>Keep-Aliveによるコネクション持続時間は， <code>KeepAliveTimeout</code> ディレクティブで設定する．</p>
+
+<p>例) コネクション持続時間を10秒に設定する</p>
+
+<pre><code>KeepAlive On
+KeepAliveTimeout 10
+</code></pre>
+
+<p>また，1つのKeep-Aliveによるコネクションで処理できるコネクション数を制限するには， <code>MaxKeepAliveRequests</code> ディレクトティブを使用する．
+例えば， <code>MaxKeepAliveRequests 10</code> と設定すると，1つのコネクションで10個までのコネクションを処理することができる．</p>
+
+<h2 id="nginx">Nginx</h2>
+
+<h3 id="keep-aliveの設定">Keep-Aliveの設定</h3>
+
+<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．
+* <code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off
+* <code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</p>
+
+<p>Keep-Aliveによるコネクション持続時間は，On/Offの設定同様 <code>keepalive_timeout</code> で設定する．</p>
+
+<p>例) コネクション持続時間を10秒に設定する</p>
+
+<pre><code>keepalive_timeout 10
+</code></pre>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc2068">RFC2068</a></li>
+<li><a href="https://tools.ietf.org/id/draft-thomson-hybi-http-timeout-01.html">Hypertext Transfer Protocol (HTTP) Keep-Alive Header</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/en/mod/core.html">Apache Core Features</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>USENIX 2018の論文読み</title>
+			<link>https://mas9612.github.io/posts/read-usenix-2018-papers/</link>
+			<pubDate>Tue, 03 Jul 2018 00:00:00 +0900</pubDate>
+			
+			<guid>https://mas9612.github.io/posts/read-usenix-2018-papers/</guid>
+			<description>軽く読んだので，雑なまとめ． ほぼ自分用のメモ． Elastic Scaling of Stateful Network Functions https://www.usenix.org/conference/nsdi18/presentation/woo NFV（Network Functions Virtualization）におけるスケーリングの弾力</description>
+			<content type="html"><![CDATA[
+
+<p>軽く読んだので，雑なまとめ．
+ほぼ自分用のメモ．</p>
+
+<h2 id="elastic-scaling-of-stateful-network-functions">Elastic Scaling of Stateful Network Functions</h2>
+
+<ul>
+<li><a href="https://www.usenix.org/conference/nsdi18/presentation/woo">https://www.usenix.org/conference/nsdi18/presentation/woo</a></li>
+<li>NFV（Network Functions Virtualization）におけるスケーリングの弾力性は重要な要素
+
+<ul>
+<li>実用レベルでの実現は難しかった
+
+<ul>
+<li>多くのNFs（Network Functions）はステートフル</li>
+<li>NFを構成するインスタンス同士での状態共有が必要である</li>
+<li>NFでのスループットとレイテンシの要件を満たしたステート共有の実装は難しい</li>
+</ul></li>
+</ul></li>
+<li>S6を提案
+
+<ul>
+<li>パフォーマンスの低下なしにNFにスケーリングの弾力性を提供するフレームワーク</li>
+<li>ステートをDSO（distributed shared object）とする
+
+<ul>
+<li>弾力性と高パフォーマンスの要件を満たすために拡張したもの</li>
+</ul></li>
+<li>NFの管理者は，ステートがどのように分散・共有されているかを気にすることなくプログラミングできる
+
+<ul>
+<li>S6が透過的に処理をしてくれる（データの局所性や整合性等を抽象化する）</li>
+</ul></li>
+</ul></li>
+<li>実験・評価の結果
+
+<ul>
+<li>現在のNFの動的スケーリング手法と比較
+
+<ul>
+<li>スケーリング: 100倍のパフォーマンス向上</li>
+<li>通常時: 2〜5倍のパフォーマンス向上</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2 id="stroboscope-declarative-network-monitoring-on-a-budget">Stroboscope: Declarative Network Monitoring on a Budget</h2>
+
+<ul>
+<li><a href="https://www.usenix.org/conference/nsdi18/presentation/tilmans">https://www.usenix.org/conference/nsdi18/presentation/tilmans</a></li>
+<li>ISPにとって，ネットワークの動作がどうなっているのか等を正確に知ることは困難
+
+<ul>
+<li>エンドホストを制御するのは不可能</li>
+<li>大量にトラフィックの統計を取る，という方法に頼るしかなかった
+
+<ul>
+<li>情報の粒度が粗いという問題がある</li>
+</ul></li>
+</ul></li>
+<li>Stroboscopeを提案
+
+<ul>
+<li>どんなトラフィックフローでもきめ細かいモニタリングが可能</li>
+<li>高レベルのクエリを入力すると，自動でいろいろやってくれる
+
+<ul>
+<li>どのフローをミラーリングするか</li>
+<li>ルールをどこに配置するか</li>
+<li>カバレッジを最大化するためにはいつルールをスケジューリングすれば良いか</li>
+</ul></li>
+<li>既存のルータ上で動作する</li>
+</ul></li>
+</ul>
+
+<h2 id="safebricks-shielding-network-functions-in-the-cloud">SafeBricks: Shielding Network Functions in the Cloud</h2>
+
+<ul>
+<li>Network Function Virtualization (NFV) の出現により，企業等ではネットワークでの処理をクラウド側に任せることが増えた
+
+<ul>
+<li>セキュリティリスクもある</li>
+<li>クラウドは攻撃の影響を受けやすい</li>
+</ul></li>
+<li>SafeBricksを提案
+
+<ul>
+<li>信頼できないクラウドからNFを守るシステム</li>
+<li>暗号化されたトラフィックのみがクラウドプロバイダの方に流れる
+
+<ul>
+<li>トラフィックとNFの両方の完全性を保つ</li>
+</ul></li>
+<li>クライアントに最小権限を強制する</li>
+<li>SafeBricks leverages a combination of hardware enclaves and language-based enforcement</li>
+<li>SafeBricksによるオーバーヘッドは0〜15%</li>
+</ul></li>
+</ul>
+]]></content>
+		</item>
+		
+	</channel>
 </rss>

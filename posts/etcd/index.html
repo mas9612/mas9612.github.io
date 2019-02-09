@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="etcd入門">
+<meta itemprop="description" content="Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア">
+
+
+<meta itemprop="datePublished" content="2018-10-27T00:00:00&#43;09:00" />
+<meta itemprop="dateModified" content="2019-02-09T19:46:37&#43;09:00" />
+<meta itemprop="wordCount" content="2438">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="etcd入門" />
+<meta property="og:description" content="Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mas9612.github.io/posts/etcd/" />
+<meta property="article:published_time" content="2018-10-27T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="etcd入門"/>
+<meta name="twitter:description" content="Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>etcd入門</title>
+	<link rel="stylesheet" href="https://mas9612.github.io/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://mas9612.github.io/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://mas9612.github.io/posts/">Blog</a>
+					<a href="https://mas9612.github.io/aboutme/">AboutMe</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://mas9612.github.io/posts/">Blog</a></li>
+			<li><a href="https://mas9612.github.io/aboutme/">AboutMe</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Oct 27, 2018</span></div>
+				<h1>etcd入門</h1>
+			</header>
+			<div class="content">
+				
+
+<p>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく．
+今回のモチベーションとして，Kubernetesのアーキテクチャを詳しく勉強したい，Terraformのstate保存をローカルではなくetcdにしたいという2つがある．</p>
+
+<p>まず，インストールとクラスタの作成について見ていく．</p>
+
+<h2 id="インストール">インストール<a href="#インストール" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>クラスタ作成のためには，まずetcd本体のバイナリが必要になる．
+<a href="https://github.com/etcd-io/etcd/releases">GitHubのreleaseページ</a>から，自分のOSにあったバイナリをダウンロードしてくる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl -LO https://github.com/etcd-io/etcd/releases/download/v3.3.10/etcd-v3.3.10-linux-amd64.tar.gz</code></pre></div>
+<p>ダウンロードしたファイルは圧縮されており，それを解凍するといくつかのファイルの中に2つのバイナリが確認できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ tar xzf etcd-v3.3.10-linux-amd64.tar.gz
+$ <span class="nb">cd</span> etcd-v3.3.10-linux-amd64.tar.gz
+$ ll etcd*
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcd
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcdctl</code></pre></div>
+<p><code>etcd</code> はetcd本体， <code>etcdctl</code> はetcdのクライアントとなるプログラム．
+これら2つをPATHが通っている場所に置いてあげる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo mv etcd* /usr/local/bin/
+$ ll /usr/local/bin/etcd*
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcd
+-rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcdctl</code></pre></div>
+<p>これでインストールは完了．
+きちんとインストールされているか一応確認する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --version
+etcd Version: <span class="m">3</span>.3.10
+Git SHA: 27fc7e2
+Go Version: go1.10.4
+Go OS/Arch: linux/amd64</code></pre></div>
+<h2 id="クラスタの作成">クラスタの作成<a href="#クラスタの作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>まず，1台のみでetcdクラスタを作成して簡単に使い方を把握し，その後複数メンバでのetcdクラスタを作成していく．</p>
+
+<h3 id="1台のetcdクラスタ作成">1台のetcdクラスタ作成<a href="#1台のetcdクラスタ作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>基本的に<a href="https://github.com/etcd-io/etcd#running-etcd">GitHubに書いてある手順</a>通りに試していく．</p>
+
+<p>1台のみでetcdクラスタを作成するときは，特に何も考えずに <code>etcd</code> コマンドを実行する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd</code></pre></div>
+<p><code>etcd</code> コマンドを実行すると，多くのログが出力される．
+ここで，作成したetcdクラスタを使って，データの登録と取得を試してみる．</p>
+
+<p>etcdクラスタとのやり取りには， <code>etcdctl</code> コマンドを使用する．
+<code>etcd</code> コマンドを実行しているシェルとは別にもう1つシェルを起動し，そこで <code>etcdctl</code> コマンドを使用していく．
+なお，etcd APIにはバージョンがいくつかあるが，今回はバージョン3を使用する．
+<strong><code>etcdctl</code> を普通に使うとv2 APIが使われてしまうので，v3 APIを使うために <code>ETCDCTL_API</code> という環境変数の値を <code>3</code> に設定する必要があることに注意する．</strong>
+公式のREADMEのように <code>etcdctl</code> コマンドを実行するごとに毎回 <code>ETCDCTL_API</code> を指定してもよいが，毎回記述するのも面倒なのであらかじめexportしておく．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span></code></pre></div>
+<p>etcdクラスタにデータを登録するには，putコマンドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
+$ etcdctl put &lt;key&gt; &lt;value&gt;
+
+$ etcdctl put mykey <span class="s2">&#34;this is awesome&#34;</span>
+OK</code></pre></div>
+<p>putコマンドを実行して， <code>OK</code> と表示されれば成功している．</p>
+
+<p>登録した値を取得するにはgetコマンドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
+$ etcdctl get &lt;key&gt;
+
+$ etcdctl get mykey
+mykey
+this is awesome</code></pre></div>
+<p>指定したキーの名前とデータが続けて出力されれば成功．</p>
+
+<p>次に，複数台のetcdクラスタを作成してみる．
+その前に，今使っていたetcdクラスタを停止させておく．
+<code>etcd</code> コマンドを実行していたシェルに戻り，Ctrl-Cで終了する．</p>
+
+<h3 id="複数メンバでのetcdクラスタ作成">複数メンバでのetcdクラスタ作成<a href="#複数メンバでのetcdクラスタ作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>今回は1つのノードの中にetcdを複数立ち上げることで，複数メンバで構成されるetcdクラスタを作成する．
+もちろん，複数のノードを使ってノード1台につきetcdを1つ動作させるという形で作成することもできる．</p>
+
+<p>公式には，etcdはTCP 2379番・2380番のポートを使用する．</p>
+
+<ul>
+<li>2379/tcp: クライアントとの通信</li>
+<li>2380/tcp: etcdメンバ間の通信</li>
+</ul>
+
+<p>今回は同じノード内に複数etcdを立ち上げるため，それぞれのetcdでポートが競合しないようにしておく．
+今回は3つのetcdメンバを動作させ，それぞれの名前，ポートは次の表のようにした．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">メンバ</th>
+<th align="right">クライアント通信用</th>
+<th align="right">メンバ間通信用</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">etcd1</td>
+<td align="right">2379</td>
+<td align="right">2380</td>
+</tr>
+
+<tr>
+<td align="left">etcd2</td>
+<td align="right">12379</td>
+<td align="right">12380</td>
+</tr>
+
+<tr>
+<td align="left">etcd3</td>
+<td align="right">22379</td>
+<td align="right">22380</td>
+</tr>
+</tbody>
+</table>
+
+<p>実際に3つのetcdメンバを動かしていく．
+ターミナルのウィンドウを3つ開いて，それぞれのターミナルにつき1つのetcdメンバを起動する．
+それぞれのターミナルで，次のようなコマンドを実行する．</p>
+
+<p>1つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd1 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:2380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:2380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:2379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:2379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>2つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd2 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:12380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:12380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:12379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:12379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>3つ目のターミナル</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd3 <span class="se">\
+</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --listen-peer-urls http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --advertise-client-urls http://localhost:22379 <span class="se">\
+</span><span class="se"></span>    --listen-client-urls http://localhost:22379 <span class="se">\
+</span><span class="se"></span>    --initial-cluster <span class="nv">etcd</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
+</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
+</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
+<p>正しくコマンドを入力できていれば，正常にetcdクラスタが起動しているはず．
+出力されるログでエラー等が出ていなければひとまずOK．</p>
+
+<p>コマンドラインオプションをたくさん使っているので複雑に見えるが，一度理解してしまうとそこまで難しくはないと思う．
+今回指定しているコマンドラインオプションは，大きく分けて次の2つに分かれている．</p>
+
+<ul>
+<li>新しいクラスタを作成するときに使用するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#clustering-flags">Clustering flags</a>）</li>
+<li>他のメンバやクライアントとの通信や，etcdの設定に関するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#member-flags">Member flags</a>）</li>
+</ul>
+
+<p>Clustering flagsでは，新しいクラスタを一から作成するときに必要となる情報を指定する．
+今回使用したものは次の通り．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">flags</th>
+<th align="left">description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><code>--initial-advertise-peer-urls</code></td>
+<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--advertise-client-urls</code></td>
+<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster</code></td>
+<td align="left">クラスタを構成するetcdメンバの情報をカンマ区切りで指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster-state</code></td>
+<td align="left">新しいクラスタを作成する場合は <code>new</code> を指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--initial-cluster-token</code></td>
+<td align="left">クラスタ作成中に用いられるトークン．複数クラスタを管理している際，意図せず別のクラスタに影響を与えるのを防ぐ</td>
+</tr>
+</tbody>
+</table>
+
+<p>Member flagsでは，作成するメンバに関する情報等の設定ができる．
+今回使用したものは次の通り．</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">flags</th>
+<th align="left">description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><code>--name</code></td>
+<td align="left">メンバ名</td>
+</tr>
+
+<tr>
+<td align="left"><code>--listen-peer-urls</code></td>
+<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
+</tr>
+
+<tr>
+<td align="left"><code>--listen-client-urls</code></td>
+<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
+</tr>
+</tbody>
+</table>
+
+<p>注意点として， <code>--initial-cluster</code> で指定しているメンバ情報は， <code>--name</code> と <code>--listen-peer-urls</code> で指定した名前とURLに一致させなければならない．
+もし一致していないと，クラスタ起動時にエラーとなる．</p>
+
+<p>次のコマンドで，きちんと3つのメンバが表示されたら成功．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcdctl member list
+29727fd1bdf9fb62, started, etcd1, http://localhost:2380, http://localhost:2379
+44dd3cd8faa339d0, started, etcd3, http://localhost:22380, http://localhost:22379
+b59b01c27098773e, started, etcd2, http://localhost:12380, http://localhost:12379</code></pre></div>
+<p>次は，作成したクラスタを使ってもう少しetcdctlの使い方を勉強し，その後TLSの設定やDiscoveryを使ったクラスタ作成，無停止でのメンバアップグレード等について勉強していく予定．</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2438 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-10-26 15:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://mas9612.github.io/posts/openssl/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>OpenSSLでTLS証明書を作る</span>
+			</a>
+			<a class="prev-post" href="https://mas9612.github.io/posts/go-type-assertion/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>GoのType AssertionとType Switches</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://mas9612.github.io/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://mas9612.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://mas9612.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>
