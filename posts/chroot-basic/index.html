@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="chrootの基礎">
+<meta itemprop="description" content="DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深">
+
+
+<meta itemprop="datePublished" content="2019-02-12T00:40:00&#43;09:00" />
+<meta itemprop="dateModified" content="2019-02-12T00:42:25&#43;09:00" />
+<meta itemprop="wordCount" content="2090">
+
+
+
+<meta itemprop="keywords" content="linux,chroot,container," />
+<meta property="og:title" content="chrootの基礎" />
+<meta property="og:description" content="DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/chroot-basic/" />
+<meta property="article:published_time" content="2019-02-12T00:40:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-12T00:42:25&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chrootの基礎"/>
+<meta name="twitter:description" content="DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>chrootの基礎</title>
+	<link rel="stylesheet" href="https://www.mas9612.net/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.mas9612.net/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.mas9612.net/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.mas9612.net/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Feb 12, 2019</span></div>
+				<h1>chrootの基礎</h1>
+			</header>
+			<div class="content">
+				
+
+<p>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深く知らなかった．
+しかし，詳細を知らないまま使い続けるのは少し気持ち悪いので，少しずつ勉強していくことにする．</p>
+
+<p>今回はまず手始めに，chrootについて勉強した．</p>
+
+<h2 id="chrootとは">chrootとは<a href="#chrootとは" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>chroot (change root) とは，名前の通り呼び出したプロセスのルートディレクトリを変更することができる仕組みのこと．</p>
+
+<blockquote>
+<p>chroot() changes the root directory of the calling process to that specified in path</p>
+</blockquote>
+
+<p>chroot(2) より引用</p>
+
+<p>chrootによって変更されたルートディレクトリは，fork等で生成された子プロセスにも引き継がれる．</p>
+
+<h2 id="chrootの使い方">chrootの使い方<a href="#chrootの使い方" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>chrootは， <code>chroot</code> コマンドを使ってコマンドラインで使用する方法と，chroot(2)システムコールを使ってプログラムから呼び出す方法がある．
+以降，2つの方法について順番に説明する．</p>
+
+<h3 id="chrootコマンドを使う">chrootコマンドを使う<a href="#chrootコマンドを使う" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>chrootコマンドの使い方は以下の通り．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ chroot <span class="o">[</span>OPTION<span class="o">]</span> NEWROOT <span class="o">[</span>COMMAND <span class="o">[</span>ARG<span class="o">]</span>...<span class="o">]</span></code></pre></div>
+<p><code>chroot</code> の後に，新しいルートディレクトリとして設定したいディレクトリを指定する．
+また，その後に実行したいコマンドを指定することもできるが，これを省略すると <code>${SHELL} -i</code> が実行される．</p>
+
+<p>ちなみに，rootユーザ（正確には <code>CAP_SYS_CHROOT</code> capabilityを持つユーザ）のみがこのコマンドを実行することができる．</p>
+
+<p>試しに <code>chroot_test</code> ディレクトリを作成して，それを新しいルートディレクトリとしてbashを起動してみる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot_test 
+<span class="c1"># 通常ユーザでは権限が足りずにエラーとなる</span>
+$ chroot chroot_test bash
+chroot: cannot change root directory to chroot_test/: Operation not permitted
+
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory</code></pre></div>
+<p><code>sudo</code> を使ってrootとして <code>chroot</code> を実行すると，権限の問題はなくなったがbashが見つからないというエラーになった．
+chrootによってルートディレクトリが変更されると元々の <code>/bin</code> にはアクセスできなくなるので，chroot先にbashコマンドを用意してあげる必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot chroot_test/bin
+$ cp <span class="sb">`</span>which bash<span class="sb">`</span> chroot_test/bin
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory
+
+<span class="c1"># lsコマンドの実行にはいくつか動的ライブラリが必要となるので，</span>
+<span class="c1"># それもchroot先に用意してあげなければならない</span>
+$ ldd <span class="sb">`</span>which bash<span class="sb">`</span>
+        linux-vdso.so.1 <span class="o">=</span>&gt;  <span class="o">(</span>0x00007ffc956cb000<span class="o">)</span>
+        libselinux.so.1 <span class="o">=</span>&gt; /lib64/libselinux.so.1 <span class="o">(</span>0x00007fe3914d4000<span class="o">)</span>
+        libcap.so.2 <span class="o">=</span>&gt; /lib64/libcap.so.2 <span class="o">(</span>0x00007fe3912cf000<span class="o">)</span>
+        libacl.so.1 <span class="o">=</span>&gt; /lib64/libacl.so.1 <span class="o">(</span>0x00007fe3910c6000<span class="o">)</span>
+        libc.so.6 <span class="o">=</span>&gt; /lib64/libc.so.6 <span class="o">(</span>0x00007fe390cf9000<span class="o">)</span>
+        libpcre.so.1 <span class="o">=</span>&gt; /lib64/libpcre.so.1 <span class="o">(</span>0x00007fe390a97000<span class="o">)</span>
+        libdl.so.2 <span class="o">=</span>&gt; /lib64/libdl.so.2 <span class="o">(</span>0x00007fe390893000<span class="o">)</span>
+        /lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007fe3916fb000<span class="o">)</span>
+        libattr.so.1 <span class="o">=</span>&gt; /lib64/libattr.so.1 <span class="o">(</span>0x00007fe39068e000<span class="o">)</span>
+        libpthread.so.0 <span class="o">=</span>&gt; /lib64/libpthread.so.0 <span class="o">(</span>0x00007fe390472000<span class="o">)</span>
+$ cp /lib64/libtinfo.so.5 /lib64/libdl.so.2 /lib64/libc.so.6    <span class="se">\
+</span><span class="se"></span>    /lib64/ld-linux-x86-64.so.2 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bash: ls: <span class="nb">command</span> not found
+bash-4.2# <span class="nb">exit</span>
+<span class="nb">exit</span>
+
+$ cp <span class="sb">`</span>which ls<span class="sb">`</span> chroot_test/bin
+$ cp /lib64/libselinux.so.1 /lib64/libcap.so.2 /lib64/libacl.so.1   <span class="se">\
+</span><span class="se"></span>    /lib64/libpcre.so.1 /lib64/libdl.so.2 /lib64/libattr.so.1       <span class="se">\
+</span><span class="se"></span>    /lib64/libpthread.so.0 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bin  lib64
+bash-4.2# <span class="nb">exit</span>
+exit</code></pre></div>
+<h3 id="chroot-2-システムコールを使う">chroot(2)システムコールを使う<a href="#chroot-2-システムコールを使う" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>chroot(2)システムコールは次のような関数となっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">chroot</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">);</span></code></pre></div>
+<p>引数に新しいルートディレクトリとなるパスを指定する．
+成功すると <code>0</code> ，失敗すると <code>-1</code> が返却されて <code>errno</code> が設定される．</p>
+
+<p><a href="https://github.com/mas9612/study/blob/master/container/chroot_basic.c">サンプルプログラム</a>はGitHubにあります．</p>
+
+<p>注意点として，chroot(2)を使っても，パスの解決方法が変わるだけでカレントディレクトリは変更されない．
+なので，サンプルプログラムでは予めchroot先に移動してからchroot(2)を実行している．</p>
+
+<p>もしchdir(2)なしでchroot(2)を実行すると，カレントディレクトリは変更されない．
+この状態でgetcwd(2)を呼び出した場合，カレントディレクトリがルートディレクトリの外となるため，エラーとなってしまう．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">getcwd</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;getcwd()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<h2 id="chrootを抜け出す">chrootを抜け出す<a href="#chrootを抜け出す" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>前節で，chroot(2)を使ってもカレントディレクトリは変更されないということを述べた．
+これを利用して，chroot(2)を使う権限があるプロセスがchrootの外に抜け出すことが可能になる．</p>
+
+<p>ここではこれを試してみる．
+プログラムの全体は<a href="https://github.com/mas9612/study/blob/master/container/chroot_escape.c">GitHub</a>にあります．</p>
+
+<p>やることは簡単で，つぎのような順番で処理を進めていく．</p>
+
+<ol>
+<li>chrootによって設定されたルートディレクトリに移動</li>
+<li>適当なサブディレクトリを作成</li>
+<li>作成したサブディレクトリにchroot</li>
+<li>一つ上の階層に移動する</li>
+</ol>
+
+<p>これで，元々のchrootされたルートディレクトリの一つ上に移動することができる．</p>
+
+<p>プログラムにすると次のようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// create foo directory and chroot to it
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">,</span> <span class="mo">0755</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;mkdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">// after chroot to foo directory, attempt to escape upper directory
+</span><span class="c1"></span>    <span class="c1">// than original chrooted directory (chroot_test directory)
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="s">&#34;..&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>chrootはパスの解決方法を変更しているだけであり，複数適用させることができない．
+そのため，2回目のchroot(2)呼び出しを行うと前回のchrootで設定した効果はなくなり，新しいものだけが効力を持つ．</p>
+
+<p>上の手順を進めると，作成したサブディレクトリにchrootした段階で，元々のchrootの効果はなくなる．
+また，chrootはカレントディレクトリを変更しないという性質より，手順3. の時点ですでにルートディレクトリの外にいることになる．</p>
+
+<p>この状態では上の階層への移動が可能なので，結果的に元々のchrootされたルートディレクトリより上に移動することが実現できる．</p>
+
+<p>実は，このことはchroot(2)のマニュアルにも記されており，仕様通りのようだ．</p>
+
+<blockquote>
+<p>This call does not change the current working directory, so that after the call &lsquo;.&rsquo; can be outside the tree rooted at &lsquo;/&rsquo;.  In  particular,  the  supe‐
+ruser can escape from a &ldquo;chroot jail&rdquo; by doing:</p>
+
+<pre><code>mkdir foo; chroot foo; cd ..
+</code></pre>
+</blockquote>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.mas9612.net/tags/linux">linux</a></span><span class="tag"><a href="https://www.mas9612.net/tags/chroot">chroot</a></span><span class="tag"><a href="https://www.mas9612.net/tags/container">container</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2090 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-02-11 15:40 &#43;0000</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#chrootとは">chrootとは</a></li>
+<li><a href="#chrootの使い方">chrootの使い方</a>
+<ul>
+<li><a href="#chrootコマンドを使う">chrootコマンドを使う</a></li>
+<li><a href="#chroot-2-システムコールを使う">chroot(2)システムコールを使う</a></li>
+</ul></li>
+<li><a href="#chrootを抜け出す">chrootを抜け出す</a></li>
+</ul></li>
+</ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://www.mas9612.net/posts/go-file-io/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>GoでのファイルI/O</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://www.mas9612.net/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.mas9612.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.mas9612.net/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134133452-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>

@@ -6,8 +6,188 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Sun, 13 Jan 2019 00:00:00 +0900</lastBuildDate>
+		<lastBuildDate>Tue, 12 Feb 2019 00:40:00 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>chrootの基礎</title>
+			<link>https://www.mas9612.net/posts/chroot-basic/</link>
+			<pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/chroot-basic/</guid>
+			<description>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深</description>
+			<content type="html"><![CDATA[
+
+<p>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深く知らなかった．
+しかし，詳細を知らないまま使い続けるのは少し気持ち悪いので，少しずつ勉強していくことにする．</p>
+
+<p>今回はまず手始めに，chrootについて勉強した．</p>
+
+<h2 id="chrootとは">chrootとは</h2>
+
+<p>chroot (change root) とは，名前の通り呼び出したプロセスのルートディレクトリを変更することができる仕組みのこと．</p>
+
+<blockquote>
+<p>chroot() changes the root directory of the calling process to that specified in path</p>
+</blockquote>
+
+<p>chroot(2) より引用</p>
+
+<p>chrootによって変更されたルートディレクトリは，fork等で生成された子プロセスにも引き継がれる．</p>
+
+<h2 id="chrootの使い方">chrootの使い方</h2>
+
+<p>chrootは， <code>chroot</code> コマンドを使ってコマンドラインで使用する方法と，chroot(2)システムコールを使ってプログラムから呼び出す方法がある．
+以降，2つの方法について順番に説明する．</p>
+
+<h3 id="chrootコマンドを使う">chrootコマンドを使う</h3>
+
+<p>chrootコマンドの使い方は以下の通り．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ chroot <span class="o">[</span>OPTION<span class="o">]</span> NEWROOT <span class="o">[</span>COMMAND <span class="o">[</span>ARG<span class="o">]</span>...<span class="o">]</span></code></pre></div>
+<p><code>chroot</code> の後に，新しいルートディレクトリとして設定したいディレクトリを指定する．
+また，その後に実行したいコマンドを指定することもできるが，これを省略すると <code>${SHELL} -i</code> が実行される．</p>
+
+<p>ちなみに，rootユーザ（正確には <code>CAP_SYS_CHROOT</code> capabilityを持つユーザ）のみがこのコマンドを実行することができる．</p>
+
+<p>試しに <code>chroot_test</code> ディレクトリを作成して，それを新しいルートディレクトリとしてbashを起動してみる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot_test 
+<span class="c1"># 通常ユーザでは権限が足りずにエラーとなる</span>
+$ chroot chroot_test bash
+chroot: cannot change root directory to chroot_test/: Operation not permitted
+
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory</code></pre></div>
+<p><code>sudo</code> を使ってrootとして <code>chroot</code> を実行すると，権限の問題はなくなったがbashが見つからないというエラーになった．
+chrootによってルートディレクトリが変更されると元々の <code>/bin</code> にはアクセスできなくなるので，chroot先にbashコマンドを用意してあげる必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot chroot_test/bin
+$ cp <span class="sb">`</span>which bash<span class="sb">`</span> chroot_test/bin
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory
+
+<span class="c1"># lsコマンドの実行にはいくつか動的ライブラリが必要となるので，</span>
+<span class="c1"># それもchroot先に用意してあげなければならない</span>
+$ ldd <span class="sb">`</span>which bash<span class="sb">`</span>
+        linux-vdso.so.1 <span class="o">=</span>&gt;  <span class="o">(</span>0x00007ffc956cb000<span class="o">)</span>
+        libselinux.so.1 <span class="o">=</span>&gt; /lib64/libselinux.so.1 <span class="o">(</span>0x00007fe3914d4000<span class="o">)</span>
+        libcap.so.2 <span class="o">=</span>&gt; /lib64/libcap.so.2 <span class="o">(</span>0x00007fe3912cf000<span class="o">)</span>
+        libacl.so.1 <span class="o">=</span>&gt; /lib64/libacl.so.1 <span class="o">(</span>0x00007fe3910c6000<span class="o">)</span>
+        libc.so.6 <span class="o">=</span>&gt; /lib64/libc.so.6 <span class="o">(</span>0x00007fe390cf9000<span class="o">)</span>
+        libpcre.so.1 <span class="o">=</span>&gt; /lib64/libpcre.so.1 <span class="o">(</span>0x00007fe390a97000<span class="o">)</span>
+        libdl.so.2 <span class="o">=</span>&gt; /lib64/libdl.so.2 <span class="o">(</span>0x00007fe390893000<span class="o">)</span>
+        /lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007fe3916fb000<span class="o">)</span>
+        libattr.so.1 <span class="o">=</span>&gt; /lib64/libattr.so.1 <span class="o">(</span>0x00007fe39068e000<span class="o">)</span>
+        libpthread.so.0 <span class="o">=</span>&gt; /lib64/libpthread.so.0 <span class="o">(</span>0x00007fe390472000<span class="o">)</span>
+$ cp /lib64/libtinfo.so.5 /lib64/libdl.so.2 /lib64/libc.so.6    <span class="se">\
+</span><span class="se"></span>    /lib64/ld-linux-x86-64.so.2 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bash: ls: <span class="nb">command</span> not found
+bash-4.2# <span class="nb">exit</span>
+<span class="nb">exit</span>
+
+$ cp <span class="sb">`</span>which ls<span class="sb">`</span> chroot_test/bin
+$ cp /lib64/libselinux.so.1 /lib64/libcap.so.2 /lib64/libacl.so.1   <span class="se">\
+</span><span class="se"></span>    /lib64/libpcre.so.1 /lib64/libdl.so.2 /lib64/libattr.so.1       <span class="se">\
+</span><span class="se"></span>    /lib64/libpthread.so.0 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bin  lib64
+bash-4.2# <span class="nb">exit</span>
+exit</code></pre></div>
+<h3 id="chroot-2-システムコールを使う">chroot(2)システムコールを使う</h3>
+
+<p>chroot(2)システムコールは次のような関数となっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">chroot</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">);</span></code></pre></div>
+<p>引数に新しいルートディレクトリとなるパスを指定する．
+成功すると <code>0</code> ，失敗すると <code>-1</code> が返却されて <code>errno</code> が設定される．</p>
+
+<p><a href="https://github.com/mas9612/study/blob/master/container/chroot_basic.c">サンプルプログラム</a>はGitHubにあります．</p>
+
+<p>注意点として，chroot(2)を使っても，パスの解決方法が変わるだけでカレントディレクトリは変更されない．
+なので，サンプルプログラムでは予めchroot先に移動してからchroot(2)を実行している．</p>
+
+<p>もしchdir(2)なしでchroot(2)を実行すると，カレントディレクトリは変更されない．
+この状態でgetcwd(2)を呼び出した場合，カレントディレクトリがルートディレクトリの外となるため，エラーとなってしまう．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">getcwd</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;getcwd()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<h2 id="chrootを抜け出す">chrootを抜け出す</h2>
+
+<p>前節で，chroot(2)を使ってもカレントディレクトリは変更されないということを述べた．
+これを利用して，chroot(2)を使う権限があるプロセスがchrootの外に抜け出すことが可能になる．</p>
+
+<p>ここではこれを試してみる．
+プログラムの全体は<a href="https://github.com/mas9612/study/blob/master/container/chroot_escape.c">GitHub</a>にあります．</p>
+
+<p>やることは簡単で，つぎのような順番で処理を進めていく．</p>
+
+<ol>
+<li>chrootによって設定されたルートディレクトリに移動</li>
+<li>適当なサブディレクトリを作成</li>
+<li>作成したサブディレクトリにchroot</li>
+<li>一つ上の階層に移動する</li>
+</ol>
+
+<p>これで，元々のchrootされたルートディレクトリの一つ上に移動することができる．</p>
+
+<p>プログラムにすると次のようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// create foo directory and chroot to it
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">,</span> <span class="mo">0755</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;mkdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">// after chroot to foo directory, attempt to escape upper directory
+</span><span class="c1"></span>    <span class="c1">// than original chrooted directory (chroot_test directory)
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="s">&#34;..&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>chrootはパスの解決方法を変更しているだけであり，複数適用させることができない．
+そのため，2回目のchroot(2)呼び出しを行うと前回のchrootで設定した効果はなくなり，新しいものだけが効力を持つ．</p>
+
+<p>上の手順を進めると，作成したサブディレクトリにchrootした段階で，元々のchrootの効果はなくなる．
+また，chrootはカレントディレクトリを変更しないという性質より，手順3. の時点ですでにルートディレクトリの外にいることになる．</p>
+
+<p>この状態では上の階層への移動が可能なので，結果的に元々のchrootされたルートディレクトリより上に移動することが実現できる．</p>
+
+<p>実は，このことはchroot(2)のマニュアルにも記されており，仕様通りのようだ．</p>
+
+<blockquote>
+<p>This call does not change the current working directory, so that after the call &lsquo;.&rsquo; can be outside the tree rooted at &lsquo;/&rsquo;.  In  particular,  the  supe‐
+ruser can escape from a &ldquo;chroot jail&rdquo; by doing:</p>
+
+<pre><code>mkdir foo; chroot foo; cd ..
+</code></pre>
+</blockquote>
+]]></content>
+		</item>
 		
 		<item>
 			<title>GoでのファイルI/O</title>
@@ -1372,115 +1552,6 @@ KeepAliveTimeout 10
 <li><a href="https://tools.ietf.org/html/rfc2068">RFC2068</a></li>
 <li><a href="https://tools.ietf.org/id/draft-thomson-hybi-http-timeout-01.html">Hypertext Transfer Protocol (HTTP) Keep-Alive Header</a></li>
 <li><a href="https://httpd.apache.org/docs/2.4/en/mod/core.html">Apache Core Features</a></li>
-</ul>
-]]></content>
-		</item>
-		
-		<item>
-			<title>USENIX 2018の論文読み</title>
-			<link>https://www.mas9612.net/posts/read-usenix-2018-papers/</link>
-			<pubDate>Tue, 03 Jul 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/read-usenix-2018-papers/</guid>
-			<description>軽く読んだので，雑なまとめ． ほぼ自分用のメモ． Elastic Scaling of Stateful Network Functions https://www.usenix.org/conference/nsdi18/presentation/woo NFV（Network Functions Virtualization）におけるスケーリングの弾力</description>
-			<content type="html"><![CDATA[
-
-<p>軽く読んだので，雑なまとめ．
-ほぼ自分用のメモ．</p>
-
-<h2 id="elastic-scaling-of-stateful-network-functions">Elastic Scaling of Stateful Network Functions</h2>
-
-<ul>
-<li><a href="https://www.usenix.org/conference/nsdi18/presentation/woo">https://www.usenix.org/conference/nsdi18/presentation/woo</a></li>
-<li>NFV（Network Functions Virtualization）におけるスケーリングの弾力性は重要な要素
-
-<ul>
-<li>実用レベルでの実現は難しかった
-
-<ul>
-<li>多くのNFs（Network Functions）はステートフル</li>
-<li>NFを構成するインスタンス同士での状態共有が必要である</li>
-<li>NFでのスループットとレイテンシの要件を満たしたステート共有の実装は難しい</li>
-</ul></li>
-</ul></li>
-<li>S6を提案
-
-<ul>
-<li>パフォーマンスの低下なしにNFにスケーリングの弾力性を提供するフレームワーク</li>
-<li>ステートをDSO（distributed shared object）とする
-
-<ul>
-<li>弾力性と高パフォーマンスの要件を満たすために拡張したもの</li>
-</ul></li>
-<li>NFの管理者は，ステートがどのように分散・共有されているかを気にすることなくプログラミングできる
-
-<ul>
-<li>S6が透過的に処理をしてくれる（データの局所性や整合性等を抽象化する）</li>
-</ul></li>
-</ul></li>
-<li>実験・評価の結果
-
-<ul>
-<li>現在のNFの動的スケーリング手法と比較
-
-<ul>
-<li>スケーリング: 100倍のパフォーマンス向上</li>
-<li>通常時: 2〜5倍のパフォーマンス向上</li>
-</ul></li>
-</ul></li>
-</ul>
-
-<h2 id="stroboscope-declarative-network-monitoring-on-a-budget">Stroboscope: Declarative Network Monitoring on a Budget</h2>
-
-<ul>
-<li><a href="https://www.usenix.org/conference/nsdi18/presentation/tilmans">https://www.usenix.org/conference/nsdi18/presentation/tilmans</a></li>
-<li>ISPにとって，ネットワークの動作がどうなっているのか等を正確に知ることは困難
-
-<ul>
-<li>エンドホストを制御するのは不可能</li>
-<li>大量にトラフィックの統計を取る，という方法に頼るしかなかった
-
-<ul>
-<li>情報の粒度が粗いという問題がある</li>
-</ul></li>
-</ul></li>
-<li>Stroboscopeを提案
-
-<ul>
-<li>どんなトラフィックフローでもきめ細かいモニタリングが可能</li>
-<li>高レベルのクエリを入力すると，自動でいろいろやってくれる
-
-<ul>
-<li>どのフローをミラーリングするか</li>
-<li>ルールをどこに配置するか</li>
-<li>カバレッジを最大化するためにはいつルールをスケジューリングすれば良いか</li>
-</ul></li>
-<li>既存のルータ上で動作する</li>
-</ul></li>
-</ul>
-
-<h2 id="safebricks-shielding-network-functions-in-the-cloud">SafeBricks: Shielding Network Functions in the Cloud</h2>
-
-<ul>
-<li>Network Function Virtualization (NFV) の出現により，企業等ではネットワークでの処理をクラウド側に任せることが増えた
-
-<ul>
-<li>セキュリティリスクもある</li>
-<li>クラウドは攻撃の影響を受けやすい</li>
-</ul></li>
-<li>SafeBricksを提案
-
-<ul>
-<li>信頼できないクラウドからNFを守るシステム</li>
-<li>暗号化されたトラフィックのみがクラウドプロバイダの方に流れる
-
-<ul>
-<li>トラフィックとNFの両方の完全性を保つ</li>
-</ul></li>
-<li>クライアントに最小権限を強制する</li>
-<li>SafeBricks leverages a combination of hardware enclaves and language-based enforcement</li>
-<li>SafeBricksによるオーバーヘッドは0〜15%</li>
-</ul></li>
 </ul>
 ]]></content>
 		</item>

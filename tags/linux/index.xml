@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on mas9612&#39;s note</title>
+    <link>https://www.mas9612.net/tags/linux/</link>
+    <description>Recent content in Linux on mas9612&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Feb 2019 00:40:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://www.mas9612.net/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>chrootの基礎</title>
+      <link>https://www.mas9612.net/posts/chroot-basic/</link>
+      <pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/chroot-basic/</guid>
+      <description>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深</description>
+    </item>
+    
+  </channel>
+</rss>
