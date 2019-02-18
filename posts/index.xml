@@ -6,8 +6,205 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Tue, 12 Feb 2019 00:40:00 +0900</lastBuildDate>
+		<lastBuildDate>Mon, 18 Feb 2019 23:24:23 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Linux Namespaces (1)</title>
+			<link>https://www.mas9612.net/posts/linux-namespaces-01/</link>
+			<pubDate>Mon, 18 Feb 2019 23:24:23 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-namespaces-01/</guid>
+			<description>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した． 少々長いので，2つの記事に分けて投稿する． 今回使った環境は</description>
+			<content type="html"><![CDATA[
+
+<p>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した．
+少々長いので，2つの記事に分けて投稿する．</p>
+
+<p>今回使った環境はDebian 9 Stretch．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ uname -a
+Linux debian <span class="m">4</span>.9.0-8-amd64 <span class="c1">#1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux</span></code></pre></div>
+<h2 id="namespacesについて">namespacesについて</h2>
+
+<p>namespacesは，Linuxが持つシステムリソースをプロセスごとに分離するための技術．
+これを用いると，異なるnamespace間でネットワークやPID等の資源を独立して持つことができるようになる．</p>
+
+<p>Linux namespacesでは，次の7つが提供されている．</p>
+
+<ul>
+<li>Cgroup namespace</li>
+<li>IPC namespaces</li>
+<li>Network namespaces</li>
+<li>Mount namespaces</li>
+<li>PID namespaces</li>
+<li>User namespaces</li>
+<li>UTS namespaces</li>
+</ul>
+
+<p>それぞれのnamespacesについては以下の節で順番に説明していく．</p>
+
+<h2 id="namespacesを使うためのシステムコール">namespacesを使うためのシステムコール</h2>
+
+<p>新しいnamespaceを作成してそれを使用するには，次の2つのどちらかを使用する．</p>
+
+<ul>
+<li>clone(2)
+
+<ul>
+<li>新しいプロセスを作成するとともに，引数に指定したフラグに対応する新しいnamespaceを作成し，新しいプロセスをそれに所属させる</li>
+</ul></li>
+<li>unshare(2)
+
+<ul>
+<li>システムコールを呼び出したプロセスを新しいnamespaceに移動させる．</li>
+</ul></li>
+</ul>
+
+<p>また，プロセスを <strong>既存の</strong> namespaceに移動させるには，setns(2)システムコールを使用する．</p>
+
+<p>User namespacesを除き，新しいnamespaceを作成するには特権（ <code>CAP_SYS_ADMIN</code> ）が必要となる．</p>
+
+<h2 id="proc-pid-nsディレクトリ">/proc/[pid]/nsディレクトリ</h2>
+
+<p><code>/proc/[pid]/ns</code> ディレクトリ内には，そのプロセスが所属している各namespaceを表すエントリがおかれている．これらは，setns(2)システムコールで操作することができる．</p>
+
+<p>例えば，すでに動作しているプロセスのnamespaceに入りたい場合は，次のようにすることで可能．</p>
+
+<ol>
+<li>入りたいnamespaceに所属しているプロセスのnsディレクトリ内にある適切なエントリ（e.g. Network namespacesなら <code>net</code> ）をオープン</li>
+<li>オープンしたファイルディスクリプタをsetns(2)の引数に渡してあげる</li>
+</ol>
+
+<h2 id="pid-namespaces">PID namespaces</h2>
+
+<p>比較的わかりやすいPID namespacesから順番に見ていく．</p>
+
+<p>PID namespacesは，その名の通りPIDの空間を分離するために用いられる．
+異なるPID namespace間では異なるプロセスツリーを持ち，それらはそれぞれ独立している．
+そのため，異なるPID namespace間で同じPIDを持つ可能性もある．</p>
+
+<p>unshare(2)システムコールを使って新しいPID namespaceを作成し，そこに子プロセスを所属させるという簡単なプログラムを使ってテストした．</p>
+
+<p>プログラム全体は<a href="https://github.com/mas9612/study/blob/master/container/pid_namespace.c">GitHub</a>にpushしている．</p>
+
+<p>新しいPID namespaceを作成するためには，unshare(2)の引数に <code>CLONE_NEWPID</code> を指定する．
+unshare(2)を呼び出した以降に作成した子プロセスは，新しいPID namespace内で実行される（新しいPID namespaceでは，PIDは1から順番に振られる）．</p>
+
+<p><strong>unshare(2)を呼び出したプロセス自体は，これまでと同じPID namespaceで動作していることに注意</strong>．
+このため，サンプルプログラムではfork(2)を使って子プロセスを作成することで動作確認をしている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">unshare</span><span class="p">(</span><span class="n">CLONE_NEWPID</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;unshare()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>サンプルプログラムを実行すると次のような実行結果が得られる．</p>
+
+<pre><code>$ gcc pid_namespaces.c
+$ sudo ./a.out
+PID: 5516
+Forking new process...
+  Child PID: 5517
+
+Create new PID namespaces...
+PID: 5516
+Forking new process...
+  Child PID: 1
+</code></pre>
+
+<p>この結果から次のことが読み取れる．</p>
+
+<ul>
+<li>unshare(2)を呼び出したプロセス自体（PID 5516）はPID namespaceの移動はしていない</li>
+<li>unshare(2)を呼び出す前の子プロセスはPID 5516と同じPID namespaceに所属しているので，PIDはその続き（PID 5517）となっている</li>
+<li>unshare(2)を呼び出した後の子プロセスは新しいPID namespaceに所属しているので，PIDは1となっている</li>
+</ul>
+
+<h2 id="network-namespaces">Network namespaces</h2>
+
+<p>次はNetwork namespacesについて見ていく．</p>
+
+<p>名前の通りで理解しやすいと思うが，ネットワーク関連のリソースを分離するための技術．
+ネットワークデバイスやIPプロトコルスタック，ルーティングテーブルやファイアウォールルール等をnamespaceごとで分離することができる．
+各ネットワークデバイスは1つのnetwork namespacesのみに割り当てられる．</p>
+
+<p>これも<a href="https://github.com/mas9612/study/blob/master/container/network_namespaces.c">サンプルプログラム</a>を書いて試してみた．
+サンプルでは， <code>ip a</code> コマンドを使ってネットワークデバイスの情報を出力してみた．</p>
+
+<p>新しいnetwork namespaceに移動するには，unshare(2)の引数に <code>CLONE_NEWNET</code> を渡してあげれば良い．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">unshare</span><span class="p">(</span><span class="n">CLONE_NEWNET</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;unshare()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>サンプルプログラムを実行するとつぎのような実行結果が得られる．</p>
+
+<pre><code>$ gcc network_namespaces.c
+$ sudo ./a.out
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:ad:47:43 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fead:4743/64 scope link
+       valid_lft forever preferred_lft forever
+3: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.80/24 brd 192.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+Enter new network namespace:
+1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</code></pre>
+
+<p>実行結果から，network namespaceを移動した後の <code>ip a</code> では，ループバックデバイス以外のネットワークデバイスが割り当てられていないことがわかる．
+ネットワークデバイスは一度に1つのnetwork namespaceにしか所属できないので，新しいnetwork namespaceに移動した後の <code>ip a</code> の出力には現れなかった．</p>
+
+<h2 id="uts-namespaces">UTS namespaces</h2>
+
+<p>UTS namespacesは，ホスト名およびNISドメイン名をnamespaceごとに分離するための技術．
+これを用いると，各UTS namespaceごとにそれぞれ個別のホスト名をつけることができる．</p>
+
+<p>プログラムを書いて検証するのが少し面倒なので，unshare(1)コマンドで試す．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ hostname
+debian
+$ sudo unshare --uts
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> yamazaki:
+
+<span class="c1"># hostname</span>
+debian
+<span class="c1"># hostname inside-uts-namespace</span>
+<span class="c1"># hostname</span>
+inside-uts-namespace
+<span class="c1"># exit</span>
+<span class="nb">logout</span>
+
+$ hostname
+debian</code></pre></div>
+<p><code>unshare --uts</code> コマンドで，新しいUTS namespaceを作成してそれに移動することができる．
+その後， <code>hostname</code> コマンドを使って適当なホスト名をセットしてみる．</p>
+
+<p>正常にホスト名が変更できたことを確認して，作成したUTS namespaceからexitで抜ける．
+抜けた後にもう一度ホスト名を確認してみると，UTS namespace内で行った変更が反映されておらず，namespaceごとで独立していたことがわかる．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>namespaces(7)</li>
+<li>unshare(2)</li>
+<li>setns(2)</li>
+<li>pid_namespaces(7)</li>
+<li>network_namespaces(7)</li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>chrootの基礎</title>
@@ -1484,74 +1681,6 @@ uint32: 00 00 00 7b
 <ul>
 <li><a href="https://tools.ietf.org/html/rfc7231">RFC 7231</a></li>
 <li><a href="https://tools.ietf.org/html/rfc7538">RFC 7238</a></li>
-</ul>
-]]></content>
-		</item>
-		
-		<item>
-			<title>HTTP Keep-Aliveについて</title>
-			<link>https://www.mas9612.net/posts/http-keep-alive/</link>
-			<pubDate>Thu, 05 Jul 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/http-keep-alive/</guid>
-			<description>HTTP Keep-Aliveについて調査した． とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい． 1つのTCPコネクションで複数リクエ</description>
-			<content type="html"><![CDATA[
-
-<p>HTTP Keep-Aliveについて調査した．
-とりあえず調査しただけなので，次回にでも実際に挙動確認をしたい．</p>
-
-<ul>
-<li>1つのTCPコネクションで複数リクエストを処理できるしくみ</li>
-<li>HTTP/1.1ではKeep-Aliveがデフォルトでオン
-
-<ul>
-<li>オフにするにはそれを明示的に指定する必要がある
-
-<ul>
-<li><code>Connection: close</code> ヘッダを指定</li>
-</ul></li>
-</ul></li>
-</ul>
-
-<h2 id="apache">Apache</h2>
-
-<h3 id="keep-aliveの設定-keepalive-ディレクティブで-keep-aliveを有効にするかどうかを設定できる">Keep-Aliveの設定<code>KeepAlive</code> ディレクティブで，Keep-Aliveを有効にするかどうかを設定できる．</h3>
-
-<p>Keep-Aliveによるコネクション持続時間は， <code>KeepAliveTimeout</code> ディレクティブで設定する．</p>
-
-<p>例) コネクション持続時間を10秒に設定する</p>
-
-<pre><code>KeepAlive On
-KeepAliveTimeout 10
-</code></pre>
-
-<p>また，1つのKeep-Aliveによるコネクションで処理できるコネクション数を制限するには， <code>MaxKeepAliveRequests</code> ディレクトティブを使用する．
-例えば， <code>MaxKeepAliveRequests 10</code> と設定すると，1つのコネクションで10個までのコネクションを処理することができる．</p>
-
-<h2 id="nginx">Nginx</h2>
-
-<h3 id="keep-aliveの設定">Keep-Aliveの設定</h3>
-
-<p>Nginxでは，Keep-AliveのOn/Offは <code>keepalive_timeout</code> の値によって決まる．</p>
-
-<ul>
-<li><code>keepalive_timeout</code> が <code>0</code> : Keep-Alive Off</li>
-<li><code>keepalive_timeout</code> が <code>0</code> 以外: Keep-Alive On</li>
-</ul>
-
-<p>Keep-Aliveによるコネクション持続時間は，On/Offの設定同様 <code>keepalive_timeout</code> で設定する．</p>
-
-<p>例) コネクション持続時間を10秒に設定する</p>
-
-<pre><code>keepalive_timeout 10
-</code></pre>
-
-<h2 id="references">References</h2>
-
-<ul>
-<li><a href="https://tools.ietf.org/html/rfc2068">RFC2068</a></li>
-<li><a href="https://tools.ietf.org/id/draft-thomson-hybi-http-timeout-01.html">Hypertext Transfer Protocol (HTTP) Keep-Alive Header</a></li>
-<li><a href="https://httpd.apache.org/docs/2.4/en/mod/core.html">Apache Core Features</a></li>
 </ul>
 ]]></content>
 		</item>

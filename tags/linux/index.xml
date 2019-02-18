@@ -6,10 +6,19 @@
     <description>Recent content in Linux on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Feb 2019 00:40:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 18 Feb 2019 23:24:23 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux Namespaces (1)</title>
+      <link>https://www.mas9612.net/posts/linux-namespaces-01/</link>
+      <pubDate>Mon, 18 Feb 2019 23:24:23 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/linux-namespaces-01/</guid>
+      <description>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した． 少々長いので，2つの記事に分けて投稿する． 今回使った環境は</description>
+    </item>
     
     <item>
       <title>chrootの基礎</title>
