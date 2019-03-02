@@ -6,8 +6,176 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Mon, 18 Feb 2019 23:24:23 +0900</lastBuildDate>
+		<lastBuildDate>Sat, 02 Mar 2019 23:13:05 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Linux PAMについて</title>
+			<link>https://www.mas9612.net/posts/linux-pam/</link>
+			<pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-pam/</guid>
+			<description>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解</description>
+			<content type="html"><![CDATA[
+
+<p>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった．
+しかし，PAMについてしっかりと理解できているわけではなかったので，PAMやその設定について調査した．</p>
+
+<h2 id="pamとは">PAMとは</h2>
+
+<p>マニュアルによると，PAM（Pluggable Authentication Module）はシステム上のアプリケーション（サービス）による認証を処理するためのライブラリであるとのこと．
+API経由で認証タスクを呼び出すことができるので，アプリケーション側で認証のやり方等の深いところまで考えることなく使えるよ，という感じ．</p>
+
+<blockquote>
+<p>Linux-PAM is a system of libraries that handle the authentication tasks of applications (services) on the system.
+The library provides a stable general interface (Application Programming Interface - API) that privilege granting programs (such as login(1) and su(1)) defer to to perform standard authentication tasks.</p>
+</blockquote>
+
+<p>PAMでは，認証に関するタスクを役割ごとに次の4つのグループに分け，それぞれのグループごとに設定できる．</p>
+
+<ul>
+<li>account: ユーザパスワードの期限が切れていないか，要求しているサービスにアクセスする権限があるか，等を検証</li>
+<li>authentication: パスワード等によるユーザ認証を行う部分．認証方法は問わない（パスワード，ハードウェアトークン等）</li>
+<li>password: 例えばパスワード認証の場合，パスワードの変更等に関連する部分を担当する（e.g. 弱いパスワードでないか，前回と同じでないか等）</li>
+<li>session: サービス利用前と利用後に実施される処理について．e.g. ログやユーザディレクトリのマウント等</li>
+</ul>
+
+<h2 id="pamの設定">PAMの設定</h2>
+
+<p>PAMの設定は <code>/etc/pam.conf</code> もしくは <code>/etc/pam.d/</code> 以下のファイルによって行う．
+<code>/etc/pam.d/</code> が存在している場合は， <code>/etc/pam.conf</code> は無視されて <code>/etc/pam.d/</code> 以下のファイルにある設定が有効となる．</p>
+
+<p>設定のフォーマットは次の通り．基本的に1行に1つの設定を書いていく感じ．</p>
+
+<pre><code>service type control module-path module-arguments
+</code></pre>
+
+<p>なお，先頭が <code>#</code> の場合はコメントとなる．</p>
+
+<p><code>/etc/pam.conf</code> と <code>/etc/pam.d</code> 以下のファイルは基本的に設定フォーマットは同じである．
+しかし， <code>/etc/pam.d/</code> 以下のファイルでは，そのファイル名自体が <code>service</code> を示すため，1カラム目にある <code>service</code> は省略される．</p>
+
+<h3 id="service">service</h3>
+
+<p>serviceは，設定が反映される対象のアプリケーションを示す．
+例えば，serviceが <code>sshd</code> の場合（ <code>/etc/pam.d/sshd</code> ）はSSHサーバのデーモンに対しての設定が記述される．</p>
+
+<h3 id="type">type</h3>
+
+<p>typeは，その行にある設定が上記4つの内どのグループの設定かを示す．</p>
+
+<ul>
+<li><code>account</code></li>
+<li><code>auth</code></li>
+<li><code>password</code></li>
+<li><code>session</code></li>
+</ul>
+
+<h3 id="control">control</h3>
+
+<p>単純な設定と複雑な設定があるが，単純な設定の場合に有効な値は次の通り．</p>
+
+<ul>
+<li>required: モジュールから返ってきた結果がfailure（失敗）だった場合，PAM全体としての返却値もfailureになる．しかし，後に続く設定は引き続き評価される．</li>
+<li>requisite: 基本はrequiredと同じ．requiredと異なり，モジュールの返却値がfailureだった場合はそこで即座に終了し，後に続く設定は評価されない．</li>
+<li>sufficient: モジュールの返却値が成功なら，そこで処理を終了してPAMも成功を返却する．後に続く設定は評価されない．モジュールの返却値が失敗なら引き続き後に続く設定の評価に移る．</li>
+<li>optional: このモジュールの結果は，このモジュールが唯一の設定であった場合のみ有効となる．
+
+<ul>
+<li>e.g.) sshdのauthタイプとして設定されているモジュールが一つだけ存在し，それのcontrolがoptionalである場合</li>
+</ul></li>
+<li>include: 他のファイルに定義されている設定を読みこむ．</li>
+<li>substack: includeと同様に他のファイルから設定を読み込むが，その中に即座に評価を終了するような設定がその中にあった場合（e.g. requisite），その効力は読み込んだファイルに対してのみ有効となる
+
+<ul>
+<li>e.g.) substackの中で定義されているrequisiteが失敗した場合，substack内の評価のみがそこで終了し，substackを呼び出した側の評価は終了せずに引き続き続行される．</li>
+<li>スコープが分かれるイメージ</li>
+</ul></li>
+</ul>
+
+<p>複雑な方の設定は今回確認するファイルの中には出てこなかったので割愛する．</p>
+
+<h3 id="module-path-module-arguments">module-path, module-arguments</h3>
+
+<p>適用されるPAMモジュールのパスとその引数を指定する．
+モジュールは共有ライブラリとなっており， <code>/lib64/security/</code> の下にあるかと思う．
+それぞれのモジュールについての説明は， <code>man</code> コマンドで確認することができる（e.g. <code>man pam_unix</code> ）．</p>
+
+<h2 id="sshdの設定を見てみる">sshdの設定を見てみる</h2>
+
+<p>PAMがどういったものかというのは簡単に理解できたので，実際に設定を見てみる．
+今回は，LDAPログインの設定でも編集対象となるsshdの設定ファイルを見ることにする．
+なお，一つ一つのモジュールについて逐一説明を入れていくとキリがないので，モジュール自体の説明は一部に留める．</p>
+
+<p>今回使用している環境はCentOS 7である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/redhat-release
+CentOS Linux release <span class="m">7</span>.6.1810 <span class="o">(</span>Core<span class="o">)</span></code></pre></div>
+<p><code>/etc/pam.d/sshd</code> の中身は次のようになっていた．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/pam.d/sshd
+<span class="c1">#%PAM-1.0</span>
+auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-auth      optional     pam_reauthorize.so prepare
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+<span class="c1"># pam_selinux.so close should be the first session rule</span>
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+<span class="c1"># pam_selinux.so open should only be followed by sessions to be executed in the user context</span>
+session    required     pam_selinux.so open env_params
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    include      password-auth
+session    include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-session   optional     pam_reauthorize.so prepare</code></pre></div>
+<p>設定ファイルは上から順番に評価されていくので，設定を読むときも上から順番に読んでいく．</p>
+
+<p>authに関連する部分を見てみる．
+auth関連の部分は次の4行（コメントを除く）．</p>
+
+<pre><code>auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+# Used with polkit to reauthorize users in remote sessions
+-auth      optional     pam_reauthorize.so prepare
+</code></pre>
+
+<p>1つ目の <code>pam_sepermit.so</code> は，このユーザはSELinuxが有効になっている場合のみログインを許可する，といった設定が可能になるモジュール．</p>
+
+<p>2つ目と3つ目は，それぞれ <code>/etc/pam.d/password-auth</code> と <code>/etc/pam.d/postlogin</code> というファイルから設定を読み込んでいる．
+2つ目は <code>substack</code> となっているので，もし <code>password-auth</code> の中でrequisiteのように即座に評価を終了するものが適用された場合は，その段階で <code>password-auth</code> の評価が終了するだけで引き続き次の<code>postlogin</code> の評価に移る．</p>
+
+<p>4つ目の <code>auth</code> には，頭に <code>-</code> がついている．これは，もしモジュールが存在しなかった場合はこの行を無視して次に進むということを意味している．</p>
+
+<p>次に，password-authとpostloginの部分について見てみる．
+なお， <code>include</code> や <code>substack</code> は，それが書かれたtypeに関する設定のみを読み込む．今回だと <code>auth</code> の部分のみを読み込む．</p>
+
+<pre><code>$ cat /etc/pam.d/password-auth | grep -E '^-?auth'
+auth        required      pam_env.so
+auth        required      pam_faildelay.so delay=2000000
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid &gt;= 1000 quiet_success
+auth        required      pam_deny.so
+$ cat /etc/pam.d/postlogin | grep -E '^-?auth'
+</code></pre>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>PAMとは何か，どのようにPAMを設定していくのかについて調査した．
+PAM APIの方針に従っていれば，自由に新しいモジュールを作成することができるので，理解を深めるためになにか簡単なモジュールでも作ってみようかと考えている．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>PAM(8)</li>
+<li>pam.conf(5)</li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Linux Namespaces (1)</title>
@@ -1481,207 +1649,6 @@ uint32: 00 00 00 7b
 </code></pre>
 
 <p>今回はint型のみを扱ったが，構造体を書き込みたいときも同じようにして扱うことができるようだ．</p>
-]]></content>
-		</item>
-		
-		<item>
-			<title>HTTPリダイレクトについて調査した</title>
-			<link>https://www.mas9612.net/posts/http-redirect/</link>
-			<pubDate>Mon, 16 Jul 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/http-redirect/</guid>
-			<description>HTTPのリダイレクトには，大きく分けて次の二つ存在する． 一時的なリダイレクト 恒久的なリダイレクト 一般的に用いられるリダイレクトのステータス</description>
-			<content type="html"><![CDATA[
-
-<p>HTTPのリダイレクトには，大きく分けて次の二つ存在する．</p>
-
-<ul>
-<li>一時的なリダイレクト</li>
-<li>恒久的なリダイレクト</li>
-</ul>
-
-<p>一般的に用いられるリダイレクトのステータスコードは <code>301</code> や <code>302</code> である（個人的な考えですが）．
-しかし，他にもいくつかリダイレクトのステータスコードは存在する．</p>
-
-<p>また，似たような意味を持つステータスコードもあるので，整理するために少し調査した．</p>
-
-<h2 id="今回対象とするリダイレクトのステータスコード">今回対象とするリダイレクトのステータスコード</h2>
-
-<p>今回は，次の4つを対象とする．</p>
-
-<ul>
-<li><code>301 Moved Permanently</code></li>
-<li><code>302 Found</code></li>
-<li><code>307 Temporary Redirect</code></li>
-<li><code>308 Permanent Redirect</code></li>
-</ul>
-
-<p>それぞれのステータスコードについて，RFCを参考に概要を以下に示す．
-308以外はRFC 7231，308はRFC 7238で定義されている．</p>
-
-<h3 id="301-moved-permanently">301 Moved Permanently</h3>
-
-<ul>
-<li>恒久的なリダイレクトを表す</li>
-<li><strong>歴史的な経緯から，301を受け取ったクライアントはリクエストメソッドをPOSTからGETに変更する可能性がある</strong>
-
-<ul>
-<li>これを望まない場合，代わりに307を用いることができる</li>
-<li>しかし，307とは意味が異なる（恒久的↔一時的）
-
-<ul>
-<li>308が新しく定義された</li>
-</ul></li>
-</ul></li>
-</ul>
-
-<h3 id="302-found">302 Found</h3>
-
-<ul>
-<li>一時的なリダイレクトを表す</li>
-<li><strong>歴史的な経緯から，301を受け取ったクライアントはリクエストメソッドをPOSTからGETに変更する可能性がある</strong>
-
-<ul>
-<li>これを望まない場合，代わりに307を用いることができる</li>
-</ul></li>
-</ul>
-
-<h3 id="307-temporary-redirect">307 Temporary Redirect</h3>
-
-<ul>
-<li>一時的なリダイレクトを表す</li>
-<li>これを受け取ったクライアントはリクエストメソッドを変更してはいけない</li>
-</ul>
-
-<h3 id="308-permanent-redirect">308 Permanent Redirect</h3>
-
-<ul>
-<li>恒久的なリダイレクトを表す</li>
-<li>これを受け取ったクライアントはリクエストメソッドを変更してはいけない</li>
-</ul>
-
-<h2 id="挙動の確認">挙動の確認</h2>
-
-<p>それぞれのステータスコードに対する挙動を確認するため，簡単なサーバプログラムをGoで作成し，そのサーバに4種類のクライアントで接続した．
-作成したサーバプログラムは <a href="https://github.com/mas9612/http-redirect-test">mas9612/http-redirect-test</a> に置いている．</p>
-
-<p>用いたクライアント</p>
-
-<ul>
-<li>curl 7.43.0</li>
-<li>Safari 11.1.2</li>
-<li>Google Chrome 67.0.3396.99</li>
-<li>Firefox 59.0.2</li>
-</ul>
-
-<p>上記それぞれのクライアントから，GETとPOST2つのメソッドで作成したサーバに接続した．
-結果を次の表に示す．</p>
-
-<h3 id="method-get">Method GET</h3>
-
-<table>
-<thead>
-<tr>
-<th align="center">client</th>
-<th align="center">301</th>
-<th align="center">302</th>
-<th align="center">307</th>
-<th align="center">308</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="center">curl</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-</tr>
-
-<tr>
-<td align="center">Safari</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-</tr>
-
-<tr>
-<td align="center">Chrome</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-</tr>
-
-<tr>
-<td align="center">Firefox</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="method-post">Method POST</h3>
-
-<table>
-<thead>
-<tr>
-<th align="center">client</th>
-<th align="center">301</th>
-<th align="center">302</th>
-<th align="center">307</th>
-<th align="center">308</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="center">curl</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-</tr>
-
-<tr>
-<td align="center">Safari</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-</tr>
-
-<tr>
-<td align="center">Chrome</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-</tr>
-
-<tr>
-<td align="center">Firefox</td>
-<td align="center">GET</td>
-<td align="center">GET</td>
-<td align="center">POST</td>
-<td align="center">POST</td>
-</tr>
-</tbody>
-</table>
-
-<p>実験結果より，curl以外のクライアントは，POSTリクエストの応答結果が301と302の時，リダイレクト先へのリクエストメソッドをGETに変更していることがわかった．
-また，RFCの定義どおり，307と308はきちんとリクエストメソッドが維持されていることが確認できた．</p>
-
-<h2 id="references">References</h2>
-
-<ul>
-<li><a href="https://tools.ietf.org/html/rfc7231">RFC 7231</a></li>
-<li><a href="https://tools.ietf.org/html/rfc7538">RFC 7238</a></li>
-</ul>
 ]]></content>
 		</item>
 		

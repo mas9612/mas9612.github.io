@@ -6,10 +6,19 @@
     <description>Recent content in Linux on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Feb 2019 23:24:23 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 02 Mar 2019 23:13:05 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux PAMについて</title>
+      <link>https://www.mas9612.net/posts/linux-pam/</link>
+      <pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/linux-pam/</guid>
+      <description>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解</description>
+    </item>
     
     <item>
       <title>Linux Namespaces (1)</title>

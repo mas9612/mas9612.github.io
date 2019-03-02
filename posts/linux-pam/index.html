@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Linux PAMについて">
+<meta itemprop="description" content="LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解">
+
+
+<meta itemprop="datePublished" content="2019-03-02T23:13:05&#43;09:00" />
+<meta itemprop="dateModified" content="2019-03-02T23:14:14&#43;09:00" />
+<meta itemprop="wordCount" content="2528">
+
+
+
+<meta itemprop="keywords" content="linux,pam," />
+<meta property="og:title" content="Linux PAMについて" />
+<meta property="og:description" content="LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/linux-pam/" />
+<meta property="article:published_time" content="2019-03-02T23:13:05&#43;09:00"/>
+<meta property="article:modified_time" content="2019-03-02T23:14:14&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux PAMについて"/>
+<meta name="twitter:description" content="LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Linux PAMについて</title>
+	<link rel="stylesheet" href="https://www.mas9612.net/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.mas9612.net/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.mas9612.net/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.mas9612.net/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Mar 2, 2019</span></div>
+				<h1>Linux PAMについて</h1>
+			</header>
+			<div class="content">
+				
+
+<p>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった．
+しかし，PAMについてしっかりと理解できているわけではなかったので，PAMやその設定について調査した．</p>
+
+<h2 id="pamとは">PAMとは<a href="#pamとは" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>マニュアルによると，PAM（Pluggable Authentication Module）はシステム上のアプリケーション（サービス）による認証を処理するためのライブラリであるとのこと．
+API経由で認証タスクを呼び出すことができるので，アプリケーション側で認証のやり方等の深いところまで考えることなく使えるよ，という感じ．</p>
+
+<blockquote>
+<p>Linux-PAM is a system of libraries that handle the authentication tasks of applications (services) on the system.
+The library provides a stable general interface (Application Programming Interface - API) that privilege granting programs (such as login(1) and su(1)) defer to to perform standard authentication tasks.</p>
+</blockquote>
+
+<p>PAMでは，認証に関するタスクを役割ごとに次の4つのグループに分け，それぞれのグループごとに設定できる．</p>
+
+<ul>
+<li>account: ユーザパスワードの期限が切れていないか，要求しているサービスにアクセスする権限があるか，等を検証</li>
+<li>authentication: パスワード等によるユーザ認証を行う部分．認証方法は問わない（パスワード，ハードウェアトークン等）</li>
+<li>password: 例えばパスワード認証の場合，パスワードの変更等に関連する部分を担当する（e.g. 弱いパスワードでないか，前回と同じでないか等）</li>
+<li>session: サービス利用前と利用後に実施される処理について．e.g. ログやユーザディレクトリのマウント等</li>
+</ul>
+
+<h2 id="pamの設定">PAMの設定<a href="#pamの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>PAMの設定は <code>/etc/pam.conf</code> もしくは <code>/etc/pam.d/</code> 以下のファイルによって行う．
+<code>/etc/pam.d/</code> が存在している場合は， <code>/etc/pam.conf</code> は無視されて <code>/etc/pam.d/</code> 以下のファイルにある設定が有効となる．</p>
+
+<p>設定のフォーマットは次の通り．基本的に1行に1つの設定を書いていく感じ．</p>
+
+<pre><code>service type control module-path module-arguments
+</code></pre>
+
+<p>なお，先頭が <code>#</code> の場合はコメントとなる．</p>
+
+<p><code>/etc/pam.conf</code> と <code>/etc/pam.d</code> 以下のファイルは基本的に設定フォーマットは同じである．
+しかし， <code>/etc/pam.d/</code> 以下のファイルでは，そのファイル名自体が <code>service</code> を示すため，1カラム目にある <code>service</code> は省略される．</p>
+
+<h3 id="service">service<a href="#service" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>serviceは，設定が反映される対象のアプリケーションを示す．
+例えば，serviceが <code>sshd</code> の場合（ <code>/etc/pam.d/sshd</code> ）はSSHサーバのデーモンに対しての設定が記述される．</p>
+
+<h3 id="type">type<a href="#type" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>typeは，その行にある設定が上記4つの内どのグループの設定かを示す．</p>
+
+<ul>
+<li><code>account</code></li>
+<li><code>auth</code></li>
+<li><code>password</code></li>
+<li><code>session</code></li>
+</ul>
+
+<h3 id="control">control<a href="#control" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>単純な設定と複雑な設定があるが，単純な設定の場合に有効な値は次の通り．</p>
+
+<ul>
+<li>required: モジュールから返ってきた結果がfailure（失敗）だった場合，PAM全体としての返却値もfailureになる．しかし，後に続く設定は引き続き評価される．</li>
+<li>requisite: 基本はrequiredと同じ．requiredと異なり，モジュールの返却値がfailureだった場合はそこで即座に終了し，後に続く設定は評価されない．</li>
+<li>sufficient: モジュールの返却値が成功なら，そこで処理を終了してPAMも成功を返却する．後に続く設定は評価されない．モジュールの返却値が失敗なら引き続き後に続く設定の評価に移る．</li>
+<li>optional: このモジュールの結果は，このモジュールが唯一の設定であった場合のみ有効となる．
+
+<ul>
+<li>e.g.) sshdのauthタイプとして設定されているモジュールが一つだけ存在し，それのcontrolがoptionalである場合</li>
+</ul></li>
+<li>include: 他のファイルに定義されている設定を読みこむ．</li>
+<li>substack: includeと同様に他のファイルから設定を読み込むが，その中に即座に評価を終了するような設定がその中にあった場合（e.g. requisite），その効力は読み込んだファイルに対してのみ有効となる
+
+<ul>
+<li>e.g.) substackの中で定義されているrequisiteが失敗した場合，substack内の評価のみがそこで終了し，substackを呼び出した側の評価は終了せずに引き続き続行される．</li>
+<li>スコープが分かれるイメージ</li>
+</ul></li>
+</ul>
+
+<p>複雑な方の設定は今回確認するファイルの中には出てこなかったので割愛する．</p>
+
+<h3 id="module-path-module-arguments">module-path, module-arguments<a href="#module-path-module-arguments" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>適用されるPAMモジュールのパスとその引数を指定する．
+モジュールは共有ライブラリとなっており， <code>/lib64/security/</code> の下にあるかと思う．
+それぞれのモジュールについての説明は， <code>man</code> コマンドで確認することができる（e.g. <code>man pam_unix</code> ）．</p>
+
+<h2 id="sshdの設定を見てみる">sshdの設定を見てみる<a href="#sshdの設定を見てみる" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>PAMがどういったものかというのは簡単に理解できたので，実際に設定を見てみる．
+今回は，LDAPログインの設定でも編集対象となるsshdの設定ファイルを見ることにする．
+なお，一つ一つのモジュールについて逐一説明を入れていくとキリがないので，モジュール自体の説明は一部に留める．</p>
+
+<p>今回使用している環境はCentOS 7である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/redhat-release
+CentOS Linux release <span class="m">7</span>.6.1810 <span class="o">(</span>Core<span class="o">)</span></code></pre></div>
+<p><code>/etc/pam.d/sshd</code> の中身は次のようになっていた．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/pam.d/sshd
+<span class="c1">#%PAM-1.0</span>
+auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-auth      optional     pam_reauthorize.so prepare
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+<span class="c1"># pam_selinux.so close should be the first session rule</span>
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+<span class="c1"># pam_selinux.so open should only be followed by sessions to be executed in the user context</span>
+session    required     pam_selinux.so open env_params
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    include      password-auth
+session    include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-session   optional     pam_reauthorize.so prepare</code></pre></div>
+<p>設定ファイルは上から順番に評価されていくので，設定を読むときも上から順番に読んでいく．</p>
+
+<p>authに関連する部分を見てみる．
+auth関連の部分は次の4行（コメントを除く）．</p>
+
+<pre><code>auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+# Used with polkit to reauthorize users in remote sessions
+-auth      optional     pam_reauthorize.so prepare
+</code></pre>
+
+<p>1つ目の <code>pam_sepermit.so</code> は，このユーザはSELinuxが有効になっている場合のみログインを許可する，といった設定が可能になるモジュール．</p>
+
+<p>2つ目と3つ目は，それぞれ <code>/etc/pam.d/password-auth</code> と <code>/etc/pam.d/postlogin</code> というファイルから設定を読み込んでいる．
+2つ目は <code>substack</code> となっているので，もし <code>password-auth</code> の中でrequisiteのように即座に評価を終了するものが適用された場合は，その段階で <code>password-auth</code> の評価が終了するだけで引き続き次の<code>postlogin</code> の評価に移る．</p>
+
+<p>4つ目の <code>auth</code> には，頭に <code>-</code> がついている．これは，もしモジュールが存在しなかった場合はこの行を無視して次に進むということを意味している．</p>
+
+<p>次に，password-authとpostloginの部分について見てみる．
+なお， <code>include</code> や <code>substack</code> は，それが書かれたtypeに関する設定のみを読み込む．今回だと <code>auth</code> の部分のみを読み込む．</p>
+
+<pre><code>$ cat /etc/pam.d/password-auth | grep -E '^-?auth'
+auth        required      pam_env.so
+auth        required      pam_faildelay.so delay=2000000
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid &gt;= 1000 quiet_success
+auth        required      pam_deny.so
+$ cat /etc/pam.d/postlogin | grep -E '^-?auth'
+</code></pre>
+
+<h2 id="おわりに">おわりに<a href="#おわりに" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>PAMとは何か，どのようにPAMを設定していくのかについて調査した．
+PAM APIの方針に従っていれば，自由に新しいモジュールを作成することができるので，理解を深めるためになにか簡単なモジュールでも作ってみようかと考えている．</p>
+
+<h2 id="references">References<a href="#references" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li>PAM(8)</li>
+<li>pam.conf(5)</li>
+</ul>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.mas9612.net/tags/linux">linux</a></span><span class="tag"><a href="https://www.mas9612.net/tags/pam">pam</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2528 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-03-02 14:13 &#43;0000</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#pamとは">PAMとは</a></li>
+<li><a href="#pamの設定">PAMの設定</a>
+<ul>
+<li><a href="#service">service</a></li>
+<li><a href="#type">type</a></li>
+<li><a href="#control">control</a></li>
+<li><a href="#module-path-module-arguments">module-path, module-arguments</a></li>
+</ul></li>
+<li><a href="#sshdの設定を見てみる">sshdの設定を見てみる</a></li>
+<li><a href="#おわりに">おわりに</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://www.mas9612.net/posts/linux-namespaces-01/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Linux Namespaces (1)</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://www.mas9612.net/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.mas9612.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.mas9612.net/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134133452-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>

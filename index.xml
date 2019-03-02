@@ -6,10 +6,19 @@
     <description>Recent content on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Feb 2019 23:24:23 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 02 Mar 2019 23:13:05 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux PAMについて</title>
+      <link>https://www.mas9612.net/posts/linux-pam/</link>
+      <pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/linux-pam/</guid>
+      <description>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解</description>
+    </item>
     
     <item>
       <title>Linux Namespaces (1)</title>
@@ -92,15 +101,6 @@ Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Cl
       
       <guid>https://www.mas9612.net/posts/build-binary-with-go/</guid>
       <description>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた． テストで書いてみたプログラムは次の通り． とりあえず</description>
-    </item>
-    
-    <item>
-      <title>HTTPリダイレクトについて調査した</title>
-      <link>https://www.mas9612.net/posts/http-redirect/</link>
-      <pubDate>Mon, 16 Jul 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/http-redirect/</guid>
-      <description>HTTPのリダイレクトには，大きく分けて次の二つ存在する． 一時的なリダイレクト 恒久的なリダイレクト 一般的に用いられるリダイレクトのステータス</description>
     </item>
     
   </channel>
