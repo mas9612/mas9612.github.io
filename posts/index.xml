@@ -6,8 +6,129 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Sat, 02 Mar 2019 23:13:05 +0900</lastBuildDate>
+		<lastBuildDate>Sat, 23 Mar 2019 22:18:44 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>プロミスキャスモード（Promiscuous Mode）</title>
+			<link>https://www.mas9612.net/posts/promisc-mode/</link>
+			<pubDate>Sat, 23 Mar 2019 22:18:44 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/promisc-mode/</guid>
+			<description>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを</description>
+			<content type="html"><![CDATA[
+
+<p>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみをCPUに渡す．
+それ以外のフレームの場合，CPUへの割り込みを行わずに破棄する．</p>
+
+<p>しかし，プロミスキャスモードを有効にすると，宛先MACアドレスが自分宛てかどうかにかかわらず，すべてのフレームをCPUに渡すようになる．
+この機能は，主にtcpdumpやWireshark等のパケットキャプチャを行うプログラムで使われている．</p>
+
+<p>ここでは，プロミスキャスモードの設定について簡単にまとめる．</p>
+
+<h2 id="環境">環境</h2>
+
+<p>Debian 9</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ uname -a
+Linux debian <span class="m">4</span>.9.0-8-amd64 <span class="c1">#1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux</span>
+$ cat /etc/*-release
+<span class="nv">PRETTY_NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux 9 (stretch)&#34;</span>
+<span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux&#34;</span>
+<span class="nv">VERSION_ID</span><span class="o">=</span><span class="s2">&#34;9&#34;</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="s2">&#34;9 (stretch)&#34;</span>
+<span class="nv">ID</span><span class="o">=</span>debian
+<span class="nv">HOME_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/&#34;</span>
+<span class="nv">SUPPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/support&#34;</span>
+<span class="nv">BUG_REPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://bugs.debian.org/&#34;</span></code></pre></div>
+<h2 id="プロミスキャスモードの設定">プロミスキャスモードの設定</h2>
+
+<p>プロミスキャスモードの設定は，コマンドを用いる方法とプログラムから設定する方法の2つがある．
+それぞれの設定方法を見ていく．</p>
+
+<h3 id="コマンドによる設定">コマンドによる設定</h3>
+
+<p><code>ip</code> コマンドと <code>ifconfig</code> 2種類が使えるが， <code>ifconfig</code> はすでに非推奨となっているため， <code>ip</code> コマンドを使った方法で行う．</p>
+
+<p><code>ip</code> コマンドを使ってプロミスキャスモードを有効にするには， <code>ip link set &lt;device name&gt; promisc on</code> と実行する．
+なお，設定には特権が必要である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ ip link <span class="nb">set</span> enp0s8 promisc on
+RTNETLINK answers: Operation not permitted
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc on
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h3 id="プログラムによる設定">プログラムによる設定</h3>
+
+<p>プログラムから設定するには，ioctl(2)で <code>SIOCSIFFLAGS</code> を使用する．
+<code>ip</code> コマンドと同様，設定には特権が必要である．</p>
+
+<p>サンプルプログラムは <a href="https://github.com/mas9612/study/blob/master/networking/promiscuous_mode/promisc_sample.c">study/promisc_sample.c at master · mas9612/study</a> にあります．</p>
+
+<p>実際にプロミスキャスモードを設定している部分は次の部分．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// set promiscuous mode
+</span><span class="c1"></span>    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ifr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ifr</span><span class="p">));</span>
+    <span class="n">strncpy</span><span class="p">(</span><span class="n">ifr</span><span class="p">.</span><span class="n">ifr_name</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">IFNAMSIZ</span><span class="p">);</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCGIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to get interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ifr</span><span class="p">.</span><span class="n">ifr_flags</span> <span class="o">|=</span> <span class="n">IFF_PROMISC</span><span class="p">;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCSIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to set interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>まず， <code>SIOCGIFFLAGS</code> で現在NICに設定されているフラグを取得して，それに <code>IFF_PROMISC</code> フラグを追加するという形で設定する．
+プログラムをコンパイルし，実行してみるとうまく設定されていることが確認できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># ensure promisc mode is off before run program</span>
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc off
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ gcc -Wall promisc_sample.c
+$ ./a.out enp0s8
+failed to create socket: Operation not permitted
+$ sudo ./a.out enp0s8
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h2 id="おわりに">おわりに</h2>
+
+<p>今回は設定する方法のみをまとめたが，プロミスキャスモードを検出する方法もいくつかあるようなので，今後検証したい．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="http://www.just.edu.jo/~tawalbeh/nyit/incs745/presentations/Sniffers.pdf">Sniffers Basics and Detection</a></li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Linux PAMについて</title>
@@ -1590,65 +1711,6 @@ Type assertionでは変換したい型名を指定していたが，Type Switche
 <li><a href="https://golang.org/ref/spec#Type_assertions">Type assertions</a></li>
 <li><a href="https://golang.org/ref/spec#Switch_statements">Switch Statements</a></li>
 </ul>
-]]></content>
-		</item>
-		
-		<item>
-			<title>Goでバイナリを作る</title>
-			<link>https://www.mas9612.net/posts/build-binary-with-go/</link>
-			<pubDate>Fri, 27 Jul 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/build-binary-with-go/</guid>
-			<description>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた． テストで書いてみたプログラムは次の通り． とりあえず</description>
-			<content type="html"><![CDATA[<p>ネットワークパケットを作るために，構造体や変数からバイト型のスライスへの変換方法を調べた．</p>
-
-<p>テストで書いてみたプログラムは次の通り．
-とりあえずint型の変数をいくつか対象としてバイト変換を試してみた．</p>
-
-<script src="https://gist.github.com/mas9612/ea067ea7436b28e2054a12c7630758b1.js"></script>
-
-<p>何らかの型（構造体やint等のプリミティブ型）からバイト型のスライスに変換するには， <code>encoding/binary</code> パッケージの <code>Write</code> メソッドを使用すると良い．</p>
-
-<p><code>binary.Write()</code> メソッドは次のような定義になっている．</p>
-
-<pre><code>func Write(w io.Writer, order ByteOrder, data interface{}) error
-</code></pre>
-
-<p>第3引数に指定したデータを，第2引数で指定したバイトオーダーで第1引数の <code>w</code> に書き込む．</p>
-
-<p>このメソッドを使うために，まず <code>io.Writer</code> インタフェースを実装したものが必要になる．
-バイト型のデータを書き込みたいので， <code>bytes</code> パッケージの <code>Buffer</code> を使用することにする．</p>
-
-<pre><code>buf := new(bytes.Buffer)
-</code></pre>
-
-<p>注意点として， <code>new()</code> を使う点が挙げられる．
-<code>bytes.Buffer</code> の <code>Write()</code> メソッドはポインタ型（ <code>*bytes.Buffer</code> ）がレシーバとなっているため， <code>new()</code> を使ってポインタを取得してあげる必要がある．</p>
-
-<p>これで <code>io.Writer</code> を用意できたので， <code>binary.Write()</code> を使ってデータを書き込む．
-適当にint型の変数を用意して <code>binary.Write()</code> による書き込みを行う．
-なお，今回はネットワークパケットを作りたいので，第2引数のバイトオーダはビッグエンディアンを指定する．</p>
-
-<pre><code>var val32bit int32
-val32bit = 123
-
-err = binary.Write(buf, binary.BigEndian, val32bit)
-if err != nil {
-    log.Fatalln(err)
-}
-fmt.Printf(&quot;uint32: % x\n&quot;, buf.Bytes())
-</code></pre>
-
-<p>これで無事書き込みができた．</p>
-
-<p>サンプルプログラムの実行結果</p>
-
-<pre><code>uint8: 7b
-uint16: 00 7b
-uint32: 00 00 00 7b
-</code></pre>
-
-<p>今回はint型のみを扱ったが，構造体を書き込みたいときも同じようにして扱うことができるようだ．</p>
 ]]></content>
 		</item>
 		

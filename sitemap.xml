@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.mas9612.net/posts/promisc-mode/</loc>
+    <lastmod>2019-03-23T22:37:39+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.mas9612.net/posts/linux-pam/</loc>
     <lastmod>2019-03-02T23:14:14+09:00</lastmod>
   </url>
@@ -181,7 +186,13 @@
   
   <url>
     <loc>https://www.mas9612.net/tags/linux/</loc>
-    <lastmod>2019-03-02T23:14:14+09:00</lastmod>
+    <lastmod>2019-03-23T22:37:39+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.mas9612.net/tags/network/</loc>
+    <lastmod>2019-03-23T22:37:39+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -193,7 +204,7 @@
   
   <url>
     <loc>https://www.mas9612.net/posts/</loc>
-    <lastmod>2019-03-02T23:14:14+09:00</lastmod>
+    <lastmod>2019-03-23T22:37:39+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -205,7 +216,7 @@
   
   <url>
     <loc>https://www.mas9612.net/</loc>
-    <lastmod>2019-03-02T23:14:14+09:00</lastmod>
+    <lastmod>2019-03-23T22:37:39+09:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="プロミスキャスモード（Promiscuous Mode）">
+<meta itemprop="description" content="通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを">
+
+
+<meta itemprop="datePublished" content="2019-03-23T22:18:44&#43;09:00" />
+<meta itemprop="dateModified" content="2019-03-23T22:37:39&#43;09:00" />
+<meta itemprop="wordCount" content="1012">
+
+
+
+<meta itemprop="keywords" content="linux,network," />
+<meta property="og:title" content="プロミスキャスモード（Promiscuous Mode）" />
+<meta property="og:description" content="通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/promisc-mode/" />
+<meta property="article:published_time" content="2019-03-23T22:18:44&#43;09:00"/>
+<meta property="article:modified_time" content="2019-03-23T22:37:39&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="プロミスキャスモード（Promiscuous Mode）"/>
+<meta name="twitter:description" content="通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>プロミスキャスモード（Promiscuous Mode）</title>
+	<link rel="stylesheet" href="https://www.mas9612.net/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.mas9612.net/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.mas9612.net/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.mas9612.net/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Mar 23, 2019</span></div>
+				<h1>プロミスキャスモード（Promiscuous Mode）</h1>
+			</header>
+			<div class="content">
+				
+
+<p>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみをCPUに渡す．
+それ以外のフレームの場合，CPUへの割り込みを行わずに破棄する．</p>
+
+<p>しかし，プロミスキャスモードを有効にすると，宛先MACアドレスが自分宛てかどうかにかかわらず，すべてのフレームをCPUに渡すようになる．
+この機能は，主にtcpdumpやWireshark等のパケットキャプチャを行うプログラムで使われている．</p>
+
+<p>ここでは，プロミスキャスモードの設定について簡単にまとめる．</p>
+
+<h2 id="環境">環境<a href="#環境" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Debian 9</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ uname -a
+Linux debian <span class="m">4</span>.9.0-8-amd64 <span class="c1">#1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux</span>
+$ cat /etc/*-release
+<span class="nv">PRETTY_NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux 9 (stretch)&#34;</span>
+<span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux&#34;</span>
+<span class="nv">VERSION_ID</span><span class="o">=</span><span class="s2">&#34;9&#34;</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="s2">&#34;9 (stretch)&#34;</span>
+<span class="nv">ID</span><span class="o">=</span>debian
+<span class="nv">HOME_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/&#34;</span>
+<span class="nv">SUPPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/support&#34;</span>
+<span class="nv">BUG_REPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://bugs.debian.org/&#34;</span></code></pre></div>
+<h2 id="プロミスキャスモードの設定">プロミスキャスモードの設定<a href="#プロミスキャスモードの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>プロミスキャスモードの設定は，コマンドを用いる方法とプログラムから設定する方法の2つがある．
+それぞれの設定方法を見ていく．</p>
+
+<h3 id="コマンドによる設定">コマンドによる設定<a href="#コマンドによる設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p><code>ip</code> コマンドと <code>ifconfig</code> 2種類が使えるが， <code>ifconfig</code> はすでに非推奨となっているため， <code>ip</code> コマンドを使った方法で行う．</p>
+
+<p><code>ip</code> コマンドを使ってプロミスキャスモードを有効にするには， <code>ip link set &lt;device name&gt; promisc on</code> と実行する．
+なお，設定には特権が必要である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ ip link <span class="nb">set</span> enp0s8 promisc on
+RTNETLINK answers: Operation not permitted
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc on
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h3 id="プログラムによる設定">プログラムによる設定<a href="#プログラムによる設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>プログラムから設定するには，ioctl(2)で <code>SIOCSIFFLAGS</code> を使用する．
+<code>ip</code> コマンドと同様，設定には特権が必要である．</p>
+
+<p>サンプルプログラムは <a href="https://github.com/mas9612/study/blob/master/networking/promiscuous_mode/promisc_sample.c">study/promisc_sample.c at master · mas9612/study</a> にあります．</p>
+
+<p>実際にプロミスキャスモードを設定している部分は次の部分．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// set promiscuous mode
+</span><span class="c1"></span>    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ifr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ifr</span><span class="p">));</span>
+    <span class="n">strncpy</span><span class="p">(</span><span class="n">ifr</span><span class="p">.</span><span class="n">ifr_name</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">IFNAMSIZ</span><span class="p">);</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCGIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to get interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ifr</span><span class="p">.</span><span class="n">ifr_flags</span> <span class="o">|=</span> <span class="n">IFF_PROMISC</span><span class="p">;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCSIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to set interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>まず， <code>SIOCGIFFLAGS</code> で現在NICに設定されているフラグを取得して，それに <code>IFF_PROMISC</code> フラグを追加するという形で設定する．
+プログラムをコンパイルし，実行してみるとうまく設定されていることが確認できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># ensure promisc mode is off before run program</span>
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc off
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ gcc -Wall promisc_sample.c
+$ ./a.out enp0s8
+failed to create socket: Operation not permitted
+$ sudo ./a.out enp0s8
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h2 id="おわりに">おわりに<a href="#おわりに" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>今回は設定する方法のみをまとめたが，プロミスキャスモードを検出する方法もいくつかあるようなので，今後検証したい．</p>
+
+<h2 id="references">References<a href="#references" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li><a href="http://www.just.edu.jo/~tawalbeh/nyit/incs745/presentations/Sniffers.pdf">Sniffers Basics and Detection</a></li>
+</ul>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.mas9612.net/tags/linux">linux</a></span><span class="tag"><a href="https://www.mas9612.net/tags/network">network</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1012 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-03-23 22:18 &#43;0900</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#環境">環境</a></li>
+<li><a href="#プロミスキャスモードの設定">プロミスキャスモードの設定</a>
+<ul>
+<li><a href="#コマンドによる設定">コマンドによる設定</a></li>
+<li><a href="#プログラムによる設定">プログラムによる設定</a></li>
+</ul></li>
+<li><a href="#おわりに">おわりに</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://www.mas9612.net/posts/linux-pam/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Linux PAMについて</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://www.mas9612.net/">Masato Yamazaki</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.mas9612.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.mas9612.net/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134133452-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
