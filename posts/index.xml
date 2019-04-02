@@ -6,8 +6,193 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Sat, 23 Mar 2019 22:18:44 +0900</lastBuildDate>
+		<lastBuildDate>Tue, 02 Apr 2019 22:26:20 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Linuxのロードアベレージについて</title>
+			<link>https://www.mas9612.net/posts/linux-loadavg/</link>
+			<pubDate>Tue, 02 Apr 2019 22:26:20 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-loadavg/</guid>
+			<description>Linuxを使ってサーバ運用をしていると，ロードアベレージという単語をよく聞くかと思う． ふわっとした認識しかなかったので，改めて調査してみた</description>
+			<content type="html"><![CDATA[
+
+<p>Linuxを使ってサーバ運用をしていると，ロードアベレージという単語をよく聞くかと思う．
+ふわっとした認識しかなかったので，改めて調査してみた．</p>
+
+<h2 id="ロードアベレージとは">ロードアベレージとは</h2>
+
+<p>Linuxの負荷を表す指標の一つ．現在の実行待ちプロセス数の平均と説明されていることが多い．</p>
+
+<h2 id="ロードアベレージを知る方法">ロードアベレージを知る方法</h2>
+
+<p>ロードアベレージはいくつかの方法で知ることができる．</p>
+
+<h3 id="uptimeコマンド">uptimeコマンド</h3>
+
+<p>uptimeコマンドを使うと，システムの稼働時間と同時にロードアベレージが報告される．
+ロードアベレージの値は3つ表示され，左から順番に1分，5分，15分の平均を表している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ uptime
+ <span class="m">23</span>:37:07 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00</code></pre></div>
+<h3 id="wコマンド">wコマンド</h3>
+
+<p>wコマンドは，現在システムにログインしているユーザが表示される．
+それと同時に，1行目にuptimeコマンドと同様の内容が出力される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ w
+ <span class="m">23</span>:37:23 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+yamazaki pts/0    <span class="m">192</span>.168.56.1     <span class="m">23</span>:17    <span class="m">1</span>.00s  <span class="m">0</span>.04s  <span class="m">0</span>.00s w</code></pre></div>
+<h3 id="topコマンド">topコマンド</h3>
+
+<p>topコマンドを使うと，現在動いているプロセスの内容が表示される．
+それに加え，ロードアベレージの値が1行目に表示される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ top <span class="p">|</span> head
+top - <span class="m">23</span>:37:37 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00
+Tasks:  <span class="m">67</span> total,   <span class="m">1</span> running,  <span class="m">66</span> sleeping,   <span class="m">0</span> stopped,   <span class="m">0</span> zombie
+%Cpu<span class="o">(</span>s<span class="o">)</span>:  <span class="m">0</span>.0 us,  <span class="m">0</span>.0 sy,  <span class="m">0</span>.0 ni,100.0 id,  <span class="m">0</span>.0 wa,  <span class="m">0</span>.0 hi,  <span class="m">0</span>.0 si,  <span class="m">0</span>.0 st
+KiB Mem :  <span class="m">1020332</span> total,   <span class="m">114692</span> free,    <span class="m">64304</span> used,   <span class="m">841336</span> buff/cache
+KiB Swap:  <span class="m">1046524</span> total,  <span class="m">1046524</span> free,        <span class="m">0</span> used.   <span class="m">762628</span> avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    <span class="m">1</span> root      <span class="m">20</span>   <span class="m">0</span>   <span class="m">57104</span>   <span class="m">6868</span>   <span class="m">5276</span> S  <span class="m">0</span>.0  <span class="m">0</span>.7   <span class="m">0</span>:03.66 systemd
+    <span class="m">2</span> root      <span class="m">20</span>   <span class="m">0</span>       <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> S  <span class="m">0</span>.0  <span class="m">0</span>.0   <span class="m">0</span>:00.04 kthreadd
+    <span class="m">3</span> root      <span class="m">20</span>   <span class="m">0</span>       <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> S  <span class="m">0</span>.0  <span class="m">0</span>.0   <span class="m">0</span>:01.32 ksoftirqd/0</code></pre></div>
+<h3 id="proc-loadavg">/proc/loadavg</h3>
+
+<p><code>/proc/loadavg</code> には，ロードアベレージの値と現在のプロセス数，最後に使用したPIDが記録されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /proc/loadavg
+<span class="m">0</span>.00 <span class="m">0</span>.00 <span class="m">0</span>.00 <span class="m">1</span>/73 <span class="m">21068</span></code></pre></div>
+<h2 id="ロードアベレージの算出方法">ロードアベレージの算出方法</h2>
+
+<p>それでは，実際にロードアベレージがどのような値を元に算出されているのかを調べていく．
+今回は，Linuxカーネル v4.20 のソースコードを使って調査している．</p>
+
+<h3 id="実行待ちプロセス">実行待ちプロセス</h3>
+
+<p>ロードアベレージを計算する時に使われる <strong>現在の実行待ちプロセス数</strong> は，現在存在しているプロセスの中で， <code>TASK_RUNNING</code> もしくは <code>TASK_UNINTERRUPTIBLE</code> と呼ばれる状態のプロセス数を数えたものとなる．</p>
+
+<p><code>TASK_RUNNING</code> 等，プロセスの状態を表す定数は <code>include/linux/sched.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* Used in tsk-&gt;state: */</span>
+<span class="cp">#define TASK_RUNNING            0x0000
+</span><span class="cp">#define TASK_INTERRUPTIBLE        0x0001
+</span><span class="cp">#define TASK_UNINTERRUPTIBLE        0x0002
+</span><span class="cp"></span><span class="p">...</span></code></pre></div>
+<p>それぞれの状態がどういう意味を表しているのかは，ps(1)のマニュアルの <code>PROCESS STATE CODES</code> で説明されている．</p>
+
+<ul>
+<li><code>TASK_RUNNING</code> : プロセスが実行中もしくは実行可能な状態</li>
+<li><code>TASK_UNINTERRUPTIBLE</code> : 割り込み不可能なスリープ状態（IO待ち等）</li>
+</ul>
+
+<p>psコマンドの出力を見ると， <code>STAT</code> の列に各プロセスの状態が示されているのがわかる．ここが <code>R</code> の場合は <code>TASK_RUNNING</code> ， <code>D</code> の場合は <code>TASK_UNINTERRUPTIBLE</code> 状態である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ps aux <span class="p">|</span> head
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         <span class="m">1</span>  <span class="m">0</span>.0  <span class="m">0</span>.6  <span class="m">57104</span>  <span class="m">6868</span> ?        Ss   Mar27   <span class="m">0</span>:03 /sbin/init
+root         <span class="m">2</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>kthreadd<span class="o">]</span>
+root         <span class="m">3</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:01 <span class="o">[</span>ksoftirqd/0<span class="o">]</span>
+root         <span class="m">5</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S&lt;   Mar27   <span class="m">0</span>:00 <span class="o">[</span>kworker/0:0H<span class="o">]</span>
+root         <span class="m">7</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">1</span>:16 <span class="o">[</span>rcu_sched<span class="o">]</span>
+root         <span class="m">8</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>rcu_bh<span class="o">]</span>
+root         <span class="m">9</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>migration/0<span class="o">]</span>
+root        <span class="m">10</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S&lt;   Mar27   <span class="m">0</span>:00 <span class="o">[</span>lru-add-drain<span class="o">]</span>
+root        <span class="m">11</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:01 <span class="o">[</span>watchdog/0<span class="o">]</span></code></pre></div>
+<p>これら2つの状態にあるプロセス数をカウントし，それを元にしてロードアベレージを計算していく．
+このプロセス数は <code>kernel/sched/loadavg.c</code> で宣言されている <code>calc_load_tasks</code> 変数で管理されており，定期的に呼び出される <code>calc_global_load_tick()</code> 関数で更新される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">atomic_long_t</span> <span class="n">calc_load_tasks</span><span class="p">;</span>
+
+<span class="cm">/*
+</span><span class="cm"> * Called from scheduler_tick() to periodically update this CPU&#39;s
+</span><span class="cm"> * active count.
+</span><span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">calc_global_load_tick</span><span class="p">(</span><span class="k">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">this_rq</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">delta</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">time_before</span><span class="p">(</span><span class="n">jiffies</span><span class="p">,</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_update</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/* 前回の計測と差分があれば，その差分をcalc_load_tasksに適用 */</span>
+    <span class="n">delta</span>  <span class="o">=</span> <span class="n">calc_load_fold_active</span><span class="p">(</span><span class="n">this_rq</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+        <span class="n">atomic_long_add</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">calc_load_tasks</span><span class="p">);</span>
+
+    <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_update</span> <span class="o">+=</span> <span class="n">LOAD_FREQ</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>実際のプロセス数のカウントは <code>calc_global_load_tick()</code> 関数内部で呼び出されている <code>calc_load_fold_active()</code> 関数で行われている．
+この関数では，前回カウントしたときのプロセス数と今回のカウント数を比較し，異なっていればその差分を返却するという実装となっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">long</span> <span class="nf">calc_load_fold_active</span><span class="p">(</span><span class="k">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">this_rq</span><span class="p">,</span> <span class="kt">long</span> <span class="n">adjust</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">nr_active</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* TASK_RUNNINGとTASK_UNINTERRUPTIBLEのプロセス数をカウントし，nr_activeに保存 */</span>
+    <span class="n">nr_active</span> <span class="o">=</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">nr_running</span> <span class="o">-</span> <span class="n">adjust</span><span class="p">;</span>
+    <span class="n">nr_active</span> <span class="o">+=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">nr_uninterruptible</span><span class="p">;</span>
+
+    <span class="cm">/* 前回の計測結果と異なっていれば，差分をdeltaに保存 */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nr_active</span> <span class="o">!=</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">nr_active</span> <span class="o">-</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span><span class="p">;</span>
+        <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span> <span class="o">=</span> <span class="n">nr_active</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">delta</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="ロードアベレージの計算">ロードアベレージの計算</h3>
+
+<p>実行待ちプロセス数がどのようにカウントされるのかがわかったので，実際のロードアベレージの計算方法について見ていく．
+Linuxカーネルでは，ロードアベレージは <code>kernel/sched/loadavg.c</code> で宣言されている <code>avenrun</code> 配列に保存される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">avenrun</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span></code></pre></div>
+<p>この配列は，タイマーによって定期的に呼び出されている <code>kernel/sched/loadavg.c</code> の <code>calc_global_load()</code> 関数で更新される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">calc_global_load</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ticks</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sample_window</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">active</span><span class="p">,</span> <span class="n">delta</span><span class="p">;</span>
+
+    <span class="p">...</span>
+
+    <span class="cm">/* 実行待ちプロセス数ををcalc_load_tasksから読み出す */</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">atomic_long_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">calc_load_tasks</span><span class="p">);</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">active</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">active</span> <span class="o">*</span> <span class="nl">FIXED_1</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* 1，5，15分ごとのロードアベレージをそれぞれ計算する */</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EXP_1</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">EXP_5</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">EXP_15</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">}</span></code></pre></div>
+<p>この関数を見ると，実際の計算は <code>calc_load()</code> 関数で行っていることがわかる． <code>calc_load()</code> 関数は <code>include/linux/sched/loadavg.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
+</span><span class="cm"> * a1 = a0 * e + a * (1 - e)
+</span><span class="cm"> */</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">unsigned</span> <span class="kt">long</span>
+<span class="nf">calc_load</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">load</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">exp</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">active</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newload</span><span class="p">;</span>
+
+    <span class="cm">/* load: 前回計算したloadavgの値 */</span>
+    <span class="n">newload</span> <span class="o">=</span> <span class="n">load</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">+</span> <span class="n">active</span> <span class="o">*</span> <span class="p">(</span><span class="n">FIXED_1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">active</span> <span class="o">&gt;=</span> <span class="n">load</span><span class="p">)</span>
+        <span class="n">newload</span> <span class="o">+=</span> <span class="n">FIXED_1</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">newload</span> <span class="o">/</span> <span class="n">FIXED_1</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>ここで，いくつか出てきた定数について整理しておく． <code>calc_global_load()</code> ， <code>calc_load()</code> で出てきた定数はいずれも <code>include/linux/sched/loadavg.h</code> で次のように定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define FSHIFT		11		</span><span class="cm">/* nr of bits of precision */</span><span class="cp">
+</span><span class="cp">#define FIXED_1		(1&lt;&lt;FSHIFT)	</span><span class="cm">/* 1.0 as fixed-point */</span><span class="cp">
+</span><span class="cp">#define EXP_1		1884		</span><span class="cm">/* 1/exp(5sec/1min) as fixed-point */</span><span class="cp">
+</span><span class="cp">#define EXP_5		2014		</span><span class="cm">/* 1/exp(5sec/5min) */</span><span class="cp">
+</span><span class="cp">#define EXP_15		2037		</span><span class="cm">/* 1/exp(5sec/15min) */</span></code></pre></div>
+<p>コメントを見ると， <code>FIXED_1</code> は <code>1</code> を固定小数点で表現しているものだとわかる．そして <code>EXP_*</code> は，それぞれ $e^{\frac{5}{60}}$ ， $e^{\frac{5}{300}}$ ， $e^{\frac{5}{900}}$ の固定小数点表現であることがわかる．</p>
+
+<p>それでは <code>calc_load()</code> に戻って，ロードアベレージを計算している箇所を見てみる．
+新しいロードアベレージは， <code>calc_load()</code> の次の行で計算されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">newload</span> <span class="o">=</span> <span class="n">load</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">+</span> <span class="n">active</span> <span class="o">*</span> <span class="p">(</span><span class="n">FIXED_1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">);</span></code></pre></div>
+<p>これは<a href="https://ja.wikipedia.org/wiki/%E7%A7%BB%E5%8B%95%E5%B9%B3%E5%9D%87#%E6%8C%87%E6%95%B0%E7%A7%BB%E5%8B%95%E5%B9%B3%E5%9D%87">指数移動平均</a>と呼ばれ，最近のデータを重視して古いデータを完全に切り捨てないという特徴を持つ平均のとり方らしい．</p>
+
+<p>このようにして計算された値が，ロードアベレージとして普段目にするものになるようだ．</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>プロミスキャスモード（Promiscuous Mode）</title>
@@ -1634,83 +1819,6 @@ this is awesome</code></pre></div>
 44dd3cd8faa339d0, started, etcd3, http://localhost:22380, http://localhost:22379
 b59b01c27098773e, started, etcd2, http://localhost:12380, http://localhost:12379</code></pre></div>
 <p>次は，作成したクラスタを使ってもう少しetcdctlの使い方を勉強し，その後TLSの設定やDiscoveryを使ったクラスタ作成，無停止でのメンバアップグレード等について勉強していく予定．</p>
-]]></content>
-		</item>
-		
-		<item>
-			<title>GoのType AssertionとType Switches</title>
-			<link>https://www.mas9612.net/posts/go-type-assertion/</link>
-			<pubDate>Tue, 02 Oct 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/go-type-assertion/</guid>
-			<description>Goでは，型を interface{} として宣言してあげることで，とりあえずどんな値でも格納することが出来る． SlackのEvent API等，メッセージの形式がE</description>
-			<content type="html"><![CDATA[
-
-<p>Goでは，型を <code>interface{}</code> として宣言してあげることで，とりあえずどんな値でも格納することが出来る．
-SlackのEvent API等，メッセージの形式がEventごとに異なるといった場合に使うと便利．</p>
-
-<p>Example</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">eventHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">event</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span>
-    <span class="nx">decoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nf">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">event</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>この例だと，変数 <code>event</code> に受け取ったイベントが格納される．
-<code>event</code> は <code>map[string]interface{}</code> として宣言されているので， <code>event[&quot;token&quot;]</code> のように値を取得しても返ってくるのは <code>interface{}</code> 型である．
-そのため，値を使いたいときに適切な型へ変換してあげる必要がある．</p>
-
-<p>このような場合に，Goの言語仕様として用意されているType AssertionやType Switchesというものを使ってあげるとうまく型変換が出来る．</p>
-
-<h2 id="type-assertions">Type assertions</h2>
-
-<p>Type assertionsを使うと， <code>interface{}</code> から指定した型に変換することが出来る．
-Type assertionsでは，次のような順番で処理が行われる．</p>
-
-<ol>
-<li>値がnilであるかどうかを検査</li>
-<li>指定した型に変換して値を返却</li>
-</ol>
-
-<p>書き方は次の2つある．</p>
-
-<h3 id="1-基本形">1. 基本形</h3>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="mi">7</span>   <span class="c1">// interface{}としてxを宣言
-</span><span class="c1"></span><span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>            <span class="o">//</span> <span class="nx">Type</span> <span class="nx">assertionsを使ってint型に変換</span></code></pre></div>
-<p>Type assertionsが成功すると，指定した型に変換された値が返り値として返される（上の例だと <code>int</code> に変換された <code>7</code> が返ってくる）．
-もし次の例のように正しく変換できなかった場合は，panicが発生する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span> <span class="c1">// interface{}としてxを宣言
-</span><span class="c1"></span><span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>                <span class="o">//</span> <span class="nx">xの値</span> <span class="s">&#34;hello&#34;</span> <span class="nx">はint型に変換できない</span> <span class="p">=&gt;</span> <span class="nx">panic発生</span></code></pre></div>
-<h3 id="2-別の書き方">2. 別の書き方</h3>
-
-<p>別の書き方として，次のように返り値を2つ受け取るバージョンがある．</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="mi">7</span>   <span class="c1">// interface{}としてxを宣言
-</span><span class="c1"></span><span class="nx">i</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>        <span class="o">//</span> <span class="nx">okには正しく変換できたかどうかがboolで格納される</span><span class="err">．</span><span class="nx">成功した場合はtrue</span></code></pre></div>
-<p>この書き方を使うと，失敗したときでもpanicは発生せず， <code>ok</code> に <code>false</code> が設定されるだけとなる．
-この時，1つめの返り値は指定した型のゼロ値となる．</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span> <span class="c1">// interface{}としてxを宣言
-</span><span class="c1"></span><span class="nx">i</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span>            <span class="c1">// xの値 &#34;hello&#34; はint型に変換できない =&gt; okはfalse
-</span><span class="c1"></span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>              <span class="o">//</span> <span class="mi">0</span><span class="err">（</span><span class="nx">intのゼロ値</span><span class="err">）</span><span class="nx">が出力される</span></code></pre></div>
-<h2 id="type-switches">Type Switches</h2>
-
-<p>ドキュメントでは，Type SwitchesはType assertionの特別形であると説明されている．
-Type assertionでは変換したい型名を指定していたが，Type Switchesでは代わりに <code>type</code> を指定する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">x</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span>
-<span class="k">switch</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nx">x</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="kt">int</span><span class="p">:</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;x is int&#34;</span><span class="p">)</span>
-    <span class="k">case</span> <span class="kt">string</span><span class="p">:</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;x is string&#34;</span><span class="p">)</span>
-<span class="p">}</span></code></pre></div>
-<p>これを使うと，複数の型候補がある場合にswitch文を使って分岐させることが出来る．</p>
-
-<h2 id="参考文献">参考文献</h2>
-
-<ul>
-<li><a href="https://golang.org/ref/spec#Type_assertions">Type assertions</a></li>
-<li><a href="https://golang.org/ref/spec#Switch_statements">Switch Statements</a></li>
-</ul>
 ]]></content>
 		</item>
 		
