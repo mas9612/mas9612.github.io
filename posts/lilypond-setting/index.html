@@ -1,13 +1,75 @@
-<!DOCTYPE html>
-<html lang="en-us">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="theme-color" content="#494f5c">
-	<meta name="msapplication-TileColor" content="#494f5c">
 
+
+    
+
+
+
+
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https://www.mas9612.net/"
+        },
+        "articleSection" : "posts",
+        "name" : "Lilypondのインストールと環境設定",
+        "headline" : "Lilypondのインストールと環境設定",
+        "description" : "今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん",
+        "inLanguage" : "en",
+        "author" : "Masato Yamazaki",
+        "creator" : "Masato Yamazaki",
+        "publisher": "Masato Yamazaki",
+        "accountablePerson" : "Masato Yamazaki",
+        "copyrightHolder" : "Masato Yamazaki",
+        "copyrightYear" : "2016",
+        "datePublished": "2016-09-07 00:00:00 &#43;0900 JST",
+        "dateModified" : "2016-09-07 00:00:00 &#43;0900 JST",
+        "url" : "https://www.mas9612.net/posts/lilypond-setting/",
+        "wordCount" : "1126",
+        "keywords" : [ "Blog" ]
+    }
+    </script>
+        
+            <title>Lilypondのインストールと環境設定 - mas9612&#39;s note</title>
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.54.0" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="About Programming, Computer, Technology...">
+            
+        
+
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Lilypondのインストールと環境設定"/>
+<meta name="twitter:description" content="今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん"/>
+<meta name="twitter:site" content="@mas9612"/>
+
+        <meta property="og:title" content="Lilypondのインストールと環境設定" />
+<meta property="og:description" content="今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/lilypond-setting/" />
+<meta property="article:published_time" content="2016-09-07T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
+
+        <meta property="og:image" content="https://www.mas9612.net//images/logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="512">
+        <meta property="og:image:height" content="512">
+        
 <meta itemprop="name" content="Lilypondのインストールと環境設定">
 <meta itemprop="description" content="今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん">
 
@@ -19,66 +81,185 @@
 
 
 <meta itemprop="keywords" content="" />
-<meta property="og:title" content="Lilypondのインストールと環境設定" />
-<meta property="og:description" content="今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.mas9612.net/posts/lilypond-setting/" />
-<meta property="article:published_time" content="2016-09-07T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2019-02-09T19:46:37&#43;09:00"/>
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Lilypondのインストールと環境設定"/>
-<meta name="twitter:description" content="今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃん"/>
 
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
-	<link rel="shortcut icon" href="/favicon.ico">
+        
 
-	<title>Lilypondのインストールと環境設定</title>
-	<link rel="stylesheet" href="https://www.mas9612.net/css/style.min.e17a25802a5bbec7b5c368fdf0e55ed331a31cadbc95c1c0e7be9e9cf889b8fb.css" integrity="sha256-4XolgCpbvse1w2j98OVe0zGjHK28lcHA576enPiJuPs=">
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/main.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/add-on.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/academicons.min.css">
+        
+
+        
+
+
+  
+    
+    <link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+  
+
+
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-134133452-1', 'auto');
 	
-</head>
+	ga('send', 'pageview');
+}
+</script>
 
-<body id="page">
-	
-	<header id="site-header" class="animated slideInUp faster">
-		<div class="hdr-wrapper section-inner">
-			<div class="hdr-left">
-				<div class="site-branding">
-					<a href="https://www.mas9612.net/">mas9612&#39;s note</a>
-				</div>
-				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.mas9612.net/posts/">Blog</a>
-				</nav>
-			</div>
-			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-			</div>
-		</div>
-	</header>
-	<div id="mobile-menu" class="animated fast">
-		<ul>
-			<li><a href="https://www.mas9612.net/posts/">Blog</a></li>
-		</ul>
-	</div>
+    </head>
+    <body>
+
+      
+      <div id="wrapper">
+
+    
+<header id="header">
+    
+      <h1><a href="https://www.mas9612.net/">mas9612&#39;s note</a></h1>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="https://www.mas9612.net/">
+                            <i class="fa fa-home">&nbsp;</i>Home
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.mas9612.net/posts/">
+                            <i class="fa fa-newspaper-o">&nbsp;</i>Blog
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.mas9612.net/categories/">
+                            <i class="fa fa-sitemap">&nbsp;</i>Categories
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
 
 
-	<main class="site-main section-inner animated fadeIn faster">
-		<article class="thin">
-			<header class="post-header">
-				<div class="post-meta"><span>Sep 7, 2016</span></div>
-				<h1>Lilypondのインストールと環境設定</h1>
-			</header>
-			<div class="content">
-				
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="https://www.mas9612.net/">
+                            <h3>
+                                <i class="fa fa-home">&nbsp;</i>Home
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://www.mas9612.net/posts/">
+                            <h3>
+                                <i class="fa fa-newspaper-o">&nbsp;</i>Blog
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://www.mas9612.net/categories/">
+                            <h3>
+                                <i class="fa fa-sitemap">&nbsp;</i>Categories
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section class="recent-posts">
+            <div class="mini-posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+
+                
+                    
+                
+
+                
+
+                
+            </div>
+        </section>
+
+    
+        
+</section>
+
+    
+    <div id="main">
+        <article class="post">
+            
+            <header>
+    <div class="title">
+        
+            <h1><a href="https://www.mas9612.net/posts/lilypond-setting/">Lilypondのインストールと環境設定</a></h1>
+            
+        
+        
+    </div>
+</header>
+
+            <div id="content">
+                
 
 <p>今まで楽譜を書くときにはFinaleを使用していたが，いつも使用していたFinale2011はYosemite以降，プレイバック関係でちゃんと使えない．仕事で使っているわけではないのでわざわざ新しいバージョンを購入するのはどうかと思い，前から気になっていたLilypondを導入した．</p>
 
 <p>環境はOS X v10.11.6 El Capitan．エディタにはVimを使用する．</p>
 
-<h2 id="lilypondのインストール">Lilypondのインストール<a href="#lilypondのインストール" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="lilypondのインストール">Lilypondのインストール</h2>
 
 <p>homebrewで簡単にインストールできる．
 事前に <code>homebrew/tex</code> をtapする必要がある．</p>
@@ -87,9 +268,9 @@
 $ brew install lilypond
 </code></pre>
 
-<h2 id="vimの設定">Vimの設定<a href="#vimの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="vimの設定">Vimの設定</h2>
 
-<h3 id="runtimepathの設定">runtimepathの設定<a href="#runtimepathの設定" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<h3 id="runtimepathの設定">runtimepathの設定</h3>
 
 <p>Lilypondをインストールすると，一緒にVimのftpluinなどがついてくる．これを有効にするために， <code>~/.vimrc</code> に以下を追記する．</p>
 
@@ -100,7 +281,7 @@ filetype on
 
 <p>2行目で <code>runtimepath</code> に追加するパスは，インストールされたバージョンに応じて変更する必要があるかも．</p>
 
-<h3 id="quickrunの設定-vim-quickrun-を使用して-vimから直接コンパイルしてpdfを確認できるように設定する">quickrunの設定<code>vim-quickrun</code> を使用して，Vimから直接コンパイルしてPDFを確認できるように設定する．<a href="#quickrunの設定-vim-quickrun-を使用して-vimから直接コンパイルしてpdfを確認できるように設定する" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<h3 id="quickrunの設定-vim-quickrun-を使用して-vimから直接コンパイルしてpdfを確認できるように設定する">quickrunの設定<code>vim-quickrun</code> を使用して，Vimから直接コンパイルしてPDFを確認できるように設定する．</h3>
 
 <p><code>~/.vim/ftplugin/</code> 以下にLilypond用の設定ファイルを追加する．今回は <code>lilypond_quickrun.vim</code> というファイル名で作成した．
 ( <code>~/.vim/ftplugin/lilypond_quickrun.vim</code> )</p>
@@ -140,12 +321,12 @@ call quickrun#module#register(s:hook, 1)
 
 <p>これで <code>:QuickRun</code> を実行すると，自動的にPDFが開くようになった．</p>
 
-<h4 id="9-10追記">9/10追記<a href="#9-10追記" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<h4 id="9-10追記">9/10追記</h4>
 
 <p>出力ファイル名を指定しない時はこの方法で上手くPDFが開くが，複数ファイルで楽譜を書いている時など，出力ファイル名を指定している時は上手くPDFを開けない．
 とりあえず解決策が思いつかないのでMakefile作ってVimから <code>:make</code> することにした．</p>
 
-<h3 id="テンプレートファイルの作成">テンプレートファイルの作成<a href="#テンプレートファイルの作成" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<h3 id="テンプレートファイルの作成">テンプレートファイルの作成</h3>
 
 <p>Lilypondは，ファイルの頭にバージョンを指定しなければいけないらしい．毎回書くのは面倒なので，Vimのテンプレート機能を使用する．</p>
 
@@ -159,59 +340,223 @@ call quickrun#module#register(s:hook, 1)
 <pre><code>autocmd BufNewFile *.ly 0r $HOME/.vim/template/lilypond.txt
 </code></pre>
 
-<h2 id="終わりに">終わりに<a href="#終わりに" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="終わりに">終わりに</h2>
 
 <p>これでとりあえずVim+Lilypondでの楽譜作成環境の構築が完了したので，Lilypondのチュートリアルでもやって勉強しようと思います．
 MusicXMLへの変換もできるようにしたいので，これから調べます．</p>
 
-			</div>
-			<hr class="post-end">
-			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1126 Words</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2016-09-07 00:00 &#43;0900</p>
-			</footer>
-		</article>
-		<div class="post-nav thin">
-			<a class="next-post" href="https://www.mas9612.net/posts/pandoc-presen-pdf/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Pandocを使用してMarkdownからプレゼン用PDFを作成する</span>
-			</a>
-			<a class="prev-post" href="https://www.mas9612.net/posts/cpp-vector/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>C&#43;&#43;のstd::vectorについて</span>
-			</a>
-		</div>
-		<div id="comments" class="thin">
-</div>
-	</main>
+            </div>
+        </article>
+    </div>
+    
+<section id="sidebar">
 
-    <footer id="site-footer" class="section-inner thin animated fadeIn faster">
-        <p>&copy; 2019 <a href="https://www.mas9612.net/">Masato Yamazaki</a></p>
-        <p>
-            Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.mas9612.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
-        </p>
-    </footer>
-
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-        });
-    </script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+  
+  <section id="intro">
+    
+    
+    
+      <header>
+        <h2>mas9612&#39;s note</h2>
+        <p>About Programming, Computer, Technology...</p>
+      </header>
+    
+    
+      <ul class="icons">
+        
+          
+    <li><a href="https://www.mas9612.net/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fa fa-rss"></a></li>
 
 
-	<script src="https://www.mas9612.net/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-134133452-1', 'auto');
-	
-	ga('send', 'pageview');
-}
+        
+        
+  <li><a href="//github.com/mas9612" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="//twitter.com/mas9612" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="mailto:mas9612@gmail.com" title="Email" class="fa fa-envelope"></a></li>
+
+
+      </ul>
+    
+  </section>
+
+  
+  <section class="recent-posts">
+    <div class="mini-posts">
+      <header>
+        <h3>Recent Posts</h3>
+      </header>
+      <div class="posts-container">
+        
+
+        
+          
+        
+
+        
+      </div>
+
+      
+    </div>
+  </section>
+
+  
+  
+  
+  
+  
+    <section id="categories">
+      <header>
+        <h3>
+          <a href="https://www.mas9612.net/categories/">Categories</a>
+        </h3>
+      </header>
+        
+          
+        
+
+        
+    </section>
+  
+  
+
+  
+  
+
+  
+  <section id="footer">
+    
+    <p class="copyright">
+      
+        &copy; 2019
+        
+          mas9612&#39;s note
+        
+      .
+      Powered by <a href="//gohugo.io" target="_blank">Hugo</a>
+    </p>
+  </section>
+</section>
+
+    </div>
+    <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+    
+
+    
+      
+    
+
+    
+      
+      
+      
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+        
+        
+        
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/css.min.js"></script>
+        <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+      
+    
+    
+    
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
+      <script src="https://www.mas9612.net/js/util.js"></script>
+      <script src="https://www.mas9612.net/js/main.js"></script>
+      <script src="https://www.mas9612.net/js/backToTop.js"></script>
+    
+
+    
+
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+      <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-</body>
-
+  </body>
 </html>
+
