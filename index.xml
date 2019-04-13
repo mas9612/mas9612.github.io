@@ -6,10 +6,19 @@
     <description>Recent content on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Apr 2019 22:26:20 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 13 Apr 2019 22:38:11 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linuxのプロセスについて</title>
+      <link>https://www.mas9612.net/posts/linux-process/</link>
+      <pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/linux-process/</guid>
+      <description>プロセスとは 一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている． プロセスとは、情報処理においてプログラムの動作</description>
+    </item>
     
     <item>
       <title>Linuxのロードアベレージについて</title>
@@ -92,15 +101,6 @@ Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Cl
       
       <guid>https://www.mas9612.net/posts/openssl/</guid>
       <description>etcdクラスタをTLS有効にして運用するため，TLS証明書を作成する必要があった． ちゃんとした手順をあまり理解できていなかったため，備忘録</description>
-    </item>
-    
-    <item>
-      <title>etcd入門</title>
-      <link>https://www.mas9612.net/posts/etcd/</link>
-      <pubDate>Sat, 27 Oct 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/etcd/</guid>
-      <description>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア</description>
     </item>
     
   </channel>

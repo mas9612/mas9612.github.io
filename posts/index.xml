@@ -6,8 +6,179 @@
 		<description>Recent content in Posts on mas9612&#39;s note</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<lastBuildDate>Tue, 02 Apr 2019 22:26:20 +0900</lastBuildDate>
+		<lastBuildDate>Sat, 13 Apr 2019 22:38:11 +0900</lastBuildDate>
 		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Linuxのプロセスについて</title>
+			<link>https://www.mas9612.net/posts/linux-process/</link>
+			<pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-process/</guid>
+			<description>プロセスとは 一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている． プロセスとは、情報処理においてプログラムの動作</description>
+			<content type="html"><![CDATA[
+
+<h2 id="プロセスとは">プロセスとは</h2>
+
+<p>一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている．</p>
+
+<blockquote>
+<p>プロセスとは、情報処理においてプログラムの動作中のインスタンスを意味し、プログラムのコードおよび全ての変数やその他の状態を含む</p>
+</blockquote>
+
+<p><a href="https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9">プロセス - Wikipedia</a>より</p>
+
+<p>同じプログラムを複数起動した場合でも，それらはそれぞれ異なるプロセスとして動作する．
+例えば，2人のユーザがそれぞれvimを起動すると，プログラム自体は同じだがプロセスは2つ作成されている（もちろん，1人のユーザがvimを2つ起動した場合も同様に2つのプロセスが作成される）．</p>
+
+<p>すべてのプロセスは親となるプロセス（親プロセス）を持っており<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>，サーバ上に存在するプロセスは木構造として捉えることもできる．
+親プロセスで作成された新しいプロセス（子プロセス）は，親プロセスのメモリの複製を持ち<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>，同じプログラムコードを実行するので，2つはほとんど同じ状態と言える．
+しかし，子プロセスは親プロセスとは別のメモリ空間を持つため，子プロセス内でのメモリ内容の変更は親プロセス側では知ることができない．</p>
+
+<p>プロセスと似ている概念としてスレッドというものもあるが，スレッドの場合はメモリ空間を始めとしていくつかのリソースをスレッド間で共有している点がプロセスと異なっている．</p>
+
+<h2 id="プロセスの一生">プロセスの一生</h2>
+
+<p>動かすプログラムによってプロセスが動作する時間は異なるが，基本的な流れは全プロセスで共通している．
+ここでは，bashから実行されるlsコマンドを例にとってみると，大まかな流れは次のようになる．</p>
+
+<ol>
+<li>bashに <code>ls</code> と入力してlsコマンドを実行する</li>
+<li>bashが fork システムコールを使って子プロセスを作成する
+
+<ul>
+<li>ここで作成された子プロセスは，親プロセスと同じbashのプログラムコードを実行している</li>
+</ul></li>
+<li>子プロセス側で execve システムコールを使い，lsコマンドの実行を開始する
+
+<ul>
+<li>実行するプログラムコードがbashからlsコマンドに置き換えられる</li>
+</ul></li>
+<li>lsコマンドが実行されることにより，カレントディレクトリの一覧が表示される</li>
+<li>lsコマンドを実行していたプロセスが終了する</li>
+</ol>
+
+<h3 id="プロセスの状態">プロセスの状態</h3>
+
+<p>Linuxでは，各プロセスにそれぞれ state と呼ばれる値が設定されており，それがプロセスの状態を表している．
+stateの値を見ることで，そのプロセスが実行中なのか，何らかの待ち状態に入っているのか等を知ることができる．</p>
+
+<p>stateの値は幾つか種類があるが，ここではその一部について説明する．
+stateは， <code>linux/sched.h</code> にて定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define TASK_RUNNING			0x0000
+</span><span class="cp">#define TASK_INTERRUPTIBLE		0x0001
+</span><span class="cp">#define TASK_UNINTERRUPTIBLE		0x0002</span></code></pre></div>
+<p>それぞれ，プロセスが現在次のような状態であることを表している．</p>
+
+<ul>
+<li><code>TASK_RUNNING</code> : プロセスが実行中もしくは実行待ちの状態</li>
+<li><code>TASK_INTERRUPTIBLE</code> : プロセスが一時休止している状態</li>
+<li><code>TASK_UNINTERRUPTIBLE</code> :  プロセスが一時休止している状態． <code>TASK_INTERRUPTIBLE</code> とは違い，プロセスにシグナルが届いてもそのハンドラはすぐに実行されずに保留となる．デバイスドライバでよく使われる．</li>
+</ul>
+
+<p>現在動いているプロセスのstateは，psコマンドで確認することができる．psコマンドを引数無しで実行した場合はstateが表示されないが， <code>a</code> 等のオプションを付けるとstateが表示されるようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ps a
+  PID TTY      STAT   TIME COMMAND
+  <span class="m">444</span> tty1     Ss+    <span class="m">0</span>:00 /sbin/agetty --noclear tty1 linux
+<span class="m">25878</span> pts/0    Ss     <span class="m">0</span>:00 -bash
+<span class="m">25887</span> pts/0    S+     <span class="m">0</span>:00 man ps
+<span class="m">25897</span> pts/0    S+     <span class="m">0</span>:00 pager
+<span class="m">25912</span> pts/1    Ss     <span class="m">0</span>:00 -bash
+<span class="m">25930</span> pts/1    R+     <span class="m">0</span>:00 ps a</code></pre></div>
+<p>psコマンドの結果の中で， <code>STAT</code> の列がstateを表している．それぞれの意味は，psコマンドのマニュアルの中の <code>PROCESS STATE CODES</code> に説明がある．</p>
+
+<ul>
+<li><code>R</code> : <code>TASK_RUNNING</code></li>
+<li><code>S</code> : <code>TASK_INTERRUPTIBLE</code></li>
+<li><code>D</code> : <code>TASK_UNINTERRUPTIBLE</code></li>
+</ul>
+
+<p>psコマンドの出力には <code>R</code> や <code>S</code> といった文字の他に <code>s</code> や <code>+</code> がついているが，ここでは保留としておく．</p>
+
+<h2 id="プロセスの管理">プロセスの管理</h2>
+
+<h3 id="プロセスディスクリプタ">プロセスディスクリプタ</h3>
+
+<p>Linuxカーネルは，プロセスディスクリプタというものを使ってプロセスを管理している．プロセスディスクリプタは， <code>task_struct</code> 構造体というデータ構造に保存されている．
+<code>task_struct</code> 構造体は <code>linux/sched.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+<span class="cp">#ifdef CONFIG_THREAD_INFO_IN_TASK
+</span><span class="cp"></span>	<span class="cm">/*
+</span><span class="cm">	 * For reasons of header soup (see current_thread_info()), this
+</span><span class="cm">	 * must be the first element of task_struct.
+</span><span class="cm">	 */</span>
+	<span class="k">struct</span> <span class="n">thread_info</span>		<span class="n">thread_info</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="cp"></span>	<span class="cm">/* -1 unrunnable, 0 runnable, &gt;0 stopped: */</span>
+	<span class="k">volatile</span> <span class="kt">long</span>			<span class="n">state</span><span class="p">;</span>
+
+<span class="cm">/* （省略...） */</span></code></pre></div>
+<p>前節で説明したstateは，task_struct構造体のなかの <code>state</code> メンバに保存されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">	<span class="k">volatile</span> <span class="kt">long</span>			<span class="n">state</span><span class="p">;</span></code></pre></div>
+<h3 id="プロセスid">プロセスID</h3>
+
+<p>Linuxカーネルは各プロセスを識別するためにプロセスディスクリプタのアドレスを使用しているが，ユーザはプロセスID（PID）を使ってプロセスを識別することができる．
+PIDも，プロセスディスクリプタのpidメンバに保存されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+
+<span class="cm">/* （省略...） */</span>
+	<span class="n">pid_t</span>				<span class="n">pid</span><span class="p">;</span></code></pre></div>
+<p>PIDは1から始まり，新しいプロセスが生成されるごとに1ずつ増加していく．この値は上限が決まっており，sysctlコマンドもしくは <code>/proc/sys/kernel/pid_max</code> の内容を表示すれば知ることができる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ sysctl kernel.pid_max
+kernel.pid_max <span class="o">=</span> <span class="m">32768</span>
+
+$ cat /proc/sys/kernel/pid_max
+<span class="m">32768</span></code></pre></div>
+<p>PIDが上限に達したら，使われていないPIDを再利用することになる．</p>
+
+<h3 id="プロセスの親子関係">プロセスの親子関係</h3>
+
+<p>先に説明したとおり，プロセスには親子関係が存在する．
+プロセスディスクリプタには，親プロセスや子プロセスの情報を格納しておくメンバが存在している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+
+<span class="cm">/* （省略...） */</span>
+	<span class="cm">/* Recipient of SIGCHLD, wait4() reports: */</span>
+	<span class="k">struct</span> <span class="n">task_struct</span> <span class="n">__rcu</span>	<span class="o">*</span><span class="n">parent</span><span class="p">;</span>
+
+	<span class="cm">/*
+</span><span class="cm">	 * Children/sibling form the list of natural children:
+</span><span class="cm">	 */</span>
+	<span class="k">struct</span> <span class="n">list_head</span>		<span class="n">children</span><span class="p">;</span></code></pre></div>
+<p><code>parent</code> には親プロセスのプロセスディスクリプタへのポインタ， <code>children</code> には子プロセスの双方向リストへのポインタが格納される．</p>
+
+<p>ここで <code>children</code> の型として使用されている <code>list_head</code> 構造体について少し掘り下げてみる．
+<code>list_head</code> 構造体は <code>linux/types.h</code> で次のように定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">list_head</span> <span class="p">{</span>
+	<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">next</span><span class="p">,</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+<p>定義からわかるように，この構造体は一つ前の要素・一つあとの要素へのポインタをそれぞれ持ち，それ以外のデータは何も持っていない．
+そのため，この構造体だけでは何かしらのデータを保持することができない．</p>
+
+<p>通常の連結リストとは異なり，この構造体を使って連結リストを作るときは， <code>task_struct</code> 構造体の <code>children</code> のように，データを保持する構造体の中に <code>list_head</code> 構造体を埋め込むという形で実装していく．
+しかし， <code>list_head</code> 構造体のアドレスが得られても，それを埋め込んでいる本来の構造体（＝データを保持している構造体）へアクセスできなければ意味がない．
+そのため， <code>list_head</code> 構造体で実現された連結リストを操作するために，いくつかのマクロが定義されている．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>詳解LINUXカーネル 第3版</li>
+<li><a href="https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9">プロセス - Wikipedia</a></li>
+<li><a href="https://access.redhat.com/sites/default/files/attachments/processstates_20120831.pdf">Understanding Linux Process States</a></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">一番始めに生成されるプロセスは親を持たない（PID 0のプロセス．swapperプロセスと呼ばれる）．
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">実際には，子プロセス作成時にメモリ空間の複製が行われるわけではなく，子プロセス作成直後は親プロセスと同じメモリ空間を参照している．子プロセス側でメモリの内容を変更しようとした際に初めて複製が行われる（Copy On Write）．
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Linuxのロードアベレージについて</title>
@@ -1575,251 +1746,6 @@ m9ZFXwYPhq+ORWBJE9+hL1PsgvkiruEECIKTE2Pfeb8TkiO1Gls<span class="o">=</span>
 <p>TLS証明書の内容確認には， <code>x509</code> サブコマンドを使用する．
 これも同じように， <code>-in</code> ， <code>-text</code> ， <code>-noout</code> が使える．</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ openssl x509 -in ca.crt -text -noout</code></pre></div>]]></content>
-		</item>
-		
-		<item>
-			<title>etcd入門</title>
-			<link>https://www.mas9612.net/posts/etcd/</link>
-			<pubDate>Sat, 27 Oct 2018 00:00:00 +0900</pubDate>
-			
-			<guid>https://www.mas9612.net/posts/etcd/</guid>
-			<description>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく． 今回のモチベーションとして，Kubernetesのア</description>
-			<content type="html"><![CDATA[
-
-<p>Kubernetesにも採用されている分散型KVSについて，何回かに分けて勉強していく．
-今回のモチベーションとして，Kubernetesのアーキテクチャを詳しく勉強したい，Terraformのstate保存をローカルではなくetcdにしたいという2つがある．</p>
-
-<p>まず，インストールとクラスタの作成について見ていく．</p>
-
-<h2 id="インストール">インストール</h2>
-
-<p>クラスタ作成のためには，まずetcd本体のバイナリが必要になる．
-<a href="https://github.com/etcd-io/etcd/releases">GitHubのreleaseページ</a>から，自分のOSにあったバイナリをダウンロードしてくる．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl -LO https://github.com/etcd-io/etcd/releases/download/v3.3.10/etcd-v3.3.10-linux-amd64.tar.gz</code></pre></div>
-<p>ダウンロードしたファイルは圧縮されており，それを解凍するといくつかのファイルの中に2つのバイナリが確認できる．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ tar xzf etcd-v3.3.10-linux-amd64.tar.gz
-$ <span class="nb">cd</span> etcd-v3.3.10-linux-amd64.tar.gz
-$ ll etcd*
--rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcd
--rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> etcdctl</code></pre></div>
-<p><code>etcd</code> はetcd本体， <code>etcdctl</code> はetcdのクライアントとなるプログラム．
-これら2つをPATHが通っている場所に置いてあげる．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo mv etcd* /usr/local/bin/
-$ ll /usr/local/bin/etcd*
--rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">19237536</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcd
--rwxr-xr-x. <span class="m">1</span> yamazaki yamazaki <span class="m">15817472</span> Oct <span class="m">11</span>  <span class="m">2018</span> /usr/local/bin/etcdctl</code></pre></div>
-<p>これでインストールは完了．
-きちんとインストールされているか一応確認する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --version
-etcd Version: <span class="m">3</span>.3.10
-Git SHA: 27fc7e2
-Go Version: go1.10.4
-Go OS/Arch: linux/amd64</code></pre></div>
-<h2 id="クラスタの作成">クラスタの作成</h2>
-
-<p>まず，1台のみでetcdクラスタを作成して簡単に使い方を把握し，その後複数メンバでのetcdクラスタを作成していく．</p>
-
-<h3 id="1台のetcdクラスタ作成">1台のetcdクラスタ作成</h3>
-
-<p>基本的に<a href="https://github.com/etcd-io/etcd#running-etcd">GitHubに書いてある手順</a>通りに試していく．</p>
-
-<p>1台のみでetcdクラスタを作成するときは，特に何も考えずに <code>etcd</code> コマンドを実行する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd</code></pre></div>
-<p><code>etcd</code> コマンドを実行すると，多くのログが出力される．
-ここで，作成したetcdクラスタを使って，データの登録と取得を試してみる．</p>
-
-<p>etcdクラスタとのやり取りには， <code>etcdctl</code> コマンドを使用する．
-<code>etcd</code> コマンドを実行しているシェルとは別にもう1つシェルを起動し，そこで <code>etcdctl</code> コマンドを使用していく．
-なお，etcd APIにはバージョンがいくつかあるが，今回はバージョン3を使用する．
-<strong><code>etcdctl</code> を普通に使うとv2 APIが使われてしまうので，v3 APIを使うために <code>ETCDCTL_API</code> という環境変数の値を <code>3</code> に設定する必要があることに注意する．</strong>
-公式のREADMEのように <code>etcdctl</code> コマンドを実行するごとに毎回 <code>ETCDCTL_API</code> を指定してもよいが，毎回記述するのも面倒なのであらかじめexportしておく．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span></code></pre></div>
-<p>etcdクラスタにデータを登録するには，putコマンドを使用する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
-$ etcdctl put &lt;key&gt; &lt;value&gt;
-
-$ etcdctl put mykey <span class="s2">&#34;this is awesome&#34;</span>
-OK</code></pre></div>
-<p>putコマンドを実行して， <code>OK</code> と表示されれば成功している．</p>
-
-<p>登録した値を取得するにはgetコマンドを使用する．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Usage</span>
-$ etcdctl get &lt;key&gt;
-
-$ etcdctl get mykey
-mykey
-this is awesome</code></pre></div>
-<p>指定したキーの名前とデータが続けて出力されれば成功．</p>
-
-<p>次に，複数台のetcdクラスタを作成してみる．
-その前に，今使っていたetcdクラスタを停止させておく．
-<code>etcd</code> コマンドを実行していたシェルに戻り，Ctrl-Cで終了する．</p>
-
-<h3 id="複数メンバでのetcdクラスタ作成">複数メンバでのetcdクラスタ作成</h3>
-
-<p>今回は1つのノードの中にetcdを複数立ち上げることで，複数メンバで構成されるetcdクラスタを作成する．
-もちろん，複数のノードを使ってノード1台につきetcdを1つ動作させるという形で作成することもできる．</p>
-
-<p>公式には，etcdはTCP 2379番・2380番のポートを使用する．</p>
-
-<ul>
-<li>2379/tcp: クライアントとの通信</li>
-<li>2380/tcp: etcdメンバ間の通信</li>
-</ul>
-
-<p>今回は同じノード内に複数etcdを立ち上げるため，それぞれのetcdでポートが競合しないようにしておく．
-今回は3つのetcdメンバを動作させ，それぞれの名前，ポートは次の表のようにした．</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">メンバ</th>
-<th align="right">クライアント通信用</th>
-<th align="right">メンバ間通信用</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left">etcd1</td>
-<td align="right">2379</td>
-<td align="right">2380</td>
-</tr>
-
-<tr>
-<td align="left">etcd2</td>
-<td align="right">12379</td>
-<td align="right">12380</td>
-</tr>
-
-<tr>
-<td align="left">etcd3</td>
-<td align="right">22379</td>
-<td align="right">22380</td>
-</tr>
-</tbody>
-</table>
-
-<p>実際に3つのetcdメンバを動かしていく．
-ターミナルのウィンドウを3つ開いて，それぞれのターミナルにつき1つのetcdメンバを起動する．
-それぞれのターミナルで，次のようなコマンドを実行する．</p>
-
-<p>1つ目のターミナル</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd1 <span class="se">\
-</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:2380 <span class="se">\
-</span><span class="se"></span>    --listen-peer-urls http://localhost:2380 <span class="se">\
-</span><span class="se"></span>    --advertise-client-urls http://localhost:2379 <span class="se">\
-</span><span class="se"></span>    --listen-client-urls http://localhost:2379 <span class="se">\
-</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
-</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
-</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
-<p>2つ目のターミナル</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd2 <span class="se">\
-</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:12380 <span class="se">\
-</span><span class="se"></span>    --listen-peer-urls http://localhost:12380 <span class="se">\
-</span><span class="se"></span>    --advertise-client-urls http://localhost:12379 <span class="se">\
-</span><span class="se"></span>    --listen-client-urls http://localhost:12379 <span class="se">\
-</span><span class="se"></span>    --initial-cluster <span class="nv">etcd1</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
-</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
-</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
-<p>3つ目のターミナル</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcd --name etcd3 <span class="se">\
-</span><span class="se"></span>    --initial-advertise-peer-urls http://localhost:22380 <span class="se">\
-</span><span class="se"></span>    --listen-peer-urls http://localhost:22380 <span class="se">\
-</span><span class="se"></span>    --advertise-client-urls http://localhost:22379 <span class="se">\
-</span><span class="se"></span>    --listen-client-urls http://localhost:22379 <span class="se">\
-</span><span class="se"></span>    --initial-cluster <span class="nv">etcd</span><span class="o">=</span>http://localhost:2380,etcd2<span class="o">=</span>http://localhost:12380,etcd3<span class="o">=</span>http://localhost:22380 <span class="se">\
-</span><span class="se"></span>    --initial-cluster-state new <span class="se">\
-</span><span class="se"></span>    --initial-cluster-token etcd-cluster-1</code></pre></div>
-<p>正しくコマンドを入力できていれば，正常にetcdクラスタが起動しているはず．
-出力されるログでエラー等が出ていなければひとまずOK．</p>
-
-<p>コマンドラインオプションをたくさん使っているので複雑に見えるが，一度理解してしまうとそこまで難しくはないと思う．
-今回指定しているコマンドラインオプションは，大きく分けて次の2つに分かれている．</p>
-
-<ul>
-<li>新しいクラスタを作成するときに使用するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#clustering-flags">Clustering flags</a>）</li>
-<li>他のメンバやクライアントとの通信や，etcdの設定に関するもの（<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md#member-flags">Member flags</a>）</li>
-</ul>
-
-<p>Clustering flagsでは，新しいクラスタを一から作成するときに必要となる情報を指定する．
-今回使用したものは次の通り．</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">flags</th>
-<th align="left">description</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left"><code>--initial-advertise-peer-urls</code></td>
-<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
-</tr>
-
-<tr>
-<td align="left"><code>--advertise-client-urls</code></td>
-<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
-</tr>
-
-<tr>
-<td align="left"><code>--initial-cluster</code></td>
-<td align="left">クラスタを構成するetcdメンバの情報をカンマ区切りで指定する</td>
-</tr>
-
-<tr>
-<td align="left"><code>--initial-cluster-state</code></td>
-<td align="left">新しいクラスタを作成する場合は <code>new</code> を指定する</td>
-</tr>
-
-<tr>
-<td align="left"><code>--initial-cluster-token</code></td>
-<td align="left">クラスタ作成中に用いられるトークン．複数クラスタを管理している際，意図せず別のクラスタに影響を与えるのを防ぐ</td>
-</tr>
-</tbody>
-</table>
-
-<p>Member flagsでは，作成するメンバに関する情報等の設定ができる．
-今回使用したものは次の通り．</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">flags</th>
-<th align="left">description</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left"><code>--name</code></td>
-<td align="left">メンバ名</td>
-</tr>
-
-<tr>
-<td align="left"><code>--listen-peer-urls</code></td>
-<td align="left">クラスタ内の他のetcdメンバからの通信を受け付けるURLを指定する</td>
-</tr>
-
-<tr>
-<td align="left"><code>--listen-client-urls</code></td>
-<td align="left">クライアントからの通信を受け付けるURLを指定する</td>
-</tr>
-</tbody>
-</table>
-
-<p>注意点として， <code>--initial-cluster</code> で指定しているメンバ情報は， <code>--name</code> と <code>--listen-peer-urls</code> で指定した名前とURLに一致させなければならない．
-もし一致していないと，クラスタ起動時にエラーとなる．</p>
-
-<p>次のコマンドで，きちんと3つのメンバが表示されたら成功．</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ etcdctl member list
-29727fd1bdf9fb62, started, etcd1, http://localhost:2380, http://localhost:2379
-44dd3cd8faa339d0, started, etcd3, http://localhost:22380, http://localhost:22379
-b59b01c27098773e, started, etcd2, http://localhost:12380, http://localhost:12379</code></pre></div>
-<p>次は，作成したクラスタを使ってもう少しetcdctlの使い方を勉強し，その後TLSの設定やDiscoveryを使ったクラスタ作成，無停止でのメンバアップグレード等について勉強していく予定．</p>
-]]></content>
 		</item>
 		
 	</channel>
