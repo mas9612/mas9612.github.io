@@ -6,13 +6,12 @@
     <description>Recent content in Tags on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Feb 2019 00:40:00 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Chroot</title>
+      <title>chroot</title>
       <link>https://www.mas9612.net/tags/chroot/</link>
       <pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
       
@@ -21,7 +20,7 @@
     </item>
     
     <item>
-      <title>Container</title>
+      <title>container</title>
       <link>https://www.mas9612.net/tags/container/</link>
       <pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
       
@@ -30,7 +29,7 @@
     </item>
     
     <item>
-      <title>Linux</title>
+      <title>linux</title>
       <link>https://www.mas9612.net/tags/linux/</link>
       <pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
       
@@ -39,7 +38,7 @@
     </item>
     
     <item>
-      <title>Network</title>
+      <title>network</title>
       <link>https://www.mas9612.net/tags/network/</link>
       <pubDate>Sat, 23 Mar 2019 22:18:44 +0900</pubDate>
       
@@ -48,7 +47,7 @@
     </item>
     
     <item>
-      <title>Pam</title>
+      <title>pam</title>
       <link>https://www.mas9612.net/tags/pam/</link>
       <pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
       

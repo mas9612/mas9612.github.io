@@ -1,0 +1,10 @@
+/* Thanks for https://hayashikejinan.com/webwork/css/913/ */
+.fa-hatena:before {
+    content: "B!";
+    font-family: Verdana;
+    font-weight: bold
+}
+
+.share-btn.hatena {
+    background: #00A3DE;
+}
