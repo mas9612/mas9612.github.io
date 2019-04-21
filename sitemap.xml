@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.mas9612.net/posts/authserver/</loc>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.mas9612.net/posts/linux-process/</loc>
     <lastmod>2019-04-14T23:28:02+09:00</lastmod>
   </url>
@@ -184,7 +189,7 @@
   
   <url>
     <loc>https://www.mas9612.net/posts/</loc>
-    <lastmod>2019-04-14T23:28:02+09:00</lastmod>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -206,6 +211,18 @@
   </url>
   
   <url>
+    <loc>https://www.mas9612.net/tags/jwt/</loc>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.mas9612.net/tags/ldap/</loc>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.mas9612.net/tags/linux/</loc>
     <lastmod>2019-04-14T23:28:02+09:00</lastmod>
     <priority>0</priority>
@@ -213,13 +230,19 @@
   
   <url>
     <loc>https://www.mas9612.net/</loc>
-    <lastmod>2019-04-14T23:28:02+09:00</lastmod>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.mas9612.net/tags/network/</loc>
     <lastmod>2019-04-14T23:28:02+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.mas9612.net/tags/oauth/</loc>
+    <lastmod>2019-04-21T23:37:28+09:00</lastmod>
     <priority>0</priority>
   </url>
   

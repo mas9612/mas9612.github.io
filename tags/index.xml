@@ -29,6 +29,24 @@
     </item>
     
     <item>
+      <title>jwt</title>
+      <link>https://www.mas9612.net/tags/jwt/</link>
+      <pubDate>Sun, 21 Apr 2019 23:21:17 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/tags/jwt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ldap</title>
+      <link>https://www.mas9612.net/tags/ldap/</link>
+      <pubDate>Sun, 21 Apr 2019 23:21:17 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/tags/ldap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>linux</title>
       <link>https://www.mas9612.net/tags/linux/</link>
       <pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
@@ -43,6 +61,15 @@
       <pubDate>Sat, 23 Mar 2019 22:18:44 +0900</pubDate>
       
       <guid>https://www.mas9612.net/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>oauth</title>
+      <link>https://www.mas9612.net/tags/oauth/</link>
+      <pubDate>Sun, 21 Apr 2019 23:21:17 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/tags/oauth/</guid>
       <description></description>
     </item>
     
