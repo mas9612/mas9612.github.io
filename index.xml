@@ -6,10 +6,19 @@
     <description>Recent content on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 21 Apr 2019 23:21:17 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 15 May 2019 20:21:57 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>TCPについて学ぶ - HTTP通信の流れを見てみる</title>
+      <link>https://www.mas9612.net/posts/dive-into-tcp-http/</link>
+      <pubDate>Wed, 15 May 2019 20:21:57 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/dive-into-tcp-http/</guid>
+      <description>img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ</description>
+    </item>
     
     <item>
       <title>雑なオレオレOAuth Serverを書いた</title>
@@ -92,15 +101,6 @@
       <description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
  Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
 Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version.</description>
-    </item>
-    
-    <item>
-      <title>pipeによるプロセス間通信</title>
-      <link>https://www.mas9612.net/posts/pipe/</link>
-      <pubDate>Sat, 08 Dec 2018 00:00:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/pipe/</guid>
-      <description>fork() で作成した子プロセスと親プロセスの間で情報のやり取りをするために，IPC（Inter Process Communication）の一つであるパイプを利用</description>
     </item>
     
   </channel>

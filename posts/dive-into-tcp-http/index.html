@@ -1,0 +1,990 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https://www.mas9612.net/"
+        },
+        "articleSection" : "posts",
+        "name" : "TCPについて学ぶ - HTTP通信の流れを見てみる",
+        "headline" : "TCPについて学ぶ - HTTP通信の流れを見てみる",
+        "description" : "img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ",
+        "inLanguage" : "en",
+        "author" : "Masato Yamazaki",
+        "creator" : "Masato Yamazaki",
+        "publisher": "Masato Yamazaki",
+        "accountablePerson" : "Masato Yamazaki",
+        "copyrightHolder" : "Masato Yamazaki",
+        "copyrightYear" : "2019",
+        "datePublished": "2019-05-15 20:21:57 &#43;0900 JST",
+        "dateModified" : "2019-05-15 20:21:57 &#43;0900 JST",
+        "url" : "https://www.mas9612.net/posts/dive-into-tcp-http/",
+        "wordCount" : "3202",
+        "keywords" : [ "network","tcp","Blog" ]
+    }
+    </script>
+        
+            
+                <title>TCPについて学ぶ - HTTP通信の流れを見てみる</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.54.0" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="About Programming, Computer, Technology...">
+            
+        
+
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TCPについて学ぶ - HTTP通信の流れを見てみる"/>
+<meta name="twitter:description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ"/>
+<meta name="twitter:site" content="@mas9612"/>
+
+        <meta property="og:title" content="TCPについて学ぶ - HTTP通信の流れを見てみる" />
+<meta property="og:description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/dive-into-tcp-http/" />
+<meta property="article:published_time" content="2019-05-15T20:21:57&#43;09:00"/>
+<meta property="article:modified_time" content="2019-05-15T21:40:37&#43;09:00"/>
+
+        <meta property="og:image" content="https://www.mas9612.net//images/logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="512">
+        <meta property="og:image:height" content="512">
+        
+<meta itemprop="name" content="TCPについて学ぶ - HTTP通信の流れを見てみる">
+<meta itemprop="description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ">
+
+
+<meta itemprop="datePublished" content="2019-05-15T20:21:57&#43;09:00" />
+<meta itemprop="dateModified" content="2019-05-15T21:40:37&#43;09:00" />
+<meta itemprop="wordCount" content="3202">
+
+
+
+<meta itemprop="keywords" content="network,tcp," />
+
+        
+
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/main.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/add-on.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/academicons.min.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/hatena.css">
+        
+
+        
+
+
+  
+    
+    <link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+  
+
+
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-134133452-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    </head>
+    <body>
+
+      
+      <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+      <h1><a href="https://www.mas9612.net/">mas9612&#39;s note</a></h1>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="https://www.mas9612.net/">
+                            <i class="fa fa-home">&nbsp;</i>Home
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.mas9612.net/about/">
+                            <i class="fa fa-id-card-o">&nbsp;</i>About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.mas9612.net/posts/">
+                            <i class="fa fa-newspaper-o">&nbsp;</i>Blog
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.mas9612.net/tags/">
+                            <i class="fa fa-sitemap">&nbsp;</i>Tags
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="https://www.mas9612.net/">
+                            <h3>
+                                <i class="fa fa-home">&nbsp;</i>Home
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://www.mas9612.net/about/">
+                            <h3>
+                                <i class="fa fa-id-card-o">&nbsp;</i>About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://www.mas9612.net/posts/">
+                            <h3>
+                                <i class="fa fa-newspaper-o">&nbsp;</i>Blog
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://www.mas9612.net/tags/">
+                            <h3>
+                                <i class="fa fa-sitemap">&nbsp;</i>Tags
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section class="recent-posts">
+            <div class="mini-posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+
+                
+                    
+                
+
+                
+                        <article class="mini-post">
+                            <header>
+                                <h3><a href="https://www.mas9612.net/posts/dive-into-tcp-http/">TCPについて学ぶ - HTTP通信の流れを見てみる</a></h3>
+                                
+                                <time class="published" datetime=
+                                    '2019-05-15'>
+                                    May 15, 2019</time>
+                            </header>
+                            
+
+                        </article>
+                
+                        <article class="mini-post">
+                            <header>
+                                <h3><a href="https://www.mas9612.net/posts/authserver/">雑なオレオレOAuth Serverを書いた</a></h3>
+                                
+                                <time class="published" datetime=
+                                    '2019-04-21'>
+                                    April 21, 2019</time>
+                            </header>
+                            
+
+                        </article>
+                
+                        <article class="mini-post">
+                            <header>
+                                <h3><a href="https://www.mas9612.net/posts/linux-process/">Linuxのプロセスについて</a></h3>
+                                
+                                <time class="published" datetime=
+                                    '2019-04-13'>
+                                    April 13, 2019</time>
+                            </header>
+                            
+
+                        </article>
+                
+                        <article class="mini-post">
+                            <header>
+                                <h3><a href="https://www.mas9612.net/posts/linux-loadavg/">Linuxのロードアベレージについて</a></h3>
+                                
+                                <time class="published" datetime=
+                                    '2019-04-02'>
+                                    April 2, 2019</time>
+                            </header>
+                            
+
+                        </article>
+                
+                        <article class="mini-post">
+                            <header>
+                                <h3><a href="https://www.mas9612.net/posts/promisc-mode/">プロミスキャスモード（Promiscuous Mode）</a></h3>
+                                
+                                <time class="published" datetime=
+                                    '2019-03-23'>
+                                    March 23, 2019</time>
+                            </header>
+                            
+
+                        </article>
+                
+
+                
+                    <a href=
+                        
+                            /posts/
+                        
+                        class="button">View more posts</a>
+                
+            </div>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li>
+  <a href="//b.hatena.ne.jp/entry/https://www.mas9612.net/posts/dive-into-tcp-http/" target="_blank" class="share-btn hatena">
+    <i class="fa fa-hatena"></i>
+    <p>はてなブログ</p>
+    </a>
+</li>
+
+
+
+
+<li>
+  <a href="//twitter.com/share?url=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f&amp;text=TCP%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6%e5%ad%a6%e3%81%b6%20-%20HTTP%e9%80%9a%e4%bf%a1%e3%81%ae%e6%b5%81%e3%82%8c%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b&amp;via=mas9612" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+    </a>
+</li>
+
+
+
+
+
+
+
+
+<li>
+  <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+    </a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+  <a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+  </a>
+</li>
+
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+  <header>
+    <div class="title">
+        
+            <h1><a href="https://www.mas9612.net/posts/dive-into-tcp-http/">TCPについて学ぶ - HTTP通信の流れを見てみる</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+
+        <time class="published"
+            datetime='2019-05-15'>
+            May 15, 2019</time>
+        <span class="author"></span>
+        
+            <p>7 minute read</p>
+        
+        
+    </div>
+</header>
+
+
+  
+    <section id="social-share">
+      <ul class="icons">
+        
+
+
+<li>
+  <a href="//b.hatena.ne.jp/entry/https://www.mas9612.net/posts/dive-into-tcp-http/" target="_blank" class="share-btn hatena">
+    <i class="fa fa-hatena"></i>
+    <p>はてなブログ</p>
+    </a>
+</li>
+
+
+
+
+<li>
+  <a href="//twitter.com/share?url=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f&amp;text=TCP%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6%e5%ad%a6%e3%81%b6%20-%20HTTP%e9%80%9a%e4%bf%a1%e3%81%ae%e6%b5%81%e3%82%8c%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b&amp;via=mas9612" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+    </a>
+</li>
+
+
+
+
+
+
+
+
+<li>
+  <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+    </a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+  <a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fwww.mas9612.net%2fposts%2fdive-into-tcp-http%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+  </a>
+</li>
+
+
+      </ul>
+    </section>
+  
+
+  
+
+  <div id="content">
+    
+
+<style>
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+img.small {
+  width: 100%;
+  max-width: 350px !important;
+}
+</style>
+
+<p>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した．
+ここではHTTPサーバへGETリクエストを送ったときのトラフィックを対象としている．</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>macOS Mojave v10.14.4</li>
+<li>Web server: Go v1.12.5</li>
+</ul>
+
+<h2 id="サンプルのwebサーバを準備する">サンプルのWebサーバを準備する</h2>
+
+<p>Goを使って検証用にWebサーバを作成する．GETでHTTPリクエストを投げると <code>Hello world</code> と返すだけのWebサーバを作成した．ソースコードは次の通り．</p>
+
+<script src="https://gist.github.com/mas9612/edfc7b6efa28d9002e282070ecd5e4e6.js"></script>
+
+<p>これを <code>main.go</code> として保存してサーバを実行しておく．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go run main.go</code></pre></div>
+<h2 id="http通信のパケットをキャプチャする">HTTP通信のパケットをキャプチャする</h2>
+
+<p>Webサーバは準備できたので，早速HTTP通信をキャプチャしていく．
+ここではtcpdumpを使っているが，Wiresharkでキャプチャしても構わない．</p>
+
+<p>Webサーバを動かしているのとは別のコンソールを開き，次のコマンドでHTTP通信をキャプチャする．
+後からWiresharkで中身を詳しく見たいので， <code>-w</code> オプションでファイルに書き出しておく．
+ポート番号やpcapファイル名は必要に応じて変更してほしい．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ tcpdump -i lo0 -X tcp port <span class="m">8080</span> -w http.pcap</code></pre></div>
+<p>Webサーバとtcpdumpを動作させている状態でさらに別のコンソールを開き，次のコマンドでHTTP GETリクエストを投げる．
+なお，レスポンスボディだけでなくレスポンスヘッダもあわせて表示するために <code>--include</code> オプションを指定している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ curl --include <span class="m">127</span>.0.0.1:8080
+HTTP/1.1 <span class="m">200</span> OK
+Date: Wed, <span class="m">15</span> May <span class="m">2019</span> <span class="m">06</span>:13:22 GMT
+Content-Length: <span class="m">11</span>
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+
+Hello world</code></pre></div>
+<p>これでpcapファイルにHTTP通信が記録されたはずなので，tcpdumpを実行しているコンソールに戻り，Ctrl-Cでtcpdumpを終了しておく．</p>
+
+<h2 id="http通信の中身を確認する">HTTP通信の中身を確認する</h2>
+
+<p>それでは一つ一つ通信内容を見ていく．ここでは，Wiresharkを使ってpcapファイルを見ていくことにする．
+今回見ていくpcapファイルは<a href="https://www.mas9612.net/files/http.pcap">ここ</a>から取得することができる．</p>
+
+<p>なお，一般的にTCPでやり取りされるデータのまとまり一つ一つは <strong>セグメント</strong> と呼ばれるが，ここではわかりやすさのため <strong>パケット</strong> と呼ぶことにする．</p>
+
+<p>大きく分けて，HTTP通信が完了するまでの流れは次のようになっていた．</p>
+
+<ol>
+<li>TCPコネクションの確立</li>
+<li>HTTP GETリクエストの送信</li>
+<li>HTTPレスポンスの返却</li>
+<li>TCPコネクションのクローズ</li>
+</ol>
+
+<h3 id="tcpコネクションの確立">TCPコネクションの確立</h3>
+
+<p>TCPでは，データの送受信に先立ちまず3-way handshakeと呼ばれるやり取りを行いTCPコネクションを確立する必要がある．
+3-way handshakeは次のような手順で行われる．</p>
+
+<p><img src="https://www.mas9612.net/images/tcp-3-way-handshake.png" class="small" alt="TCP 3-way handshake"></p>
+
+<ol>
+<li>クライアント（データ送信側）がサーバ（受信側）にSYNパケット（SYNフラグがセットされたパケット）を送信する</li>
+<li>クライアントからのSYNパケットを受信したサーバは，クライアントにSYN/ACKパケット（SYN・ACKの2つのフラグがセットされたパケット）を送り返す</li>
+<li>サーバからのSYN/ACKパケットを受信したクライアントは，サーバにACKパケット（ACKフラグがセットされたパケット）を送信する</li>
+</ol>
+
+<p>3-way handshakeによりクライアント・サーバ間でTCPコネクションが確立され，お互いがデータの送受信を行う準備ができたことになる．
+キャプチャされた通信を見ると，始めの3つのパケットで3-way handshakeを行っていることが読み取れる．</p>
+
+<p><img src="https://www.mas9612.net/images/pcap_3-way-handshake.png" alt="3-way handshake" /></p>
+
+<p>キャプチャされた通信では，3-way handshakeの後にTCP Window Updateというパケットがサーバからクライアントに向けて送信されていた．</p>
+
+<p><img src="https://www.mas9612.net/images/pcap_window-update.png" alt="TCP Window Update" /></p>
+
+<p>これは，TCPのフロー制御と呼ばれる機能によるもので，受信側が「私は今これだけのデータを一度に受け取ることができます」ということを送信側に通知するためのパケットである．この「一度に受け取れるデータサイズ」のことを <strong>ウィンドウサイズ</strong> と呼ぶ．データの送信側は，受信側から通知されたウィンドウサイズを超えないようにしてデータを送信していく．
+受信側が受け取れるデータのサイズは，送信側から送られてくるデータ量等により変化する．
+もし受信側の余裕がなくなってくれば，TCP Window Updateを使って現在よりも小さいウィンドウサイズを送信側に通知し，送られてくるデータのサイズを調整する．</p>
+
+<p>RFC 793<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> 1.5節によると，このTCP Window UpdateはACKパケットに通知したいウィンドウサイズをのせて送ることで実現されているようだ．</p>
+
+<blockquote>
+<p>This is achieved by returning a &ldquo;window&rdquo; with every ACK indicating a range of acceptable sequence numbers beyond the last segment successfully received.</p>
+</blockquote>
+
+<p>ウィンドウサイズはTCPヘッダに16bitで格納されているが，ネットワークの速度向上により16bitでは不足するようになってきている（TCPヘッダの形式については割愛）．
+そのため，RFC1323 2節<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>で定義されているWindow Scaleオプションを用いてウィンドウサイズの値を32bitに拡張できるようになっている．
+このオプションはSYNフラグがONとなっているパケットにしか付加できないため，3-way handshakeの始め2つ（SYNパケット，SYN/ACKパケット）で指定されることになる．</p>
+
+<p>Window Scaleオプションは次のような形式となっている．</p>
+
+<p><img src="https://www.mas9612.net/images/tcp-window-scale-option.png" class="small" alt="TCP Window Scale Option"></p>
+
+<p>このオプションが有効になっている場合は，TCPヘッダに格納されているウィンドウサイズを <code>shift.cnt</code> 分だけビットシフトした値が実際のウィンドウサイズとなる．
+これにより，16bitで表せる最大の65535よりも大きな値をウィンドウサイズとして指定できるようになる．
+例えば今回の通信では，クライアントからサーバに通知されているウィンドウサイズは <code>6379</code> だが，Window Scaleオプションで <code>shift.cnt</code> が <code>6</code> と指定されている．
+そのため，実際のウィンドウサイズは <code>6379</code> を6ビット左シフトした <code>408256</code> となる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ python -c <span class="s1">&#39;print(6379 &lt;&lt; 6)&#39;</span>
+<span class="m">408256</span></code></pre></div>
+<h3 id="http-getリクエストの送信">HTTP GETリクエストの送信</h3>
+
+<p>HTTPは平文のプロトコルなので，Wiresharkで中身をそのまま見ることができる．
+3-way handshakeとTCP Window Updateが終わった次のパケットで，HTTPリクエストがクライアントからサーバに送信されている．</p>
+
+<p><img src="https://www.mas9612.net/images/pcap_http-request.png" alt="HTTP Request" /></p>
+
+<p>今回はTCPの詳細を見るのが目的のためHTTPの詳細については割愛する．
+HTTPリクエストがサーバで受け取れたことをクライアントに通知するため，サーバはクライアントに向けてACKパケットを送信する．</p>
+
+<p><img src="https://www.mas9612.net/images/pcap_http-req-ack.png" alt="ACK packet" /></p>
+
+<p>このACKパケットには，TCPヘッダのAcknowledgment numberフィールドに，何バイト目までを受け取ったかという情報が格納されている．
+上のスクリーンショットを見ると，Acknowledgment numberフィールドは <code>79</code> となっているので，サーバは79バイトのデータを受け取ったということがわかる．</p>
+
+<h3 id="httpレスポンスの返却">HTTPレスポンスの返却</h3>
+
+<p>クライアントからのHTTPリクエストを受け取ったサーバは，それに対して適切なHTTPレスポンスを返却していく．
+とはいえ流れはHTTPリクエストの場合と同様で，クライアントとサーバの役割が逆になっただけである．
+サーバはHTTPレスポンスをクライアントに向けて送信し，それを受け取ったクライアントはサーバにACKパケットを送信して受信応答を行う．</p>
+
+<h3 id="tcpコネクションのクローズ">TCPコネクションのクローズ</h3>
+
+<p>無事にHTTPリクエストとレスポンスのやり取りが終了したので，最後にTCPコネクションのクローズ処理を行う．
+コネクションのクローズはクライアント・サーバどちらからでも行うことができる．
+クローズ処理は次のような流れで進んでいく．</p>
+
+<p>（クライアントからクローズ処理を開始すると仮定する）</p>
+
+<p><img src="https://www.mas9612.net/images/tcp-connection-close.png" class="small" alt="TCP Connection Close"></p>
+
+<ol>
+<li>クライアントがサーバにFINパケットを送信する</li>
+<li>サーバがクライアントに対してACKパケットを送信し，FINパケットの受信応答を行う</li>
+<li>サーバからもクライアントにFINパケットを送信する</li>
+<li>クライアントがサーバにACKパケットを送信し，FINパケットの受信応答を行う</li>
+</ol>
+
+<p>この4つの手順を経ることで，正常にTCPコネクションをクローズすることができる．</p>
+
+<p><img src="https://www.mas9612.net/images/pcap_tcp-close.png" alt="TCP Connection Close" /></p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1"><a href="https://tools.ietf.org/html/rfc793">RFC 793 - Transmission Control Protocol</a>
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="https://tools.ietf.org/html/rfc1323#section-2">RFC 1323 - TCP Extensions for High Performance</a>
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+  </div>
+
+  <footer>
+    <ul class="stats">
+  <li class="categories">
+    <ul>
+        
+    </ul>
+  </li>
+  <li class="tags">
+    <ul>
+        
+            
+            
+                <i class="fa fa-tags"></i>
+                
+                
+                <li><a class="article-category-link" href="https://www.mas9612.net/tags/network">network</a></li>
+                
+                
+                <li><a class="article-category-link" href="https://www.mas9612.net/tags/tcp">tcp</a></li>
+                
+            
+        
+    </ul>
+  </li>
+</ul>
+
+  </footer>
+
+</article>
+
+    <article class="post">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "mas9612s-note" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </article>
+
+
+<ul class="actions pagination">
+    
+        <li><a href="https://www.mas9612.net/posts/authserver/"
+                class="button big previous">雑なオレオレOAuth Serverを書いた</a></li>
+    
+
+    
+</ul>
+
+
+    </div>
+    
+<section id="sidebar">
+
+  
+  <section id="intro">
+    
+    
+    
+      <header>
+        <h2>mas9612&#39;s note</h2>
+        <p>About Programming, Computer, Technology...</p>
+      </header>
+    
+    
+      <ul class="icons">
+        
+          
+    <li><a href="https://www.mas9612.net/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fa fa-rss"></a></li>
+
+
+        
+        
+  <li><a href="//github.com/mas9612" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="//facebook.com/mas9612" target="_blank" title="Facebook" class="fa fa-facebook"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="//twitter.com/mas9612" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="mailto:mas9612@gmail.com" title="Email" class="fa fa-envelope"></a></li>
+
+
+      </ul>
+    
+  </section>
+
+  
+  <section class="recent-posts">
+    <div class="mini-posts">
+      <header>
+        <h3>Recent Posts</h3>
+      </header>
+      <div class="posts-container">
+        
+
+        
+          
+        
+
+        
+          <article class="mini-post">
+            <header>
+              <h3>
+                <a href="https://www.mas9612.net/posts/dive-into-tcp-http/">TCPについて学ぶ - HTTP通信の流れを見てみる</a>
+              </h3>
+              
+              <time class="published" datetime='2019-05-15'>
+                May 15, 2019
+              </time>
+            </header>
+            
+
+          </article>
+        
+          <article class="mini-post">
+            <header>
+              <h3>
+                <a href="https://www.mas9612.net/posts/authserver/">雑なオレオレOAuth Serverを書いた</a>
+              </h3>
+              
+              <time class="published" datetime='2019-04-21'>
+                April 21, 2019
+              </time>
+            </header>
+            
+
+          </article>
+        
+          <article class="mini-post">
+            <header>
+              <h3>
+                <a href="https://www.mas9612.net/posts/linux-process/">Linuxのプロセスについて</a>
+              </h3>
+              
+              <time class="published" datetime='2019-04-13'>
+                April 13, 2019
+              </time>
+            </header>
+            
+
+          </article>
+        
+          <article class="mini-post">
+            <header>
+              <h3>
+                <a href="https://www.mas9612.net/posts/linux-loadavg/">Linuxのロードアベレージについて</a>
+              </h3>
+              
+              <time class="published" datetime='2019-04-02'>
+                April 2, 2019
+              </time>
+            </header>
+            
+
+          </article>
+        
+          <article class="mini-post">
+            <header>
+              <h3>
+                <a href="https://www.mas9612.net/posts/promisc-mode/">プロミスキャスモード（Promiscuous Mode）</a>
+              </h3>
+              
+              <time class="published" datetime='2019-03-23'>
+                March 23, 2019
+              </time>
+            </header>
+            
+
+          </article>
+        
+      </div>
+
+      
+        <a href=
+          
+            /posts/
+          
+        class="button">View more posts</a>
+      
+    </div>
+  </section>
+
+  
+  
+  
+
+  
+  
+
+  
+  <section id="footer">
+    
+    <p class="copyright">
+      
+        &copy; 2019
+        
+          mas9612&#39;s note
+        
+      .
+      Powered by <a href="//gohugo.io" target="_blank">Hugo</a>
+    </p>
+  </section>
+</section>
+
+    </div>
+    <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+    
+
+    
+      
+    
+
+    
+      
+      
+      
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+        
+        
+        
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/css.min.js"></script>
+        <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+      
+    
+    
+    
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
+      <script src="https://www.mas9612.net/js/util.js"></script>
+      <script src="https://www.mas9612.net/js/main.js"></script>
+      <script src="https://www.mas9612.net/js/backToTop.js"></script>
+    
+
+    
+
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+      <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </body>
+</html>
+
