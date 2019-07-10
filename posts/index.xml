@@ -6,10 +6,19 @@
     <description>Recent content in Posts on mas9612&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 May 2019 20:21:57 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jul 2019 19:08:35 +0900</lastBuildDate>
     
 	<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Goのbufio.Writerについて</title>
+      <link>https://www.mas9612.net/posts/golang-bufio-writer/</link>
+      <pubDate>Wed, 10 Jul 2019 19:08:35 +0900</pubDate>
+      
+      <guid>https://www.mas9612.net/posts/golang-bufio-writer/</guid>
+      <description>GoのbufioパッケージにあるWriterについて，少し実装を見てみたのでメモ． $ go version go version go1.12.6 darwin/amd64 bufio.Writer バッファリング機構を持った io.Writer インタフェース</description>
+    </item>
     
     <item>
       <title>TCPについて学ぶ - HTTP通信の流れを見てみる</title>
@@ -90,17 +99,6 @@
       
       <guid>https://www.mas9612.net/posts/go-file-io/</guid>
       <description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes Authentication</title>
-      <link>https://www.mas9612.net/posts/k8s-auth/</link>
-      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/k8s-auth/</guid>
-      <description>When we use Kubernetes API, the request is checked by following order after TLS is established[1].
- Authentication: Checked whether user is granted to access API Authorization: Checked whether user is granted to do requested action to specified object Admission Control: Modify or reject request  To test and study Kubernetes authentication flow, I was tested it with minikube.
-Environment  Kubernetes cluster bootstrapped with minikube  $ kubectl version Client Version: version.</description>
     </item>
     
   </channel>
