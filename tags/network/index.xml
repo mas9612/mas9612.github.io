@@ -17,7 +17,7 @@
       <pubDate>Wed, 15 May 2019 20:21:57 +0900</pubDate>
       
       <guid>https://www.mas9612.net/posts/dive-into-tcp-http/</guid>
-      <description>img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ</description>
+      <description>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT</description>
     </item>
     
     <item>

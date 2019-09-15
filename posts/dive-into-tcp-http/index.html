@@ -13,7 +13,7 @@
         "articleSection" : "posts",
         "name" : "TCPについて学ぶ - HTTP通信の流れを見てみる",
         "headline" : "TCPについて学ぶ - HTTP通信の流れを見てみる",
-        "description" : "img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ",
+        "description" : "TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT",
         "inLanguage" : "en",
         "author" : "Masato Yamazaki",
         "creator" : "Masato Yamazaki",
@@ -24,7 +24,7 @@
         "datePublished": "2019-05-15 20:21:57 &#43;0900 JST",
         "dateModified" : "2019-05-15 20:21:57 &#43;0900 JST",
         "url" : "https://www.mas9612.net/posts/dive-into-tcp-http/",
-        "wordCount" : "3202",
+        "wordCount" : "3186",
         "keywords" : [ "network","tcp","Blog" ]
     }
     </script>
@@ -49,15 +49,15 @@
 
         <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="TCPについて学ぶ - HTTP通信の流れを見てみる"/>
-<meta name="twitter:description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ"/>
+<meta name="twitter:description" content="TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT"/>
 <meta name="twitter:site" content="@mas9612"/>
 
         <meta property="og:title" content="TCPについて学ぶ - HTTP通信の流れを見てみる" />
-<meta property="og:description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ" />
+<meta property="og:description" content="TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.mas9612.net/posts/dive-into-tcp-http/" />
 <meta property="article:published_time" content="2019-05-15T20:21:57&#43;09:00"/>
-<meta property="article:modified_time" content="2019-05-15T21:40:37&#43;09:00"/>
+<meta property="article:modified_time" content="2019-09-15T22:12:53&#43;09:00"/>
 
         <meta property="og:image" content="https://www.mas9612.net//images/logo.png">
         <meta property="og:image:type" content="image/png">
@@ -65,12 +65,12 @@
         <meta property="og:image:height" content="512">
         
 <meta itemprop="name" content="TCPについて学ぶ - HTTP通信の流れを見てみる">
-<meta itemprop="description" content="img { display: block; margin: 0 auto; } img.small { width: 100%; max-width: 350px !important; } TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチ">
+<meta itemprop="description" content="TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT">
 
 
 <meta itemprop="datePublished" content="2019-05-15T20:21:57&#43;09:00" />
-<meta itemprop="dateModified" content="2019-05-15T21:40:37&#43;09:00" />
-<meta itemprop="wordCount" content="3202">
+<meta itemprop="dateModified" content="2019-09-15T22:12:53&#43;09:00" />
+<meta itemprop="wordCount" content="3186">
 
 
 
@@ -92,6 +92,7 @@
             <link rel="stylesheet" href="https://www.mas9612.net/css/add-on.css">
             <link rel="stylesheet" href="https://www.mas9612.net/css/academicons.min.css">
             <link rel="stylesheet" href="https://www.mas9612.net/css/hatena.css">
+            <link rel="stylesheet" href="https://www.mas9612.net/css/custom.css">
         
 
         
@@ -482,18 +483,6 @@ if (!doNotTrack) {
   <div id="content">
     
 
-<style>
-img {
-  display: block;
-  margin: 0 auto;
-}
-
-img.small {
-  width: 100%;
-  max-width: 350px !important;
-}
-</style>
-
 <p>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した．
 ここではHTTPサーバへGETリクエストを送ったときのトラフィックを対象としている．</p>
 
@@ -508,7 +497,7 @@ img.small {
 
 <p>Goを使って検証用にWebサーバを作成する．GETでHTTPリクエストを投げると <code>Hello world</code> と返すだけのWebサーバを作成した．ソースコードは次の通り．</p>
 
-<script src="https://gist.github.com/mas9612/edfc7b6efa28d9002e282070ecd5e4e6.js"></script>
+<script type="application/javascript" src="//gist.github.com/mas9612/edfc7b6efa28d9002e282070ecd5e4e6.js"></script>
 
 <p>これを <code>main.go</code> として保存してサーバを実行しておく．</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go run main.go</code></pre></div>
@@ -553,7 +542,11 @@ Hello world</code></pre></div>
 <p>TCPでは，データの送受信に先立ちまず3-way handshakeと呼ばれるやり取りを行いTCPコネクションを確立する必要がある．
 3-way handshakeは次のような手順で行われる．</p>
 
-<p><img src="https://www.mas9612.net/images/tcp-3-way-handshake.png" class="small" alt="TCP 3-way handshake"></p>
+<figure class="img-small">
+    <img src="https://www.mas9612.net/images/tcp-3-way-handshake.png"
+         alt="TCP 3-way handshake"/> 
+</figure>
+
 
 <ol>
 <li>クライアント（データ送信側）がサーバ（受信側）にSYNパケット（SYNフラグがセットされたパケット）を送信する</li>
@@ -586,7 +579,11 @@ Hello world</code></pre></div>
 
 <p>Window Scaleオプションは次のような形式となっている．</p>
 
-<p><img src="https://www.mas9612.net/images/tcp-window-scale-option.png" class="small" alt="TCP Window Scale Option"></p>
+<figure class="img-small">
+    <img src="https://www.mas9612.net/images/tcp-window-scale-option.png"
+         alt="TCP Window Scale Option"/> 
+</figure>
+
 
 <p>このオプションが有効になっている場合は，TCPヘッダに格納されているウィンドウサイズを <code>shift.cnt</code> 分だけビットシフトした値が実際のウィンドウサイズとなる．
 これにより，16bitで表せる最大の65535よりも大きな値をウィンドウサイズとして指定できるようになる．
@@ -623,7 +620,11 @@ HTTPリクエストがサーバで受け取れたことをクライアントに�
 
 <p>（クライアントからクローズ処理を開始すると仮定する）</p>
 
-<p><img src="https://www.mas9612.net/images/tcp-connection-close.png" class="small" alt="TCP Connection Close"></p>
+<figure class="img-small">
+    <img src="https://www.mas9612.net/images/tcp-connection-close.png"
+         alt="TCP Connection Close"/> 
+</figure>
+
 
 <ol>
 <li>クライアントがサーバにFINパケットを送信する</li>

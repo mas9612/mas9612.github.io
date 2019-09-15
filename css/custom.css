@@ -1,0 +1,9 @@
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+figure.img-small > img {
+  width: 100%;
+  max-width: 350px !important;
+}
