@@ -1,105 +1,1821 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on mas9612&#39;s note</title>
-    <link>https://www.mas9612.net/posts/</link>
-    <description>Recent content in Posts on mas9612&#39;s note</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 10 Jul 2019 19:08:35 +0900</lastBuildDate>
-    
-	<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Goのbufio.Writerについて</title>
-      <link>https://www.mas9612.net/posts/golang-bufio-writer/</link>
-      <pubDate>Wed, 10 Jul 2019 19:08:35 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/golang-bufio-writer/</guid>
-      <description>GoのbufioパッケージにあるWriterについて，少し実装を見てみたのでメモ． $ go version go version go1.12.6 darwin/amd64 bufio.Writer バッファリング機構を持った io.Writer インタフェース</description>
-    </item>
-    
-    <item>
-      <title>TCPについて学ぶ - HTTP通信の流れを見てみる</title>
-      <link>https://www.mas9612.net/posts/dive-into-tcp-http/</link>
-      <pubDate>Wed, 15 May 2019 20:21:57 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/dive-into-tcp-http/</guid>
-      <description>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT</description>
-    </item>
-    
-    <item>
-      <title>雑なオレオレOAuth Serverを書いた</title>
-      <link>https://www.mas9612.net/posts/authserver/</link>
-      <pubDate>Sun, 21 Apr 2019 23:21:17 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/authserver/</guid>
-      <description>img { max-width: 50% !important; display: block; margin: 0 auto; } タイトルの通り． authserverというそのまんまな名前でGitHubにおいている． 自分で使う用としてとりあえず書い</description>
-    </item>
-    
-    <item>
-      <title>Linuxのプロセスについて</title>
-      <link>https://www.mas9612.net/posts/linux-process/</link>
-      <pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/linux-process/</guid>
-      <description>プロセスとは 一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている． プロセスとは、情報処理においてプログラムの動作</description>
-    </item>
-    
-    <item>
-      <title>Linuxのロードアベレージについて</title>
-      <link>https://www.mas9612.net/posts/linux-loadavg/</link>
-      <pubDate>Tue, 02 Apr 2019 22:26:20 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/linux-loadavg/</guid>
-      <description>Linuxを使ってサーバ運用をしていると，ロードアベレージという単語をよく聞くかと思う． ふわっとした認識しかなかったので，改めて調査してみた</description>
-    </item>
-    
-    <item>
-      <title>プロミスキャスモード（Promiscuous Mode）</title>
-      <link>https://www.mas9612.net/posts/promisc-mode/</link>
-      <pubDate>Sat, 23 Mar 2019 22:18:44 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/promisc-mode/</guid>
-      <description>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを</description>
-    </item>
-    
-    <item>
-      <title>Linux PAMについて</title>
-      <link>https://www.mas9612.net/posts/linux-pam/</link>
-      <pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/linux-pam/</guid>
-      <description>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解</description>
-    </item>
-    
-    <item>
-      <title>Linux Namespaces (1)</title>
-      <link>https://www.mas9612.net/posts/linux-namespaces-01/</link>
-      <pubDate>Mon, 18 Feb 2019 23:24:23 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/linux-namespaces-01/</guid>
-      <description>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した． 少々長いので，2つの記事に分けて投稿する． 今回使った環境は</description>
-    </item>
-    
-    <item>
-      <title>chrootの基礎</title>
-      <link>https://www.mas9612.net/posts/chroot-basic/</link>
-      <pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/chroot-basic/</guid>
-      <description>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深</description>
-    </item>
-    
-    <item>
-      <title>GoでのファイルI/O</title>
-      <link>https://www.mas9612.net/posts/go-file-io/</link>
-      <pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
-      
-      <guid>https://www.mas9612.net/posts/go-file-io/</guid>
-      <description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
-    </item>
-    
-  </channel>
+	<channel>
+		<title>Posts on mas9612&#39;s note</title>
+		<link>https://www.mas9612.net/posts/</link>
+		<description>Recent content in Posts on mas9612&#39;s note</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<lastBuildDate>Wed, 10 Jul 2019 19:08:35 +0900</lastBuildDate>
+		<atom:link href="https://www.mas9612.net/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Goのbufio.Writerについて</title>
+			<link>https://www.mas9612.net/posts/golang-bufio-writer/</link>
+			<pubDate>Wed, 10 Jul 2019 19:08:35 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/golang-bufio-writer/</guid>
+			<description>GoのbufioパッケージにあるWriterについて，少し実装を見てみたのでメモ． $ go version go version go1.12.6 darwin/amd64 bufio.Writer バッファリング機構を持った io.Writer インタフェース</description>
+			<content type="html"><![CDATA[
+
+<p>GoのbufioパッケージにあるWriterについて，少し実装を見てみたのでメモ．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go version
+go version go1.12.6 darwin/amd64</code></pre></div>
+<h2 id="bufio-writer">bufio.Writer</h2>
+
+<p>バッファリング機構を持った <code>io.Writer</code> インタフェースの実装．
+特に何も指定せずに <code>bufio.Writer</code> を作成すると，バッファサイズは4096バイトになる．</p>
+
+<h3 id="使用したサンプルコード">使用したサンプルコード</h3>
+
+<p>GoDocにある <code>bufio.Writer</code> のExampleそのまま．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;bufio&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">w</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprint</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;Hello, &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprint</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;world!&#34;</span><span class="p">)</span>
+	<span class="nx">w</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<p>これを実行すると，おなじみの <code>Hello, world!</code> がコンソールに出力される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go run main.go
+Hello, world!</code></pre></div>
+<p>それでは中身を見ていく．
+Writer関連のメソッドは <a href="https://github.com/golang/go">golang/go: The Go programming language</a> の <code>src/bufio/bufio.go</code> で定義されている．</p>
+
+<p><code>bufio.NewWriter</code> は <code>bufio.NewWriterSize</code> のラッパーになっており，デフォルトのバッファサイズ（4096バイト）でバッファを作成して <code>bufio.Writer</code> を返却する．
+バッファサイズをデフォルト値以外にしたい場合は， <code>bufio.NewWriterSize</code> の引数に好きな値を指定してあげれば良い．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="p">(</span>
+	<span class="nx">defaultBufSize</span> <span class="p">=</span> <span class="mi">4096</span>
+<span class="p">)</span>
+
+<span class="c1">// ...
+</span><span class="c1"></span>
+<span class="kd">func</span> <span class="nf">NewWriterSize</span><span class="p">(</span><span class="nx">w</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span><span class="p">,</span> <span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">Writer</span> <span class="p">{</span>
+	<span class="c1">// Is it already a Writer?
+</span><span class="c1"></span>	<span class="nx">b</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.(</span><span class="o">*</span><span class="nx">Writer</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">size</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">b</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">size</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">size</span> <span class="p">=</span> <span class="nx">defaultBufSize</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">Writer</span><span class="p">{</span>
+		<span class="nx">buf</span><span class="p">:</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">size</span><span class="p">),</span>
+		<span class="nx">wr</span><span class="p">:</span>  <span class="nx">w</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewWriter</span><span class="p">(</span><span class="nx">w</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span><span class="p">)</span> <span class="o">*</span><span class="nx">Writer</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewWriterSize</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">defaultBufSize</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<p>なお， <code>bufio.NewWriter</code> および <code>bufio.NewWriterSize</code> の引数として <code>bufio.Writer</code> を渡した場合，そのバッファサイズが十分に大きければ新しいオブジェクトは作成されずにそのまま返却される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewWriterSize</span><span class="p">(</span><span class="nx">w</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span><span class="p">,</span> <span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">Writer</span> <span class="p">{</span>
+	<span class="c1">// Is it already a Writer?
+</span><span class="c1"></span>	<span class="nx">b</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.(</span><span class="o">*</span><span class="nx">Writer</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">size</span> <span class="p">{</span>   <span class="c1">// バッファサイズが十分ある場合はここでreturn
+</span><span class="c1"></span>		<span class="k">return</span> <span class="nx">b</span>
+	<span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<p>ちなみに， <code>bufio.Writer</code> は次のような構造体として定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Writer</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">err</span> <span class="kt">error</span>
+	<span class="nx">buf</span> <span class="p">[]</span><span class="kt">byte</span>
+	<span class="nx">n</span>   <span class="kt">int</span>
+	<span class="nx">wr</span>  <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span>
+<span class="p">}</span></code></pre></div>
+<p>それぞれ <code>err</code> が書き込み時に発生したエラー， <code>buf</code> がバッファ， <code>n</code> が現在バッファに溜まっているバイト数， <code>wr</code> がバッファの書き込み先．</p>
+
+<p>サンプルコードでは <code>fmt.Fprint</code> を使って文字列を書き込んでいるが， <code>fmt.Fprint</code> の内部で <code>Write</code> メソッドが呼ばれている．
+<code>bufio.Writer</code> の <code>Write</code> メソッドは次のように実装されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Writer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">nn</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Available</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">n</span> <span class="kt">int</span>   <span class="c1">// 1回のforループ中に書き込んだバイト数
+</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Buffered</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="c1">// Large write, empty buffer.
+</span><span class="c1"></span>			<span class="c1">// Write directly from p to avoid copy.
+</span><span class="c1"></span>			<span class="nx">n</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="p">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">wr</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="nx">n</span> <span class="p">=</span> <span class="nb">copy</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">[</span><span class="nx">b</span><span class="p">.</span><span class="nx">n</span><span class="p">:],</span> <span class="nx">p</span><span class="p">)</span>
+			<span class="nx">b</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="nx">n</span>
+			<span class="nx">b</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span>
+		<span class="p">}</span>
+		<span class="nx">nn</span> <span class="o">+=</span> <span class="nx">n</span>
+		<span class="nx">p</span> <span class="p">=</span> <span class="nx">p</span><span class="p">[</span><span class="nx">n</span><span class="p">:]</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">nn</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span>
+	<span class="p">}</span>
+	<span class="nx">n</span> <span class="o">:=</span> <span class="nb">copy</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">[</span><span class="nx">b</span><span class="p">.</span><span class="nx">n</span><span class="p">:],</span> <span class="nx">p</span><span class="p">)</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="nx">n</span>
+	<span class="nx">nn</span> <span class="o">+=</span> <span class="nx">n</span>     <span class="c1">// このWriteメソッド全体で書き込んだバイト数．バッファ・io.Writerどちらに書き込んだかは関係ない
+</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">nn</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<p>引数に与えられたデータの長さがバッファの空きスペース（ <code>b.Available()</code> ）よりも小さい場合はforループがスキップされ，データをバッファにコピーして終了となる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Writer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">nn</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Available</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">nn</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span>
+	<span class="p">}</span>
+	<span class="nx">n</span> <span class="o">:=</span> <span class="nb">copy</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">[</span><span class="nx">b</span><span class="p">.</span><span class="nx">n</span><span class="p">:],</span> <span class="nx">p</span><span class="p">)</span>   <span class="c1">// ここでデータをバッファにコピーしている
+</span><span class="c1"></span>	<span class="nx">b</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="nx">n</span>
+	<span class="nx">nn</span> <span class="o">+=</span> <span class="nx">n</span>
+	<span class="k">return</span> <span class="nx">nn</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<p>データの長さがバッファの空きスペースよりも大きい場合は，forループの中で少しずつデータの書き込みが行われていく．
+基本的には次のような手順で処理が進んでいく．</p>
+
+<ol>
+<li>バッファの空きスペース分だけデータをバッファにコピーする</li>
+<li>バッファがいっぱいになったら，バッファの内容を書き込み先の <code>io.Writer</code> に書き込む（ <code>bufio.Writer.Flush()</code> に相当）</li>
+<li>データの最後に到達するまで1, 2の繰り返し</li>
+</ol>
+
+<p>ここで，手順1の時にバッファが空の場合（ <code>b.Buffered() == 0</code> ）は，一度バッファにデータをコピーしてからバッファの内容を Write すると無駄なコピーが発生してしまう．
+そこで，バッファが空の場合はデータを直接書き込み先の <code>io.Writer</code> に書き込んでしまっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Writer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">nn</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Available</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">n</span> <span class="kt">int</span>
+		<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Buffered</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="c1">// Large write, empty buffer.
+</span><span class="c1"></span>			<span class="c1">// Write directly from p to avoid copy.
+</span><span class="c1"></span>			<span class="nx">n</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">err</span> <span class="p">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">wr</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<h3 id="flush-の呼び出し">Flush()の呼び出し</h3>
+
+<p>ドキュメントにも記述があるように，最後にFlushメソッドを呼ぶことが推奨されている．</p>
+
+<blockquote>
+<p>After all data has been written, the client should call the Flush method to guarantee all data has been forwarded to the underlying io.Writer.</p>
+</blockquote>
+
+<p>Flushメソッドを呼ばなかった時の挙動を調べるためのプログラムを書いてみた．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;bufio&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">w</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriterSize</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprint</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;Hello, &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprint</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;world!&#34;</span><span class="p">)</span>
+	<span class="c1">// w.Flush()
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<p>先程のサンプルプログラムとほとんど同じだが，下の2点を変更した．</p>
+
+<ol>
+<li>バッファサイズを8バイトに</li>
+<li>最後の <code>w.Flush()</code> をコメントアウト</li>
+</ol>
+
+<p>このプログラムを実行すると，次のように途中までしかデータが書き出されずに終了する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go run main.go
+Hello, w</code></pre></div>
+<p>はじめに <code>Hello,</code> を書き込むときは，データのサイズよりもバッファの空きスペースのほうが大きいため（ <code>7 &lt; 8</code> ），データはそのままバッファにコピーされる．</p>
+
+<p><img src="/images/bufio-writer-01.png" alt="bufio-writer-01" /></p>
+
+<p>このとき， <code>w</code> のバッファに溜まっているのは7文字なので，バッファにはあと <code>8 - 7 = 1</code> 文字格納できることになる．</p>
+
+<p>次に <code>world!</code> を書き込むが，バッファの空きスペースよりもデータのサイズが大きいので，まずはバッファに入る分だけコピーされる．</p>
+
+<p><img src="/images/bufio-writer-02.png" alt="bufio-writer-02" /></p>
+
+<p>これでバッファがいっぱいになったので，一度Flushされて標準出力に書き込まれる．
+バッファの内容を書き出したあと，残りのデータを処理する．
+残りのデータ（ <code>orld!</code> ）はバッファの空きスペースよりも小さいので，ここではバッファにコピーされるだけとなる．
+最終的にバッファの状態は次の図のようになる．</p>
+
+<p><img src="/images/bufio-writer-03.png" alt="bufio-writer-03" /></p>
+
+<p>ここで書き込むデータはすべて終了したが，Flushメソッドが呼ばれていないために，バッファに残っているデータは書き出されないままプログラムが終了してしまう．
+そのため，標準出力には途中までしか文字が出力されなかった．</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>TCPについて学ぶ - HTTP通信の流れを見てみる</title>
+			<link>https://www.mas9612.net/posts/dive-into-tcp-http/</link>
+			<pubDate>Wed, 15 May 2019 20:21:57 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/dive-into-tcp-http/</guid>
+			<description>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した． ここではHTT</description>
+			<content type="html"><![CDATA[
+
+<p>TCPのコネクションが確立されてからクローズされるまでどのような流れで進んでいくのか，実際にパケットキャプチャをして確認した．
+ここではHTTPサーバへGETリクエストを送ったときのトラフィックを対象としている．</p>
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>macOS Mojave v10.14.4</li>
+<li>Web server: Go v1.12.5</li>
+</ul>
+
+<h2 id="サンプルのwebサーバを準備する">サンプルのWebサーバを準備する</h2>
+
+<p>Goを使って検証用にWebサーバを作成する．GETでHTTPリクエストを投げると <code>Hello world</code> と返すだけのWebサーバを作成した．ソースコードは次の通り．</p>
+
+<script type="application/javascript" src="//gist.github.com/mas9612/edfc7b6efa28d9002e282070ecd5e4e6.js"></script>
+
+<p>これを <code>main.go</code> として保存してサーバを実行しておく．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go run main.go</code></pre></div>
+<h2 id="http通信のパケットをキャプチャする">HTTP通信のパケットをキャプチャする</h2>
+
+<p>Webサーバは準備できたので，早速HTTP通信をキャプチャしていく．
+ここではtcpdumpを使っているが，Wiresharkでキャプチャしても構わない．</p>
+
+<p>Webサーバを動かしているのとは別のコンソールを開き，次のコマンドでHTTP通信をキャプチャする．
+後からWiresharkで中身を詳しく見たいので， <code>-w</code> オプションでファイルに書き出しておく．
+ポート番号やpcapファイル名は必要に応じて変更してほしい．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ tcpdump -i lo0 -X tcp port <span class="m">8080</span> -w http.pcap</code></pre></div>
+<p>Webサーバとtcpdumpを動作させている状態でさらに別のコンソールを開き，次のコマンドでHTTP GETリクエストを投げる．
+なお，レスポンスボディだけでなくレスポンスヘッダもあわせて表示するために <code>--include</code> オプションを指定している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ curl --include <span class="m">127</span>.0.0.1:8080
+HTTP/1.1 <span class="m">200</span> OK
+Date: Wed, <span class="m">15</span> May <span class="m">2019</span> <span class="m">06</span>:13:22 GMT
+Content-Length: <span class="m">11</span>
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+
+Hello world</code></pre></div>
+<p>これでpcapファイルにHTTP通信が記録されたはずなので，tcpdumpを実行しているコンソールに戻り，Ctrl-Cでtcpdumpを終了しておく．</p>
+
+<h2 id="http通信の中身を確認する">HTTP通信の中身を確認する</h2>
+
+<p>それでは一つ一つ通信内容を見ていく．ここでは，Wiresharkを使ってpcapファイルを見ていくことにする．
+今回見ていくpcapファイルは<a href="/files/http.pcap">ここ</a>から取得することができる．</p>
+
+<p>なお，一般的にTCPでやり取りされるデータのまとまり一つ一つは <strong>セグメント</strong> と呼ばれるが，ここではわかりやすさのため <strong>パケット</strong> と呼ぶことにする．</p>
+
+<p>大きく分けて，HTTP通信が完了するまでの流れは次のようになっていた．</p>
+
+<ol>
+<li>TCPコネクションの確立</li>
+<li>HTTP GETリクエストの送信</li>
+<li>HTTPレスポンスの返却</li>
+<li>TCPコネクションのクローズ</li>
+</ol>
+
+<h3 id="tcpコネクションの確立">TCPコネクションの確立</h3>
+
+<p>TCPでは，データの送受信に先立ちまず3-way handshakeと呼ばれるやり取りを行いTCPコネクションを確立する必要がある．
+3-way handshakeは次のような手順で行われる．</p>
+
+<figure class="img-small">
+    <img src="/images/tcp-3-way-handshake.png"
+         alt="TCP 3-way handshake"/> 
+</figure>
+
+
+<ol>
+<li>クライアント（データ送信側）がサーバ（受信側）にSYNパケット（SYNフラグがセットされたパケット）を送信する</li>
+<li>クライアントからのSYNパケットを受信したサーバは，クライアントにSYN/ACKパケット（SYN・ACKの2つのフラグがセットされたパケット）を送り返す</li>
+<li>サーバからのSYN/ACKパケットを受信したクライアントは，サーバにACKパケット（ACKフラグがセットされたパケット）を送信する</li>
+</ol>
+
+<p>3-way handshakeによりクライアント・サーバ間でTCPコネクションが確立され，お互いがデータの送受信を行う準備ができたことになる．
+キャプチャされた通信を見ると，始めの3つのパケットで3-way handshakeを行っていることが読み取れる．</p>
+
+<p><img src="/images/pcap_3-way-handshake.png" alt="3-way handshake" /></p>
+
+<p>キャプチャされた通信では，3-way handshakeの後にTCP Window Updateというパケットがサーバからクライアントに向けて送信されていた．</p>
+
+<p><img src="/images/pcap_window-update.png" alt="TCP Window Update" /></p>
+
+<p>これは，TCPのフロー制御と呼ばれる機能によるもので，受信側が「私は今これだけのデータを一度に受け取ることができます」ということを送信側に通知するためのパケットである．この「一度に受け取れるデータサイズ」のことを <strong>ウィンドウサイズ</strong> と呼ぶ．データの送信側は，受信側から通知されたウィンドウサイズを超えないようにしてデータを送信していく．
+受信側が受け取れるデータのサイズは，送信側から送られてくるデータ量等により変化する．
+もし受信側の余裕がなくなってくれば，TCP Window Updateを使って現在よりも小さいウィンドウサイズを送信側に通知し，送られてくるデータのサイズを調整する．</p>
+
+<p>RFC 793<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> 1.5節によると，このTCP Window UpdateはACKパケットに通知したいウィンドウサイズをのせて送ることで実現されているようだ．</p>
+
+<blockquote>
+<p>This is achieved by returning a &ldquo;window&rdquo; with every ACK indicating a range of acceptable sequence numbers beyond the last segment successfully received.</p>
+</blockquote>
+
+<p>ウィンドウサイズはTCPヘッダに16bitで格納されているが，ネットワークの速度向上により16bitでは不足するようになってきている（TCPヘッダの形式については割愛）．
+そのため，RFC1323 2節<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>で定義されているWindow Scaleオプションを用いてウィンドウサイズの値を32bitに拡張できるようになっている．
+このオプションはSYNフラグがONとなっているパケットにしか付加できないため，3-way handshakeの始め2つ（SYNパケット，SYN/ACKパケット）で指定されることになる．</p>
+
+<p>Window Scaleオプションは次のような形式となっている．</p>
+
+<figure class="img-small">
+    <img src="/images/tcp-window-scale-option.png"
+         alt="TCP Window Scale Option"/> 
+</figure>
+
+
+<p>このオプションが有効になっている場合は，TCPヘッダに格納されているウィンドウサイズを <code>shift.cnt</code> 分だけビットシフトした値が実際のウィンドウサイズとなる．
+これにより，16bitで表せる最大の65535よりも大きな値をウィンドウサイズとして指定できるようになる．
+例えば今回の通信では，クライアントからサーバに通知されているウィンドウサイズは <code>6379</code> だが，Window Scaleオプションで <code>shift.cnt</code> が <code>6</code> と指定されている．
+そのため，実際のウィンドウサイズは <code>6379</code> を6ビット左シフトした <code>408256</code> となる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ python -c <span class="s1">&#39;print(6379 &lt;&lt; 6)&#39;</span>
+<span class="m">408256</span></code></pre></div>
+<h3 id="http-getリクエストの送信">HTTP GETリクエストの送信</h3>
+
+<p>HTTPは平文のプロトコルなので，Wiresharkで中身をそのまま見ることができる．
+3-way handshakeとTCP Window Updateが終わった次のパケットで，HTTPリクエストがクライアントからサーバに送信されている．</p>
+
+<p><img src="/images/pcap_http-request.png" alt="HTTP Request" /></p>
+
+<p>今回はTCPの詳細を見るのが目的のためHTTPの詳細については割愛する．
+HTTPリクエストがサーバで受け取れたことをクライアントに通知するため，サーバはクライアントに向けてACKパケットを送信する．</p>
+
+<p><img src="/images/pcap_http-req-ack.png" alt="ACK packet" /></p>
+
+<p>このACKパケットには，TCPヘッダのAcknowledgment numberフィールドに，何バイト目までを受け取ったかという情報が格納されている．
+上のスクリーンショットを見ると，Acknowledgment numberフィールドは <code>79</code> となっているので，サーバは79バイトのデータを受け取ったということがわかる．</p>
+
+<h3 id="httpレスポンスの返却">HTTPレスポンスの返却</h3>
+
+<p>クライアントからのHTTPリクエストを受け取ったサーバは，それに対して適切なHTTPレスポンスを返却していく．
+とはいえ流れはHTTPリクエストの場合と同様で，クライアントとサーバの役割が逆になっただけである．
+サーバはHTTPレスポンスをクライアントに向けて送信し，それを受け取ったクライアントはサーバにACKパケットを送信して受信応答を行う．</p>
+
+<h3 id="tcpコネクションのクローズ">TCPコネクションのクローズ</h3>
+
+<p>無事にHTTPリクエストとレスポンスのやり取りが終了したので，最後にTCPコネクションのクローズ処理を行う．
+コネクションのクローズはクライアント・サーバどちらからでも行うことができる．
+クローズ処理は次のような流れで進んでいく．</p>
+
+<p>（クライアントからクローズ処理を開始すると仮定する）</p>
+
+<figure class="img-small">
+    <img src="/images/tcp-connection-close.png"
+         alt="TCP Connection Close"/> 
+</figure>
+
+
+<ol>
+<li>クライアントがサーバにFINパケットを送信する</li>
+<li>サーバがクライアントに対してACKパケットを送信し，FINパケットの受信応答を行う</li>
+<li>サーバからもクライアントにFINパケットを送信する</li>
+<li>クライアントがサーバにACKパケットを送信し，FINパケットの受信応答を行う</li>
+</ol>
+
+<p>この4つの手順を経ることで，正常にTCPコネクションをクローズすることができる．</p>
+
+<p><img src="/images/pcap_tcp-close.png" alt="TCP Connection Close" /></p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1"><a href="https://tools.ietf.org/html/rfc793">RFC 793 - Transmission Control Protocol</a>
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="https://tools.ietf.org/html/rfc1323#section-2">RFC 1323 - TCP Extensions for High Performance</a>
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>雑なオレオレOAuth Serverを書いた</title>
+			<link>https://www.mas9612.net/posts/authserver/</link>
+			<pubDate>Sun, 21 Apr 2019 23:21:17 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/authserver/</guid>
+			<description>img { max-width: 50% !important; display: block; margin: 0 auto; } タイトルの通り． authserverというそのまんまな名前でGitHubにおいている． 自分で使う用としてとりあえず書い</description>
+			<content type="html"><![CDATA[
+
+<style>
+img {
+  max-width: 50% !important;
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+<p>タイトルの通り．
+<a href="https://github.com/mas9612/authserver">authserver</a>というそのまんまな名前でGitHubにおいている．</p>
+
+<p>自分で使う用としてとりあえず書いただけなので，お粗末 かつ セキュリティ的にやばい部分もたくさん残っているはず．</p>
+
+<h2 id="構成">構成</h2>
+
+<p>構成は次の図の通り．
+ユーザの認証はLDAP（Lightweight Directory Access Protocol）で行っている．</p>
+
+<p><img src="/images/authserver-architecture.png" alt="authserver-architecture" /></p>
+
+<p>認証〜トークンの返却は次のような流れで進む．</p>
+
+<ol>
+<li>クライアントがauthserverへ認証情報を送る</li>
+<li>受け取った認証情報を使って，authserverがLDAPサーバに対してユーザ認証を試行する</li>
+<li>LDAPによる認証が成功したら，authserverがJWTトークンを発行する</li>
+<li>発行されたトークンをクライアントへ返却する</li>
+</ol>
+
+<p>トークンが発行されたら，あとはそれを各サービス側で検証することでログインを行うことができる．
+JWTトークンには認証されたクライアントのユーザ名が含まれているので，各サービス側ではそれを使ってユーザを識別することができる．</p>
+
+<h2 id="実装">実装</h2>
+
+<h3 id="ユーザ認証部分">ユーザ認証部分</h3>
+
+<p>LDAPサーバとのやり取りは，<a href="https://godoc.org/gopkg.in/ldap.v3">ldapパッケージ</a>を使っている（ <code>go ldap</code> で調べると，同名のパッケージがたくさん出てきて少し困る）．
+とりあえずクライアントから渡された認証情報が正しいかどうかを確かめられればそれでよかったので，クライアントから渡された情報を使ってLDAPサーバにバインドできるかどうかを確かめるだけという感じで雑に処理した．</p>
+
+<p><a href="https://github.com/mas9612/authserver/blob/42242050bbee2edd2a07f747adf03ba574f541fe/pkg/server/authserver.go#L114-L126">https://github.com/mas9612/authserver/blob/42242050bbee2edd2a07f747adf03ba574f541fe/pkg/server/authserver.go#L114-L126</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ldap</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%s:%d&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">ldapaddr</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">ldapport</span><span class="p">))</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">errMsg</span> <span class="o">:=</span> <span class="s">&#34;failed to connect to LDAP server&#34;</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">errMsg</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">status</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">codes</span><span class="p">.</span><span class="nx">Internal</span><span class="p">,</span> <span class="nx">errMsg</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Bind</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">userFormat</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">User</span><span class="p">),</span> <span class="nx">req</span><span class="p">.</span><span class="nx">Password</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">errMsg</span> <span class="o">:=</span> <span class="s">&#34;bind failed&#34;</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">errMsg</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">status</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">codes</span><span class="p">.</span><span class="nx">Unauthenticated</span><span class="p">,</span> <span class="nx">errMsg</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<p>ユーザ認証に成功したら，次のJWTトークン生成に移る．
+ここでユーザ認証に失敗した場合は， <code>Unauthenticated</code> エラーを返却して処理は終了となる．</p>
+
+<h3 id="jwtトークン生成">JWTトークン生成</h3>
+
+<p>JWT関連の実装は<a href="https://github.com/dgrijalva/jwt-go">dgrijalva/jwt-go</a>を使っている．
+肝心の発行部分はライブラリが面倒を見てくれるので，必要な情報を用意して渡してあげるだけですむ．</p>
+
+<p>Claimには，RFC7519で定義されている<a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claim Names</a>と，ユーザを識別するためのユーザ名を含めている．
+トークンの署名はRS256（RSA + SHA-256）を使っている．</p>
+
+<p><a href="https://github.com/mas9612/authserver/blob/42242050bbee2edd2a07f747adf03ba574f541fe/pkg/server/authserver.go#L139-L158">https://github.com/mas9612/authserver/blob/42242050bbee2edd2a07f747adf03ba574f541fe/pkg/server/authserver.go#L139-L158</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">nowUnix</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Unix</span><span class="p">()</span>
+<span class="nx">v4</span> <span class="o">:=</span> <span class="nx">uuid</span><span class="p">.</span><span class="nf">NewV4</span><span class="p">()</span>
+<span class="nx">claims</span> <span class="o">:=</span> <span class="nx">AuthClaim</span><span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">User</span><span class="p">,</span>
+    <span class="nx">jwt</span><span class="p">.</span><span class="nx">StandardClaims</span><span class="p">{</span>
+        <span class="nx">Audience</span><span class="p">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">OrigHost</span><span class="p">,</span>
+        <span class="nx">ExpiresAt</span><span class="p">:</span> <span class="nx">nowUnix</span> <span class="o">+</span> <span class="mi">3600</span><span class="p">,</span> <span class="c1">// valid 1h
+</span><span class="c1"></span>        <span class="nx">Id</span><span class="p">:</span>        <span class="nx">v4</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span>
+        <span class="nx">IssuedAt</span><span class="p">:</span>  <span class="nx">nowUnix</span><span class="p">,</span>
+        <span class="nx">Issuer</span><span class="p">:</span>    <span class="nx">s</span><span class="p">.</span><span class="nx">issuer</span><span class="p">,</span>
+        <span class="nx">NotBefore</span><span class="p">:</span> <span class="nx">nowUnix</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="nx">Subject</span><span class="p">:</span>   <span class="s">&#34;access_token&#34;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="nx">token</span> <span class="o">:=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nf">NewWithClaims</span><span class="p">(</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">SigningMethodRS256</span><span class="p">,</span> <span class="nx">claims</span><span class="p">)</span>
+<span class="nx">ss</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">token</span><span class="p">.</span><span class="nf">SignedString</span><span class="p">(</span><span class="nx">signKey</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="s">&#34;failed to generate JWT token&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">status</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">codes</span><span class="p">.</span><span class="nx">Internal</span><span class="p">,</span> <span class="nx">internalServerErrMsg</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h2 id="アプリケーション側でのトークン検証">アプリケーション側でのトークン検証</h2>
+
+<p>今回作ったauthserverを使った認証をアプリケーションに組み込んでみた．
+とりあえず，自分用に作っている<a href="https://github.com/mas9612/wrapups">wrapups</a>というアプリケーションを対象とした．</p>
+
+<p>wrapupsアプリケーションはgRPCサーバとして実装されている．
+GoのgRPCサーバにはInterceptorという機能があり，これを使うことで各リクエストが処理される前に様々な処理を入れ込むことができる．
+このInterceptorを使った便利なライブラリが<a href="https://github.com/grpc-ecosystem/go-grpc-middleware">grpc-ecosystem/go-grpc-middleware</a>にまとまっている．</p>
+
+<p>今回はリクエスト処理前に認証をはさみたいので，grpc-ecosystem/go-grpc-middlewareの中からgrpc_authと呼ばれるmiddlewareを利用していく．</p>
+
+<p>使い方は割と簡単．まず，gRPCサーバのインスタンスを作成するときに，grpc_auth middlewareを利用するというオプションを渡してあげる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">grpcServer</span> <span class="o">:=</span> <span class="nx">grpc</span><span class="p">.</span><span class="nf">NewServer</span><span class="p">(</span>
+    <span class="nx">grpc</span><span class="p">.</span><span class="nf">UnaryInterceptor</span><span class="p">(</span><span class="nx">grpc_middleware</span><span class="p">.</span><span class="nf">ChainUnaryServer</span><span class="p">(</span>
+        <span class="nx">grpc_auth</span><span class="p">.</span><span class="nf">UnaryServerInterceptor</span><span class="p">(</span><span class="nx">authFunc</span><span class="p">),</span>
+    <span class="p">)),</span>
+<span class="p">)</span></code></pre></div>
+<p>このコード例では <code>grpc_auth.UnaryServerInterceptor()</code> を <code>grpc_middleware.ChainUnaryServer()</code> でラップしているが，今回のようにInterceptorを一つしか利用しない場合は直接 <code>grpc.UnaryInterceptor()</code> に渡してあげても動作する．</p>
+
+<p>これで，各リクエストの処理が始まる前に， <code>grpc_auth.UnaryServerInterceptor()</code> の引数として渡した <code>authFunc</code> が実行されるようになる．
+このメソッドの中で，JWTトークンの検証処理を書いていくことになる．</p>
+
+<p>まず，リクエストからトークン部分を取り出す．
+<a href="https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L91-L94">https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L91-L94</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">token</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">grpc_auth</span><span class="p">.</span><span class="nf">AuthFromMD</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;bearer&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span></code></pre></div>
+<p>これで，Authorizationヘッダに入っているbearerトークンが <code>token</code> に格納される．</p>
+
+<p>その後，トークンのパース・検証に移る．
+トークンのパースと検証は， <code>jwt.ParseWithClaims()</code> で行うことができる．
+1つ目の引数にはトークン，2つ目にはパースしたClaimが格納される先のアドレスを渡す．
+3つ目には，トークンを検証するための鍵を得るためのメソッドを渡す．</p>
+
+<p>jwt.ParseWithClaimsは，内部で3つ目の引数に渡されたメソッドを実行し，その返り値を検証用の鍵としてトークンの検証を行う．
+今回は簡単にするため，authserverと同じディレクトリに検証用のRSA公開鍵をおいておき，それを読み込んで返り値として返すという形にしている．</p>
+
+<p><a href="https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L96-L114">https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L96-L114</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">claim</span> <span class="o">:=</span> <span class="nx">server</span><span class="p">.</span><span class="nx">AuthClaim</span><span class="p">{}</span>
+<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nf">ParseWithClaims</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">claim</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">token</span> <span class="o">*</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Method</span><span class="p">.(</span><span class="o">*</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">SigningMethodRSA</span><span class="p">);</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;requested signing method is not supported&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">b</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="s">&#34;./authserver.pub&#34;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="nx">verifyKey</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nf">ParseRSAPublicKeyFromPEM</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">verifyKey</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">})</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">status</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">codes</span><span class="p">.</span><span class="nx">Unauthenticated</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;failed to verify token: %s&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">()))</span>
+<span class="p">}</span></code></pre></div>
+<p>authFuncの全体は次の通り．</p>
+
+<p><a href="https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L90-L117">https://github.com/mas9612/wrapups/blob/c9f83cd372236f154b34b8dd369f9ffd16d1972d/cmd/wuserver/main.go#L90-L117</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">authFunc</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">token</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">grpc_auth</span><span class="p">.</span><span class="nf">AuthFromMD</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;bearer&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+
+	<span class="nx">claim</span> <span class="o">:=</span> <span class="nx">server</span><span class="p">.</span><span class="nx">AuthClaim</span><span class="p">{}</span>
+	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nf">ParseWithClaims</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">claim</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">token</span> <span class="o">*</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Method</span><span class="p">.(</span><span class="o">*</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">SigningMethodRSA</span><span class="p">);</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;requested signing method is not supported&#34;</span><span class="p">)</span>
+		<span class="p">}</span>
+
+		<span class="nx">b</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="s">&#34;./authserver.pub&#34;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+		<span class="p">}</span>
+		<span class="nx">verifyKey</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nf">ParseRSAPublicKeyFromPEM</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">verifyKey</span><span class="p">,</span> <span class="kc">nil</span>
+	<span class="p">})</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">status</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">codes</span><span class="p">.</span><span class="nx">Unauthenticated</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;failed to verify token: %s&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">()))</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithValue</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;user&#34;</span><span class="p">,</span> <span class="nx">claim</span><span class="p">.</span><span class="nx">User</span><span class="p">),</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></div>
+<p>これで必要な実装は完了したので，適当なクライアントを使って認証が求められること，また正しい認証情報を使って認証が成功することを確認する．</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>とりあえず最低限の機能が使えるOAuth serverを実装してみた．
+まだまだいろいろ足りていない部分があるので，引き続き開発を続けていく．</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Linuxのプロセスについて</title>
+			<link>https://www.mas9612.net/posts/linux-process/</link>
+			<pubDate>Sat, 13 Apr 2019 22:38:11 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-process/</guid>
+			<description>プロセスとは 一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている． プロセスとは、情報処理においてプログラムの動作</description>
+			<content type="html"><![CDATA[
+
+<h2 id="プロセスとは">プロセスとは</h2>
+
+<p>一般的に，プロセスはプログラムの実行時におけるインスタンスであると定義されている．</p>
+
+<blockquote>
+<p>プロセスとは、情報処理においてプログラムの動作中のインスタンスを意味し、プログラムのコードおよび全ての変数やその他の状態を含む</p>
+</blockquote>
+
+<p><a href="https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9">プロセス - Wikipedia</a>より</p>
+
+<p>同じプログラムを複数起動した場合でも，それらはそれぞれ異なるプロセスとして動作する．
+例えば，2人のユーザがそれぞれvimを起動すると，プログラム自体は同じだがプロセスは2つ作成されている（もちろん，1人のユーザがvimを2つ起動した場合も同様に2つのプロセスが作成される）．</p>
+
+<p>すべてのプロセスは親となるプロセス（親プロセス）を持っており<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>，サーバ上に存在するプロセスは木構造として捉えることもできる．
+親プロセスで作成された新しいプロセス（子プロセス）は，親プロセスのメモリの複製を持ち<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>，同じプログラムコードを実行するので，2つはほとんど同じ状態と言える．
+しかし，子プロセスは親プロセスとは別のメモリ空間を持つため，子プロセス内でのメモリ内容の変更は親プロセス側では知ることができない．</p>
+
+<p>プロセスと似ている概念としてスレッドというものもあるが，スレッドの場合はメモリ空間を始めとしていくつかのリソースをスレッド間で共有している点がプロセスと異なっている．</p>
+
+<h2 id="プロセスの一生">プロセスの一生</h2>
+
+<p>動かすプログラムによってプロセスが動作する時間は異なるが，基本的な流れは全プロセスで共通している．
+ここでは，bashから実行されるlsコマンドを例にとってみると，大まかな流れは次のようになる．</p>
+
+<ol>
+<li>bashに <code>ls</code> と入力してlsコマンドを実行する</li>
+<li>bashが fork システムコールを使って子プロセスを作成する
+
+<ul>
+<li>ここで作成された子プロセスは，親プロセスと同じbashのプログラムコードを実行している</li>
+</ul></li>
+<li>子プロセス側で execve システムコールを使い，lsコマンドの実行を開始する
+
+<ul>
+<li>実行するプログラムコードがbashからlsコマンドに置き換えられる</li>
+</ul></li>
+<li>lsコマンドが実行されることにより，カレントディレクトリの一覧が表示される</li>
+<li>lsコマンドを実行していたプロセスが終了する</li>
+</ol>
+
+<h3 id="プロセスの状態">プロセスの状態</h3>
+
+<p>Linuxでは，各プロセスにそれぞれ state と呼ばれる値が設定されており，それがプロセスの状態を表している．
+stateの値を見ることで，そのプロセスが実行中なのか，何らかの待ち状態に入っているのか等を知ることができる．</p>
+
+<p>stateの値は幾つか種類があるが，ここではその一部について説明する．
+stateは， <code>linux/sched.h</code> にて定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define TASK_RUNNING			0x0000
+</span><span class="cp">#define TASK_INTERRUPTIBLE		0x0001
+</span><span class="cp">#define TASK_UNINTERRUPTIBLE		0x0002</span></code></pre></div>
+<p>それぞれ，プロセスが現在次のような状態であることを表している．</p>
+
+<ul>
+<li><code>TASK_RUNNING</code> : プロセスが実行中もしくは実行待ちの状態</li>
+<li><code>TASK_INTERRUPTIBLE</code> : プロセスが一時休止している状態</li>
+<li><code>TASK_UNINTERRUPTIBLE</code> :  プロセスが一時休止している状態． <code>TASK_INTERRUPTIBLE</code> とは違い，プロセスにシグナルが届いてもそのハンドラはすぐに実行されずに保留となる．デバイスドライバでよく使われる．</li>
+</ul>
+
+<p>現在動いているプロセスのstateは，psコマンドで確認することができる．psコマンドを引数無しで実行した場合はstateが表示されないが， <code>a</code> 等のオプションを付けるとstateが表示されるようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ps a
+  PID TTY      STAT   TIME COMMAND
+  <span class="m">444</span> tty1     Ss+    <span class="m">0</span>:00 /sbin/agetty --noclear tty1 linux
+<span class="m">25878</span> pts/0    Ss     <span class="m">0</span>:00 -bash
+<span class="m">25887</span> pts/0    S+     <span class="m">0</span>:00 man ps
+<span class="m">25897</span> pts/0    S+     <span class="m">0</span>:00 pager
+<span class="m">25912</span> pts/1    Ss     <span class="m">0</span>:00 -bash
+<span class="m">25930</span> pts/1    R+     <span class="m">0</span>:00 ps a</code></pre></div>
+<p>psコマンドの結果の中で， <code>STAT</code> の列がstateを表している．それぞれの意味は，psコマンドのマニュアルの中の <code>PROCESS STATE CODES</code> に説明がある．</p>
+
+<ul>
+<li><code>R</code> : <code>TASK_RUNNING</code></li>
+<li><code>S</code> : <code>TASK_INTERRUPTIBLE</code></li>
+<li><code>D</code> : <code>TASK_UNINTERRUPTIBLE</code></li>
+</ul>
+
+<p>psコマンドの出力には <code>R</code> や <code>S</code> といった文字の他に <code>s</code> や <code>+</code> がついているが，ここでは保留としておく．</p>
+
+<h2 id="プロセスの管理">プロセスの管理</h2>
+
+<h3 id="プロセスディスクリプタ">プロセスディスクリプタ</h3>
+
+<p>Linuxカーネルは，プロセスディスクリプタというものを使ってプロセスを管理している．プロセスディスクリプタは， <code>task_struct</code> 構造体というデータ構造に保存されている．
+<code>task_struct</code> 構造体は <code>linux/sched.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+<span class="cp">#ifdef CONFIG_THREAD_INFO_IN_TASK
+</span><span class="cp"></span>	<span class="cm">/*
+</span><span class="cm">	 * For reasons of header soup (see current_thread_info()), this
+</span><span class="cm">	 * must be the first element of task_struct.
+</span><span class="cm">	 */</span>
+	<span class="k">struct</span> <span class="n">thread_info</span>		<span class="n">thread_info</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="cp"></span>	<span class="cm">/* -1 unrunnable, 0 runnable, &gt;0 stopped: */</span>
+	<span class="k">volatile</span> <span class="kt">long</span>			<span class="n">state</span><span class="p">;</span>
+
+<span class="cm">/* （省略...） */</span></code></pre></div>
+<p>前節で説明したstateは，task_struct構造体のなかの <code>state</code> メンバに保存されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">	<span class="k">volatile</span> <span class="kt">long</span>			<span class="n">state</span><span class="p">;</span></code></pre></div>
+<h3 id="プロセスid">プロセスID</h3>
+
+<p>Linuxカーネルは各プロセスを識別するためにプロセスディスクリプタのアドレスを使用しているが，ユーザはプロセスID（PID）を使ってプロセスを識別することができる．
+PIDも，プロセスディスクリプタのpidメンバに保存されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+
+<span class="cm">/* （省略...） */</span>
+	<span class="n">pid_t</span>				<span class="n">pid</span><span class="p">;</span></code></pre></div>
+<p>PIDは1から始まり，新しいプロセスが生成されるごとに1ずつ増加していく．この値は上限が決まっており，sysctlコマンドもしくは <code>/proc/sys/kernel/pid_max</code> の内容を表示すれば知ることができる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ sysctl kernel.pid_max
+kernel.pid_max <span class="o">=</span> <span class="m">32768</span>
+
+$ cat /proc/sys/kernel/pid_max
+<span class="m">32768</span></code></pre></div>
+<p>PIDが上限に達したら，使われていないPIDを再利用することになる．</p>
+
+<h3 id="プロセスの親子関係">プロセスの親子関係</h3>
+
+<p>先に説明したとおり，プロセスには親子関係が存在する．
+プロセスディスクリプタには，親プロセスや子プロセスの情報を格納しておくメンバが存在している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+
+<span class="cm">/* （省略...） */</span>
+	<span class="cm">/* Recipient of SIGCHLD, wait4() reports: */</span>
+	<span class="k">struct</span> <span class="n">task_struct</span> <span class="n">__rcu</span>	<span class="o">*</span><span class="n">parent</span><span class="p">;</span>
+
+	<span class="cm">/*
+</span><span class="cm">	 * Children/sibling form the list of natural children:
+</span><span class="cm">	 */</span>
+	<span class="k">struct</span> <span class="n">list_head</span>		<span class="n">children</span><span class="p">;</span></code></pre></div>
+<p><code>parent</code> には親プロセスのプロセスディスクリプタへのポインタ， <code>children</code> には子プロセスの双方向リストへのポインタが格納される．</p>
+
+<p>ここで <code>children</code> の型として使用されている <code>list_head</code> 構造体について少し掘り下げてみる．
+<code>list_head</code> 構造体は <code>linux/types.h</code> で次のように定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">list_head</span> <span class="p">{</span>
+	<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">next</span><span class="p">,</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+<p>定義からわかるように，この構造体は一つ前の要素・一つあとの要素へのポインタをそれぞれ持ち，それ以外のデータは何も持っていない．
+そのため，この構造体だけでは何かしらのデータを保持することができない．</p>
+
+<p>通常の連結リストとは異なり，この構造体を使って連結リストを作るときは， <code>task_struct</code> 構造体の <code>children</code> のように，データを保持する構造体の中に <code>list_head</code> 構造体を埋め込むという形で実装していく．
+しかし， <code>list_head</code> 構造体のアドレスが得られても，それを埋め込んでいる本来の構造体（＝データを保持している構造体）へアクセスできなければ意味がない．
+そのため， <code>list_head</code> 構造体で実現された連結リストを操作するために，いくつかのマクロが定義されている．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>詳解LINUXカーネル 第3版</li>
+<li><a href="https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9">プロセス - Wikipedia</a></li>
+<li><a href="https://access.redhat.com/sites/default/files/attachments/processstates_20120831.pdf">Understanding Linux Process States</a></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">一番始めに生成されるプロセスは親を持たない（PID 0のプロセス．swapperプロセスと呼ばれる）．
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">実際には，子プロセス作成時にメモリ空間の複製が行われるわけではなく，子プロセス作成直後は親プロセスと同じメモリ空間を参照している．子プロセス側でメモリの内容を変更しようとした際に初めて複製が行われる（Copy On Write）．
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Linuxのロードアベレージについて</title>
+			<link>https://www.mas9612.net/posts/linux-loadavg/</link>
+			<pubDate>Tue, 02 Apr 2019 22:26:20 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-loadavg/</guid>
+			<description>Linuxを使ってサーバ運用をしていると，ロードアベレージという単語をよく聞くかと思う． ふわっとした認識しかなかったので，改めて調査してみた</description>
+			<content type="html"><![CDATA[
+
+<p>Linuxを使ってサーバ運用をしていると，ロードアベレージという単語をよく聞くかと思う．
+ふわっとした認識しかなかったので，改めて調査してみた．</p>
+
+<h2 id="ロードアベレージとは">ロードアベレージとは</h2>
+
+<p>Linuxの負荷を表す指標の一つ．現在の実行待ちプロセス数の平均と説明されていることが多い．</p>
+
+<h2 id="ロードアベレージを知る方法">ロードアベレージを知る方法</h2>
+
+<p>ロードアベレージはいくつかの方法で知ることができる．</p>
+
+<h3 id="uptimeコマンド">uptimeコマンド</h3>
+
+<p>uptimeコマンドを使うと，システムの稼働時間と同時にロードアベレージが報告される．
+ロードアベレージの値は3つ表示され，左から順番に1分，5分，15分の平均を表している．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ uptime
+ <span class="m">23</span>:37:07 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00</code></pre></div>
+<h3 id="wコマンド">wコマンド</h3>
+
+<p>wコマンドは，現在システムにログインしているユーザが表示される．
+それと同時に，1行目にuptimeコマンドと同様の内容が出力される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ w
+ <span class="m">23</span>:37:23 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+yamazaki pts/0    <span class="m">192</span>.168.56.1     <span class="m">23</span>:17    <span class="m">1</span>.00s  <span class="m">0</span>.04s  <span class="m">0</span>.00s w</code></pre></div>
+<h3 id="topコマンド">topコマンド</h3>
+
+<p>topコマンドを使うと，現在動いているプロセスの内容が表示される．
+それに加え，ロードアベレージの値が1行目に表示される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ top <span class="p">|</span> head
+top - <span class="m">23</span>:37:37 up <span class="m">5</span> days, <span class="m">18</span>:41,  <span class="m">1</span> user,  load average: <span class="m">0</span>.00, <span class="m">0</span>.00, <span class="m">0</span>.00
+Tasks:  <span class="m">67</span> total,   <span class="m">1</span> running,  <span class="m">66</span> sleeping,   <span class="m">0</span> stopped,   <span class="m">0</span> zombie
+%Cpu<span class="o">(</span>s<span class="o">)</span>:  <span class="m">0</span>.0 us,  <span class="m">0</span>.0 sy,  <span class="m">0</span>.0 ni,100.0 id,  <span class="m">0</span>.0 wa,  <span class="m">0</span>.0 hi,  <span class="m">0</span>.0 si,  <span class="m">0</span>.0 st
+KiB Mem :  <span class="m">1020332</span> total,   <span class="m">114692</span> free,    <span class="m">64304</span> used,   <span class="m">841336</span> buff/cache
+KiB Swap:  <span class="m">1046524</span> total,  <span class="m">1046524</span> free,        <span class="m">0</span> used.   <span class="m">762628</span> avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    <span class="m">1</span> root      <span class="m">20</span>   <span class="m">0</span>   <span class="m">57104</span>   <span class="m">6868</span>   <span class="m">5276</span> S  <span class="m">0</span>.0  <span class="m">0</span>.7   <span class="m">0</span>:03.66 systemd
+    <span class="m">2</span> root      <span class="m">20</span>   <span class="m">0</span>       <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> S  <span class="m">0</span>.0  <span class="m">0</span>.0   <span class="m">0</span>:00.04 kthreadd
+    <span class="m">3</span> root      <span class="m">20</span>   <span class="m">0</span>       <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> S  <span class="m">0</span>.0  <span class="m">0</span>.0   <span class="m">0</span>:01.32 ksoftirqd/0</code></pre></div>
+<h3 id="proc-loadavg">/proc/loadavg</h3>
+
+<p><code>/proc/loadavg</code> には，ロードアベレージの値と現在のプロセス数，最後に使用したPIDが記録されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /proc/loadavg
+<span class="m">0</span>.00 <span class="m">0</span>.00 <span class="m">0</span>.00 <span class="m">1</span>/73 <span class="m">21068</span></code></pre></div>
+<h2 id="ロードアベレージの算出方法">ロードアベレージの算出方法</h2>
+
+<p>それでは，実際にロードアベレージがどのような値を元に算出されているのかを調べていく．
+今回は，Linuxカーネル v4.20 のソースコードを使って調査している．</p>
+
+<h3 id="実行待ちプロセス">実行待ちプロセス</h3>
+
+<p>ロードアベレージを計算する時に使われる <strong>現在の実行待ちプロセス数</strong> は，現在存在しているプロセスの中で， <code>TASK_RUNNING</code> もしくは <code>TASK_UNINTERRUPTIBLE</code> と呼ばれる状態のプロセス数を数えたものとなる．</p>
+
+<p><code>TASK_RUNNING</code> 等，プロセスの状態を表す定数は <code>include/linux/sched.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* Used in tsk-&gt;state: */</span>
+<span class="cp">#define TASK_RUNNING            0x0000
+</span><span class="cp">#define TASK_INTERRUPTIBLE        0x0001
+</span><span class="cp">#define TASK_UNINTERRUPTIBLE        0x0002
+</span><span class="cp"></span><span class="p">...</span></code></pre></div>
+<p>それぞれの状態がどういう意味を表しているのかは，ps(1)のマニュアルの <code>PROCESS STATE CODES</code> で説明されている．</p>
+
+<ul>
+<li><code>TASK_RUNNING</code> : プロセスが実行中もしくは実行可能な状態</li>
+<li><code>TASK_UNINTERRUPTIBLE</code> : 割り込み不可能なスリープ状態（IO待ち等）</li>
+</ul>
+
+<p>psコマンドの出力を見ると， <code>STAT</code> の列に各プロセスの状態が示されているのがわかる．ここが <code>R</code> の場合は <code>TASK_RUNNING</code> ， <code>D</code> の場合は <code>TASK_UNINTERRUPTIBLE</code> 状態である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ps aux <span class="p">|</span> head
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         <span class="m">1</span>  <span class="m">0</span>.0  <span class="m">0</span>.6  <span class="m">57104</span>  <span class="m">6868</span> ?        Ss   Mar27   <span class="m">0</span>:03 /sbin/init
+root         <span class="m">2</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>kthreadd<span class="o">]</span>
+root         <span class="m">3</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:01 <span class="o">[</span>ksoftirqd/0<span class="o">]</span>
+root         <span class="m">5</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S&lt;   Mar27   <span class="m">0</span>:00 <span class="o">[</span>kworker/0:0H<span class="o">]</span>
+root         <span class="m">7</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">1</span>:16 <span class="o">[</span>rcu_sched<span class="o">]</span>
+root         <span class="m">8</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>rcu_bh<span class="o">]</span>
+root         <span class="m">9</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:00 <span class="o">[</span>migration/0<span class="o">]</span>
+root        <span class="m">10</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S&lt;   Mar27   <span class="m">0</span>:00 <span class="o">[</span>lru-add-drain<span class="o">]</span>
+root        <span class="m">11</span>  <span class="m">0</span>.0  <span class="m">0</span>.0      <span class="m">0</span>     <span class="m">0</span> ?        S    Mar27   <span class="m">0</span>:01 <span class="o">[</span>watchdog/0<span class="o">]</span></code></pre></div>
+<p>これら2つの状態にあるプロセス数をカウントし，それを元にしてロードアベレージを計算していく．
+このプロセス数は <code>kernel/sched/loadavg.c</code> で宣言されている <code>calc_load_tasks</code> 変数で管理されており，定期的に呼び出される <code>calc_global_load_tick()</code> 関数で更新される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">atomic_long_t</span> <span class="n">calc_load_tasks</span><span class="p">;</span>
+
+<span class="cm">/*
+</span><span class="cm"> * Called from scheduler_tick() to periodically update this CPU&#39;s
+</span><span class="cm"> * active count.
+</span><span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">calc_global_load_tick</span><span class="p">(</span><span class="k">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">this_rq</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">delta</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">time_before</span><span class="p">(</span><span class="n">jiffies</span><span class="p">,</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_update</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/* 前回の計測と差分があれば，その差分をcalc_load_tasksに適用 */</span>
+    <span class="n">delta</span>  <span class="o">=</span> <span class="n">calc_load_fold_active</span><span class="p">(</span><span class="n">this_rq</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+        <span class="n">atomic_long_add</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">calc_load_tasks</span><span class="p">);</span>
+
+    <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_update</span> <span class="o">+=</span> <span class="n">LOAD_FREQ</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>実際のプロセス数のカウントは <code>calc_global_load_tick()</code> 関数内部で呼び出されている <code>calc_load_fold_active()</code> 関数で行われている．
+この関数では，前回カウントしたときのプロセス数と今回のカウント数を比較し，異なっていればその差分を返却するという実装となっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">long</span> <span class="nf">calc_load_fold_active</span><span class="p">(</span><span class="k">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">this_rq</span><span class="p">,</span> <span class="kt">long</span> <span class="n">adjust</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">nr_active</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* TASK_RUNNINGとTASK_UNINTERRUPTIBLEのプロセス数をカウントし，nr_activeに保存 */</span>
+    <span class="n">nr_active</span> <span class="o">=</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">nr_running</span> <span class="o">-</span> <span class="n">adjust</span><span class="p">;</span>
+    <span class="n">nr_active</span> <span class="o">+=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">nr_uninterruptible</span><span class="p">;</span>
+
+    <span class="cm">/* 前回の計測結果と異なっていれば，差分をdeltaに保存 */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nr_active</span> <span class="o">!=</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">nr_active</span> <span class="o">-</span> <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span><span class="p">;</span>
+        <span class="n">this_rq</span><span class="o">-&gt;</span><span class="n">calc_load_active</span> <span class="o">=</span> <span class="n">nr_active</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">delta</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="ロードアベレージの計算">ロードアベレージの計算</h3>
+
+<p>実行待ちプロセス数がどのようにカウントされるのかがわかったので，実際のロードアベレージの計算方法について見ていく．
+Linuxカーネルでは，ロードアベレージは <code>kernel/sched/loadavg.c</code> で宣言されている <code>avenrun</code> 配列に保存される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">avenrun</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span></code></pre></div>
+<p>この配列は，タイマーによって定期的に呼び出されている <code>kernel/sched/loadavg.c</code> の <code>calc_global_load()</code> 関数で更新される．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">calc_global_load</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ticks</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sample_window</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">active</span><span class="p">,</span> <span class="n">delta</span><span class="p">;</span>
+
+    <span class="p">...</span>
+
+    <span class="cm">/* 実行待ちプロセス数ををcalc_load_tasksから読み出す */</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">atomic_long_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">calc_load_tasks</span><span class="p">);</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">active</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">active</span> <span class="o">*</span> <span class="nl">FIXED_1</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* 1，5，15分ごとのロードアベレージをそれぞれ計算する */</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EXP_1</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">EXP_5</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+    <span class="n">avenrun</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_load</span><span class="p">(</span><span class="n">avenrun</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">EXP_15</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">}</span></code></pre></div>
+<p>この関数を見ると，実際の計算は <code>calc_load()</code> 関数で行っていることがわかる． <code>calc_load()</code> 関数は <code>include/linux/sched/loadavg.h</code> で定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
+</span><span class="cm"> * a1 = a0 * e + a * (1 - e)
+</span><span class="cm"> */</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">unsigned</span> <span class="kt">long</span>
+<span class="nf">calc_load</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">load</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">exp</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">active</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newload</span><span class="p">;</span>
+
+    <span class="cm">/* load: 前回計算したloadavgの値 */</span>
+    <span class="n">newload</span> <span class="o">=</span> <span class="n">load</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">+</span> <span class="n">active</span> <span class="o">*</span> <span class="p">(</span><span class="n">FIXED_1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">active</span> <span class="o">&gt;=</span> <span class="n">load</span><span class="p">)</span>
+        <span class="n">newload</span> <span class="o">+=</span> <span class="n">FIXED_1</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">newload</span> <span class="o">/</span> <span class="n">FIXED_1</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>ここで，いくつか出てきた定数について整理しておく． <code>calc_global_load()</code> ， <code>calc_load()</code> で出てきた定数はいずれも <code>include/linux/sched/loadavg.h</code> で次のように定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define FSHIFT		11		</span><span class="cm">/* nr of bits of precision */</span><span class="cp">
+</span><span class="cp">#define FIXED_1		(1&lt;&lt;FSHIFT)	</span><span class="cm">/* 1.0 as fixed-point */</span><span class="cp">
+</span><span class="cp">#define EXP_1		1884		</span><span class="cm">/* 1/exp(5sec/1min) as fixed-point */</span><span class="cp">
+</span><span class="cp">#define EXP_5		2014		</span><span class="cm">/* 1/exp(5sec/5min) */</span><span class="cp">
+</span><span class="cp">#define EXP_15		2037		</span><span class="cm">/* 1/exp(5sec/15min) */</span></code></pre></div>
+<p>コメントを見ると， <code>FIXED_1</code> は <code>1</code> を固定小数点で表現しているものだとわかる．そして <code>EXP_*</code> は，それぞれ $e^{\frac{5}{60}}$ ， $e^{\frac{5}{300}}$ ， $e^{\frac{5}{900}}$ の固定小数点表現であることがわかる．</p>
+
+<p>それでは <code>calc_load()</code> に戻って，ロードアベレージを計算している箇所を見てみる．
+新しいロードアベレージは， <code>calc_load()</code> の次の行で計算されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">newload</span> <span class="o">=</span> <span class="n">load</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">+</span> <span class="n">active</span> <span class="o">*</span> <span class="p">(</span><span class="n">FIXED_1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">);</span></code></pre></div>
+<p>これは<a href="https://ja.wikipedia.org/wiki/%E7%A7%BB%E5%8B%95%E5%B9%B3%E5%9D%87#%E6%8C%87%E6%95%B0%E7%A7%BB%E5%8B%95%E5%B9%B3%E5%9D%87">指数移動平均</a>と呼ばれ，最近のデータを重視して古いデータを完全に切り捨てないという特徴を持つ平均のとり方らしい．</p>
+
+<p>このようにして計算された値が，ロードアベレージとして普段目にするものになるようだ．</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>プロミスキャスモード（Promiscuous Mode）</title>
+			<link>https://www.mas9612.net/posts/promisc-mode/</link>
+			<pubDate>Sat, 23 Mar 2019 22:18:44 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/promisc-mode/</guid>
+			<description>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみを</description>
+			<content type="html"><![CDATA[
+
+<p>通常，NIC（Network Interface Card）は自分宛て（=自分のMACアドレス宛）のフレームと，ブロードキャスト・マルチキャストのフレームのみをCPUに渡す．
+それ以外のフレームの場合，CPUへの割り込みを行わずに破棄する．</p>
+
+<p>しかし，プロミスキャスモードを有効にすると，宛先MACアドレスが自分宛てかどうかにかかわらず，すべてのフレームをCPUに渡すようになる．
+この機能は，主にtcpdumpやWireshark等のパケットキャプチャを行うプログラムで使われている．</p>
+
+<p>ここでは，プロミスキャスモードの設定について簡単にまとめる．</p>
+
+<h2 id="環境">環境</h2>
+
+<p>Debian 9</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ uname -a
+Linux debian <span class="m">4</span>.9.0-8-amd64 <span class="c1">#1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux</span>
+$ cat /etc/*-release
+<span class="nv">PRETTY_NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux 9 (stretch)&#34;</span>
+<span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;Debian GNU/Linux&#34;</span>
+<span class="nv">VERSION_ID</span><span class="o">=</span><span class="s2">&#34;9&#34;</span>
+<span class="nv">VERSION</span><span class="o">=</span><span class="s2">&#34;9 (stretch)&#34;</span>
+<span class="nv">ID</span><span class="o">=</span>debian
+<span class="nv">HOME_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/&#34;</span>
+<span class="nv">SUPPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://www.debian.org/support&#34;</span>
+<span class="nv">BUG_REPORT_URL</span><span class="o">=</span><span class="s2">&#34;https://bugs.debian.org/&#34;</span></code></pre></div>
+<h2 id="プロミスキャスモードの設定">プロミスキャスモードの設定</h2>
+
+<p>プロミスキャスモードの設定は，コマンドを用いる方法とプログラムから設定する方法の2つがある．
+それぞれの設定方法を見ていく．</p>
+
+<h3 id="コマンドによる設定">コマンドによる設定</h3>
+
+<p><code>ip</code> コマンドと <code>ifconfig</code> 2種類が使えるが， <code>ifconfig</code> はすでに非推奨となっているため， <code>ip</code> コマンドを使った方法で行う．</p>
+
+<p><code>ip</code> コマンドを使ってプロミスキャスモードを有効にするには， <code>ip link set &lt;device name&gt; promisc on</code> と実行する．
+なお，設定には特権が必要である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ ip link <span class="nb">set</span> enp0s8 promisc on
+RTNETLINK answers: Operation not permitted
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc on
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h3 id="プログラムによる設定">プログラムによる設定</h3>
+
+<p>プログラムから設定するには，ioctl(2)で <code>SIOCSIFFLAGS</code> を使用する．
+<code>ip</code> コマンドと同様，設定には特権が必要である．</p>
+
+<p>サンプルプログラムは <a href="https://github.com/mas9612/study/blob/master/networking/promiscuous_mode/promisc_sample.c">study/promisc_sample.c at master · mas9612/study</a> にあります．</p>
+
+<p>実際にプロミスキャスモードを設定している部分は次の部分．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// set promiscuous mode
+</span><span class="c1"></span>    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ifr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ifr</span><span class="p">));</span>
+    <span class="n">strncpy</span><span class="p">(</span><span class="n">ifr</span><span class="p">.</span><span class="n">ifr_name</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">IFNAMSIZ</span><span class="p">);</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCGIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to get interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ifr</span><span class="p">.</span><span class="n">ifr_flags</span> <span class="o">|=</span> <span class="n">IFF_PROMISC</span><span class="p">;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">soc</span><span class="p">,</span> <span class="n">SIOCSIFFLAGS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;failed to set interface flag&#34;</span><span class="p">);</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">soc</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>まず， <code>SIOCGIFFLAGS</code> で現在NICに設定されているフラグを取得して，それに <code>IFF_PROMISC</code> フラグを追加するという形で設定する．
+プログラムをコンパイルし，実行してみるとうまく設定されていることが確認できる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># ensure promisc mode is off before run program</span>
+$ sudo ip link <span class="nb">set</span> enp0s8 promisc off
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+$ gcc -Wall promisc_sample.c
+$ ./a.out enp0s8
+failed to create socket: Operation not permitted
+$ sudo ./a.out enp0s8
+
+$ ip a show enp0s8
+<span class="m">3</span>: enp0s8: &lt;BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.56.80/24 brd <span class="m">192</span>.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+<h2 id="おわりに">おわりに</h2>
+
+<p>今回は設定する方法のみをまとめたが，プロミスキャスモードを検出する方法もいくつかあるようなので，今後検証したい．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="http://www.just.edu.jo/~tawalbeh/nyit/incs745/presentations/Sniffers.pdf">Sniffers Basics and Detection</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Linux PAMについて</title>
+			<link>https://www.mas9612.net/posts/linux-pam/</link>
+			<pubDate>Sat, 02 Mar 2019 23:13:05 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-pam/</guid>
+			<description>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった． しかし，PAMについてしっかりと理解</description>
+			<content type="html"><![CDATA[
+
+<p>LDAPと連携させてLinuxサーバにログインしたいとき等，PAMの設定をいじることは今までにもあった．
+しかし，PAMについてしっかりと理解できているわけではなかったので，PAMやその設定について調査した．</p>
+
+<h2 id="pamとは">PAMとは</h2>
+
+<p>マニュアルによると，PAM（Pluggable Authentication Module）はシステム上のアプリケーション（サービス）による認証を処理するためのライブラリであるとのこと．
+API経由で認証タスクを呼び出すことができるので，アプリケーション側で認証のやり方等の深いところまで考えることなく使えるよ，という感じ．</p>
+
+<blockquote>
+<p>Linux-PAM is a system of libraries that handle the authentication tasks of applications (services) on the system.
+The library provides a stable general interface (Application Programming Interface - API) that privilege granting programs (such as login(1) and su(1)) defer to to perform standard authentication tasks.</p>
+</blockquote>
+
+<p>PAMでは，認証に関するタスクを役割ごとに次の4つのグループに分け，それぞれのグループごとに設定できる．</p>
+
+<ul>
+<li>account: ユーザパスワードの期限が切れていないか，要求しているサービスにアクセスする権限があるか，等を検証</li>
+<li>authentication: パスワード等によるユーザ認証を行う部分．認証方法は問わない（パスワード，ハードウェアトークン等）</li>
+<li>password: 例えばパスワード認証の場合，パスワードの変更等に関連する部分を担当する（e.g. 弱いパスワードでないか，前回と同じでないか等）</li>
+<li>session: サービス利用前と利用後に実施される処理について．e.g. ログやユーザディレクトリのマウント等</li>
+</ul>
+
+<h2 id="pamの設定">PAMの設定</h2>
+
+<p>PAMの設定は <code>/etc/pam.conf</code> もしくは <code>/etc/pam.d/</code> 以下のファイルによって行う．
+<code>/etc/pam.d/</code> が存在している場合は， <code>/etc/pam.conf</code> は無視されて <code>/etc/pam.d/</code> 以下のファイルにある設定が有効となる．</p>
+
+<p>設定のフォーマットは次の通り．基本的に1行に1つの設定を書いていく感じ．</p>
+
+<pre><code>service type control module-path module-arguments
+</code></pre>
+
+<p>なお，先頭が <code>#</code> の場合はコメントとなる．</p>
+
+<p><code>/etc/pam.conf</code> と <code>/etc/pam.d</code> 以下のファイルは基本的に設定フォーマットは同じである．
+しかし， <code>/etc/pam.d/</code> 以下のファイルでは，そのファイル名自体が <code>service</code> を示すため，1カラム目にある <code>service</code> は省略される．</p>
+
+<h3 id="service">service</h3>
+
+<p>serviceは，設定が反映される対象のアプリケーションを示す．
+例えば，serviceが <code>sshd</code> の場合（ <code>/etc/pam.d/sshd</code> ）はSSHサーバのデーモンに対しての設定が記述される．</p>
+
+<h3 id="type">type</h3>
+
+<p>typeは，その行にある設定が上記4つの内どのグループの設定かを示す．</p>
+
+<ul>
+<li><code>account</code></li>
+<li><code>auth</code></li>
+<li><code>password</code></li>
+<li><code>session</code></li>
+</ul>
+
+<h3 id="control">control</h3>
+
+<p>単純な設定と複雑な設定があるが，単純な設定の場合に有効な値は次の通り．</p>
+
+<ul>
+<li>required: モジュールから返ってきた結果がfailure（失敗）だった場合，PAM全体としての返却値もfailureになる．しかし，後に続く設定は引き続き評価される．</li>
+<li>requisite: 基本はrequiredと同じ．requiredと異なり，モジュールの返却値がfailureだった場合はそこで即座に終了し，後に続く設定は評価されない．</li>
+<li>sufficient: モジュールの返却値が成功なら，そこで処理を終了してPAMも成功を返却する．後に続く設定は評価されない．モジュールの返却値が失敗なら引き続き後に続く設定の評価に移る．</li>
+<li>optional: このモジュールの結果は，このモジュールが唯一の設定であった場合のみ有効となる．
+
+<ul>
+<li>e.g.) sshdのauthタイプとして設定されているモジュールが一つだけ存在し，それのcontrolがoptionalである場合</li>
+</ul></li>
+<li>include: 他のファイルに定義されている設定を読みこむ．</li>
+<li>substack: includeと同様に他のファイルから設定を読み込むが，その中に即座に評価を終了するような設定がその中にあった場合（e.g. requisite），その効力は読み込んだファイルに対してのみ有効となる
+
+<ul>
+<li>e.g.) substackの中で定義されているrequisiteが失敗した場合，substack内の評価のみがそこで終了し，substackを呼び出した側の評価は終了せずに引き続き続行される．</li>
+<li>スコープが分かれるイメージ</li>
+</ul></li>
+</ul>
+
+<p>複雑な方の設定は今回確認するファイルの中には出てこなかったので割愛する．</p>
+
+<h3 id="module-path-module-arguments">module-path, module-arguments</h3>
+
+<p>適用されるPAMモジュールのパスとその引数を指定する．
+モジュールは共有ライブラリとなっており， <code>/lib64/security/</code> の下にあるかと思う．
+それぞれのモジュールについての説明は， <code>man</code> コマンドで確認することができる（e.g. <code>man pam_unix</code> ）．</p>
+
+<h2 id="sshdの設定を見てみる">sshdの設定を見てみる</h2>
+
+<p>PAMがどういったものかというのは簡単に理解できたので，実際に設定を見てみる．
+今回は，LDAPログインの設定でも編集対象となるsshdの設定ファイルを見ることにする．
+なお，一つ一つのモジュールについて逐一説明を入れていくとキリがないので，モジュール自体の説明は一部に留める．</p>
+
+<p>今回使用している環境はCentOS 7である．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/redhat-release
+CentOS Linux release <span class="m">7</span>.6.1810 <span class="o">(</span>Core<span class="o">)</span></code></pre></div>
+<p><code>/etc/pam.d/sshd</code> の中身は次のようになっていた．</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ cat /etc/pam.d/sshd
+<span class="c1">#%PAM-1.0</span>
+auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-auth      optional     pam_reauthorize.so prepare
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+<span class="c1"># pam_selinux.so close should be the first session rule</span>
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+<span class="c1"># pam_selinux.so open should only be followed by sessions to be executed in the user context</span>
+session    required     pam_selinux.so open env_params
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    include      password-auth
+session    include      postlogin
+<span class="c1"># Used with polkit to reauthorize users in remote sessions</span>
+-session   optional     pam_reauthorize.so prepare</code></pre></div>
+<p>設定ファイルは上から順番に評価されていくので，設定を読むときも上から順番に読んでいく．</p>
+
+<p>authに関連する部分を見てみる．
+auth関連の部分は次の4行（コメントを除く）．</p>
+
+<pre><code>auth       required     pam_sepermit.so
+auth       substack     password-auth
+auth       include      postlogin
+# Used with polkit to reauthorize users in remote sessions
+-auth      optional     pam_reauthorize.so prepare
+</code></pre>
+
+<p>1つ目の <code>pam_sepermit.so</code> は，このユーザはSELinuxが有効になっている場合のみログインを許可する，といった設定が可能になるモジュール．</p>
+
+<p>2つ目と3つ目は，それぞれ <code>/etc/pam.d/password-auth</code> と <code>/etc/pam.d/postlogin</code> というファイルから設定を読み込んでいる．
+2つ目は <code>substack</code> となっているので，もし <code>password-auth</code> の中でrequisiteのように即座に評価を終了するものが適用された場合は，その段階で <code>password-auth</code> の評価が終了するだけで引き続き次の<code>postlogin</code> の評価に移る．</p>
+
+<p>4つ目の <code>auth</code> には，頭に <code>-</code> がついている．これは，もしモジュールが存在しなかった場合はこの行を無視して次に進むということを意味している．</p>
+
+<p>次に，password-authとpostloginの部分について見てみる．
+なお， <code>include</code> や <code>substack</code> は，それが書かれたtypeに関する設定のみを読み込む．今回だと <code>auth</code> の部分のみを読み込む．</p>
+
+<pre><code>$ cat /etc/pam.d/password-auth | grep -E '^-?auth'
+auth        required      pam_env.so
+auth        required      pam_faildelay.so delay=2000000
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid &gt;= 1000 quiet_success
+auth        required      pam_deny.so
+$ cat /etc/pam.d/postlogin | grep -E '^-?auth'
+</code></pre>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>PAMとは何か，どのようにPAMを設定していくのかについて調査した．
+PAM APIの方針に従っていれば，自由に新しいモジュールを作成することができるので，理解を深めるためになにか簡単なモジュールでも作ってみようかと考えている．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>PAM(8)</li>
+<li>pam.conf(5)</li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Linux Namespaces (1)</title>
+			<link>https://www.mas9612.net/posts/linux-namespaces-01/</link>
+			<pubDate>Mon, 18 Feb 2019 23:24:23 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/linux-namespaces-01/</guid>
+			<description>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した． 少々長いので，2つの記事に分けて投稿する． 今回使った環境は</description>
+			<content type="html"><![CDATA[
+
+<p>前回は chroot(2) について調査・テストしたので，今回はnamespacesについて勉強した．
+少々長いので，2つの記事に分けて投稿する．</p>
+
+<p>今回使った環境はDebian 9 Stretch．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ uname -a
+Linux debian <span class="m">4</span>.9.0-8-amd64 <span class="c1">#1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux</span></code></pre></div>
+<h2 id="namespacesについて">namespacesについて</h2>
+
+<p>namespacesは，Linuxが持つシステムリソースをプロセスごとに分離するための技術．
+これを用いると，異なるnamespace間でネットワークやPID等の資源を独立して持つことができるようになる．</p>
+
+<p>Linux namespacesでは，次の7つが提供されている．</p>
+
+<ul>
+<li>Cgroup namespace</li>
+<li>IPC namespaces</li>
+<li>Network namespaces</li>
+<li>Mount namespaces</li>
+<li>PID namespaces</li>
+<li>User namespaces</li>
+<li>UTS namespaces</li>
+</ul>
+
+<p>それぞれのnamespacesについては以下の節で順番に説明していく．</p>
+
+<h2 id="namespacesを使うためのシステムコール">namespacesを使うためのシステムコール</h2>
+
+<p>新しいnamespaceを作成してそれを使用するには，次の2つのどちらかを使用する．</p>
+
+<ul>
+<li>clone(2)
+
+<ul>
+<li>新しいプロセスを作成するとともに，引数に指定したフラグに対応する新しいnamespaceを作成し，新しいプロセスをそれに所属させる</li>
+</ul></li>
+<li>unshare(2)
+
+<ul>
+<li>システムコールを呼び出したプロセスを新しいnamespaceに移動させる．</li>
+</ul></li>
+</ul>
+
+<p>また，プロセスを <strong>既存の</strong> namespaceに移動させるには，setns(2)システムコールを使用する．</p>
+
+<p>User namespacesを除き，新しいnamespaceを作成するには特権（ <code>CAP_SYS_ADMIN</code> ）が必要となる．</p>
+
+<h2 id="proc-pid-nsディレクトリ">/proc/[pid]/nsディレクトリ</h2>
+
+<p><code>/proc/[pid]/ns</code> ディレクトリ内には，そのプロセスが所属している各namespaceを表すエントリがおかれている．これらは，setns(2)システムコールで操作することができる．</p>
+
+<p>例えば，すでに動作しているプロセスのnamespaceに入りたい場合は，次のようにすることで可能．</p>
+
+<ol>
+<li>入りたいnamespaceに所属しているプロセスのnsディレクトリ内にある適切なエントリ（e.g. Network namespacesなら <code>net</code> ）をオープン</li>
+<li>オープンしたファイルディスクリプタをsetns(2)の引数に渡してあげる</li>
+</ol>
+
+<h2 id="pid-namespaces">PID namespaces</h2>
+
+<p>比較的わかりやすいPID namespacesから順番に見ていく．</p>
+
+<p>PID namespacesは，その名の通りPIDの空間を分離するために用いられる．
+異なるPID namespace間では異なるプロセスツリーを持ち，それらはそれぞれ独立している．
+そのため，異なるPID namespace間で同じPIDを持つ可能性もある．</p>
+
+<p>unshare(2)システムコールを使って新しいPID namespaceを作成し，そこに子プロセスを所属させるという簡単なプログラムを使ってテストした．</p>
+
+<p>プログラム全体は<a href="https://github.com/mas9612/study/blob/master/container/pid_namespace.c">GitHub</a>にpushしている．</p>
+
+<p>新しいPID namespaceを作成するためには，unshare(2)の引数に <code>CLONE_NEWPID</code> を指定する．
+unshare(2)を呼び出した以降に作成した子プロセスは，新しいPID namespace内で実行される（新しいPID namespaceでは，PIDは1から順番に振られる）．</p>
+
+<p><strong>unshare(2)を呼び出したプロセス自体は，これまでと同じPID namespaceで動作していることに注意</strong>．
+このため，サンプルプログラムではfork(2)を使って子プロセスを作成することで動作確認をしている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">unshare</span><span class="p">(</span><span class="n">CLONE_NEWPID</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;unshare()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>サンプルプログラムを実行すると次のような実行結果が得られる．</p>
+
+<pre><code>$ gcc pid_namespaces.c
+$ sudo ./a.out
+PID: 5516
+Forking new process...
+  Child PID: 5517
+
+Create new PID namespaces...
+PID: 5516
+Forking new process...
+  Child PID: 1
+</code></pre>
+
+<p>この結果から次のことが読み取れる．</p>
+
+<ul>
+<li>unshare(2)を呼び出したプロセス自体（PID 5516）はPID namespaceの移動はしていない</li>
+<li>unshare(2)を呼び出す前の子プロセスはPID 5516と同じPID namespaceに所属しているので，PIDはその続き（PID 5517）となっている</li>
+<li>unshare(2)を呼び出した後の子プロセスは新しいPID namespaceに所属しているので，PIDは1となっている</li>
+</ul>
+
+<h2 id="network-namespaces">Network namespaces</h2>
+
+<p>次はNetwork namespacesについて見ていく．</p>
+
+<p>名前の通りで理解しやすいと思うが，ネットワーク関連のリソースを分離するための技術．
+ネットワークデバイスやIPプロトコルスタック，ルーティングテーブルやファイアウォールルール等をnamespaceごとで分離することができる．
+各ネットワークデバイスは1つのnetwork namespacesのみに割り当てられる．</p>
+
+<p>これも<a href="https://github.com/mas9612/study/blob/master/container/network_namespaces.c">サンプルプログラム</a>を書いて試してみた．
+サンプルでは， <code>ip a</code> コマンドを使ってネットワークデバイスの情報を出力してみた．</p>
+
+<p>新しいnetwork namespaceに移動するには，unshare(2)の引数に <code>CLONE_NEWNET</code> を渡してあげれば良い．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">unshare</span><span class="p">(</span><span class="n">CLONE_NEWNET</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;unshare()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>サンプルプログラムを実行するとつぎのような実行結果が得られる．</p>
+
+<pre><code>$ gcc network_namespaces.c
+$ sudo ./a.out
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:ad:47:43 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fead:4743/64 scope link
+       valid_lft forever preferred_lft forever
+3: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:75:06:24 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.80/24 brd 192.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe75:624/64 scope link
+       valid_lft forever preferred_lft forever
+
+Enter new network namespace:
+1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</code></pre>
+
+<p>実行結果から，network namespaceを移動した後の <code>ip a</code> では，ループバックデバイス以外のネットワークデバイスが割り当てられていないことがわかる．
+ネットワークデバイスは一度に1つのnetwork namespaceにしか所属できないので，新しいnetwork namespaceに移動した後の <code>ip a</code> の出力には現れなかった．</p>
+
+<h2 id="uts-namespaces">UTS namespaces</h2>
+
+<p>UTS namespacesは，ホスト名およびNISドメイン名をnamespaceごとに分離するための技術．
+これを用いると，各UTS namespaceごとにそれぞれ個別のホスト名をつけることができる．</p>
+
+<p>プログラムを書いて検証するのが少し面倒なので，unshare(1)コマンドで試す．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ hostname
+debian
+$ sudo unshare --uts
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> yamazaki:
+
+<span class="c1"># hostname</span>
+debian
+<span class="c1"># hostname inside-uts-namespace</span>
+<span class="c1"># hostname</span>
+inside-uts-namespace
+<span class="c1"># exit</span>
+<span class="nb">logout</span>
+
+$ hostname
+debian</code></pre></div>
+<p><code>unshare --uts</code> コマンドで，新しいUTS namespaceを作成してそれに移動することができる．
+その後， <code>hostname</code> コマンドを使って適当なホスト名をセットしてみる．</p>
+
+<p>正常にホスト名が変更できたことを確認して，作成したUTS namespaceからexitで抜ける．
+抜けた後にもう一度ホスト名を確認してみると，UTS namespace内で行った変更が反映されておらず，namespaceごとで独立していたことがわかる．</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li>namespaces(7)</li>
+<li>unshare(2)</li>
+<li>setns(2)</li>
+<li>pid_namespaces(7)</li>
+<li>network_namespaces(7)</li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>chrootの基礎</title>
+			<link>https://www.mas9612.net/posts/chroot-basic/</link>
+			<pubDate>Tue, 12 Feb 2019 00:40:00 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/chroot-basic/</guid>
+			<description>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深</description>
+			<content type="html"><![CDATA[
+
+<p>DockerやKubernetesといったコンテナ関連の技術にはよくお世話になっているが，コンテナの実装やそれを実現している技術については深く知らなかった．
+しかし，詳細を知らないまま使い続けるのは少し気持ち悪いので，少しずつ勉強していくことにする．</p>
+
+<p>今回はまず手始めに，chrootについて勉強した．</p>
+
+<h2 id="chrootとは">chrootとは</h2>
+
+<p>chroot (change root) とは，名前の通り呼び出したプロセスのルートディレクトリを変更することができる仕組みのこと．</p>
+
+<blockquote>
+<p>chroot() changes the root directory of the calling process to that specified in path</p>
+</blockquote>
+
+<p>chroot(2) より引用</p>
+
+<p>chrootによって変更されたルートディレクトリは，fork等で生成された子プロセスにも引き継がれる．</p>
+
+<h2 id="chrootの使い方">chrootの使い方</h2>
+
+<p>chrootは， <code>chroot</code> コマンドを使ってコマンドラインで使用する方法と，chroot(2)システムコールを使ってプログラムから呼び出す方法がある．
+以降，2つの方法について順番に説明する．</p>
+
+<h3 id="chrootコマンドを使う">chrootコマンドを使う</h3>
+
+<p>chrootコマンドの使い方は以下の通り．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ chroot <span class="o">[</span>OPTION<span class="o">]</span> NEWROOT <span class="o">[</span>COMMAND <span class="o">[</span>ARG<span class="o">]</span>...<span class="o">]</span></code></pre></div>
+<p><code>chroot</code> の後に，新しいルートディレクトリとして設定したいディレクトリを指定する．
+また，その後に実行したいコマンドを指定することもできるが，これを省略すると <code>${SHELL} -i</code> が実行される．</p>
+
+<p>ちなみに，rootユーザ（正確には <code>CAP_SYS_CHROOT</code> capabilityを持つユーザ）のみがこのコマンドを実行することができる．</p>
+
+<p>試しに <code>chroot_test</code> ディレクトリを作成して，それを新しいルートディレクトリとしてbashを起動してみる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot_test 
+<span class="c1"># 通常ユーザでは権限が足りずにエラーとなる</span>
+$ chroot chroot_test bash
+chroot: cannot change root directory to chroot_test/: Operation not permitted
+
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory</code></pre></div>
+<p><code>sudo</code> を使ってrootとして <code>chroot</code> を実行すると，権限の問題はなくなったがbashが見つからないというエラーになった．
+chrootによってルートディレクトリが変更されると元々の <code>/bin</code> にはアクセスできなくなるので，chroot先にbashコマンドを用意してあげる必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ mkdir chroot chroot_test/bin
+$ cp <span class="sb">`</span>which bash<span class="sb">`</span> chroot_test/bin
+$ sudo chroot chroot_test bash
+chroot: failed to run <span class="nb">command</span> ‘/bin/bash’: No such file or directory
+
+<span class="c1"># lsコマンドの実行にはいくつか動的ライブラリが必要となるので，</span>
+<span class="c1"># それもchroot先に用意してあげなければならない</span>
+$ ldd <span class="sb">`</span>which bash<span class="sb">`</span>
+        linux-vdso.so.1 <span class="o">=</span>&gt;  <span class="o">(</span>0x00007ffc956cb000<span class="o">)</span>
+        libselinux.so.1 <span class="o">=</span>&gt; /lib64/libselinux.so.1 <span class="o">(</span>0x00007fe3914d4000<span class="o">)</span>
+        libcap.so.2 <span class="o">=</span>&gt; /lib64/libcap.so.2 <span class="o">(</span>0x00007fe3912cf000<span class="o">)</span>
+        libacl.so.1 <span class="o">=</span>&gt; /lib64/libacl.so.1 <span class="o">(</span>0x00007fe3910c6000<span class="o">)</span>
+        libc.so.6 <span class="o">=</span>&gt; /lib64/libc.so.6 <span class="o">(</span>0x00007fe390cf9000<span class="o">)</span>
+        libpcre.so.1 <span class="o">=</span>&gt; /lib64/libpcre.so.1 <span class="o">(</span>0x00007fe390a97000<span class="o">)</span>
+        libdl.so.2 <span class="o">=</span>&gt; /lib64/libdl.so.2 <span class="o">(</span>0x00007fe390893000<span class="o">)</span>
+        /lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007fe3916fb000<span class="o">)</span>
+        libattr.so.1 <span class="o">=</span>&gt; /lib64/libattr.so.1 <span class="o">(</span>0x00007fe39068e000<span class="o">)</span>
+        libpthread.so.0 <span class="o">=</span>&gt; /lib64/libpthread.so.0 <span class="o">(</span>0x00007fe390472000<span class="o">)</span>
+$ cp /lib64/libtinfo.so.5 /lib64/libdl.so.2 /lib64/libc.so.6    <span class="se">\
+</span><span class="se"></span>    /lib64/ld-linux-x86-64.so.2 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bash: ls: <span class="nb">command</span> not found
+bash-4.2# <span class="nb">exit</span>
+<span class="nb">exit</span>
+
+$ cp <span class="sb">`</span>which ls<span class="sb">`</span> chroot_test/bin
+$ cp /lib64/libselinux.so.1 /lib64/libcap.so.2 /lib64/libacl.so.1   <span class="se">\
+</span><span class="se"></span>    /lib64/libpcre.so.1 /lib64/libdl.so.2 /lib64/libattr.so.1       <span class="se">\
+</span><span class="se"></span>    /lib64/libpthread.so.0 chroot_test/lib64
+$ sudo chroot chroot_test bash
+bash-4.2# <span class="nb">pwd</span>
+/
+bash-4.2# ls
+bin  lib64
+bash-4.2# <span class="nb">exit</span>
+exit</code></pre></div>
+<h3 id="chroot-2-システムコールを使う">chroot(2)システムコールを使う</h3>
+
+<p>chroot(2)システムコールは次のような関数となっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">chroot</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">);</span></code></pre></div>
+<p>引数に新しいルートディレクトリとなるパスを指定する．
+成功すると <code>0</code> ，失敗すると <code>-1</code> が返却されて <code>errno</code> が設定される．</p>
+
+<p><a href="https://github.com/mas9612/study/blob/master/container/chroot_basic.c">サンプルプログラム</a>はGitHubにあります．</p>
+
+<p>注意点として，chroot(2)を使っても，パスの解決方法が変わるだけでカレントディレクトリは変更されない．
+なので，サンプルプログラムでは予めchroot先に移動してからchroot(2)を実行している．</p>
+
+<p>もしchdir(2)なしでchroot(2)を実行すると，カレントディレクトリは変更されない．
+この状態でgetcwd(2)を呼び出した場合，カレントディレクトリがルートディレクトリの外となるため，エラーとなってしまう．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">getcwd</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;getcwd()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<h2 id="chrootを抜け出す">chrootを抜け出す</h2>
+
+<p>前節で，chroot(2)を使ってもカレントディレクトリは変更されないということを述べた．
+これを利用して，chroot(2)を使う権限があるプロセスがchrootの外に抜け出すことが可能になる．</p>
+
+<p>ここではこれを試してみる．
+プログラムの全体は<a href="https://github.com/mas9612/study/blob/master/container/chroot_escape.c">GitHub</a>にあります．</p>
+
+<p>やることは簡単で，つぎのような順番で処理を進めていく．</p>
+
+<ol>
+<li>chrootによって設定されたルートディレクトリに移動</li>
+<li>適当なサブディレクトリを作成</li>
+<li>作成したサブディレクトリにchroot</li>
+<li>一つ上の階層に移動する</li>
+</ol>
+
+<p>これで，元々のchrootされたルートディレクトリの一つ上に移動することができる．</p>
+
+<p>プログラムにすると次のようになる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="c1">// create foo directory and chroot to it
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">mkdir</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">,</span> <span class="mo">0755</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;mkdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">chroot</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chroot()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">// after chroot to foo directory, attempt to escape upper directory
+</span><span class="c1"></span>    <span class="c1">// than original chrooted directory (chroot_test directory)
+</span><span class="c1"></span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">chdir</span><span class="p">(</span><span class="s">&#34;..&#34;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;chdir()&#34;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></div>
+<p>chrootはパスの解決方法を変更しているだけであり，複数適用させることができない．
+そのため，2回目のchroot(2)呼び出しを行うと前回のchrootで設定した効果はなくなり，新しいものだけが効力を持つ．</p>
+
+<p>上の手順を進めると，作成したサブディレクトリにchrootした段階で，元々のchrootの効果はなくなる．
+また，chrootはカレントディレクトリを変更しないという性質より，手順3. の時点ですでにルートディレクトリの外にいることになる．</p>
+
+<p>この状態では上の階層への移動が可能なので，結果的に元々のchrootされたルートディレクトリより上に移動することが実現できる．</p>
+
+<p>実は，このことはchroot(2)のマニュアルにも記されており，仕様通りのようだ．</p>
+
+<blockquote>
+<p>This call does not change the current working directory, so that after the call &lsquo;.&rsquo; can be outside the tree rooted at &lsquo;/&rsquo;.  In  particular,  the  supe‐
+ruser can escape from a &ldquo;chroot jail&rdquo; by doing:</p>
+
+<pre><code>mkdir foo; chroot foo; cd ..
+</code></pre>
+</blockquote>
+]]></content>
+		</item>
+		
+		<item>
+			<title>GoでのファイルI/O</title>
+			<link>https://www.mas9612.net/posts/go-file-io/</link>
+			<pubDate>Sun, 13 Jan 2019 00:00:00 +0900</pubDate>
+			
+			<guid>https://www.mas9612.net/posts/go-file-io/</guid>
+			<description>GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読</description>
+			<content type="html"><![CDATA[
+
+<p>GoでのファイルI/Oについて，改めてまとめた．
+いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる．</p>
+
+<h2 id="ファイルオープン">ファイルオープン</h2>
+
+<p>読み書きを行う前に，まずファイルオープンしないとどうにもならないのでそこから．
+osパッケージを見ると，2つのファイルオープンメソッドがあることがわかる．</p>
+
+<ul>
+<li><code>os.Open</code></li>
+<li><code>os.OpenFile</code></li>
+</ul>
+
+<h3 id="os-open">os.Open</h3>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>引数に与えられた名前のファイルを <strong>読み取り専用</strong> でオープンする．
+そのため，もしファイルが存在しなければエラーとなる（ <code>*PathError</code> が返却される）</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.Open attempts to open given file as read only mode.
+</span><span class="c1">// Therefore, if it doesn&#39;t exist, then *os.PathError will occur.
+</span><span class="c1"></span><span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;thisdoesntexist.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;file not found&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>上の例では便利メソッドとして <code>os.IsNotExist</code> を使っている．
+このメソッドに <code>os.Open</code> から返却されたエラーを渡すと，ファイルが存在しないために発生したエラーかどうかを教えてくれる．
+<code>os.IsNotExist</code> の返り値が <code>true</code> なら，ファイルが存在しないという意味になる．</p>
+
+<h3 id="os-openfile">os.OpenFile</h3>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">OpenFile</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">flag</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">perm</span> <span class="nx">FileMode</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>引数に与えられた名前のファイルを，指定したモード，パーミッションでオープンする．
+<code>flag</code> の指定方法次第で，追記モードや，存在しない場合に作成する，等が可能になる．</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.OpenFile attempts to open given file as given mode and permission.
+</span><span class="c1">// In this example, open &#34;newfile.txt&#34; as write-only mode and it permission is 0600 (r/w only allowed to file owner)
+</span><span class="c1"></span><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span></code></pre></div>
+<h2 id="おそらく-最も基本となる方法">（おそらく）最も基本となる方法</h2>
+
+<p>ファイルをオープンし，バイト型のスライスを使ってデータの読み書きを行う方法．</p>
+
+<h3 id="read">Read</h3>
+
+<p>前提として，ファイルからの読み取りができるモードでオープンされている必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="c1">// *File.Read reads slice of bytes up to len(slice) from file.
+</span><span class="c1"></span><span class="nx">buffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes read by *File.Read()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;file content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">buffer</span><span class="p">))</span></code></pre></div>
+<h3 id="write">Write</h3>
+
+<p>前提として，ファイルに書き込みができるモードでオープンされている必要がある．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.OpenFile attempts to open given file as given mode and permission.
+</span><span class="c1">// In this example, open &#34;newfile.txt&#34; as write-only mode and it permission is 0600 (r/w only allowed to file owner)
+</span><span class="c1"></span><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="c1">// *File.Write writes slice of bytes to file.
+</span><span class="c1"></span><span class="nx">byteData</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hello world\n&#34;</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">byteData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written by os.Write()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span></code></pre></div>
+<p>また，バイト型のスライスの代わりにstringを書き込むこともできる．
+stringの書き込みには <code>WriteString</code> メソッドを使用する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// *File.WriteString writes strings to file instead of slice of bytes.
+</span><span class="c1"></span><span class="nx">stringData</span> <span class="o">:=</span> <span class="s">&#34;We can write not only []byte but also string :)&#34;</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">stringData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written by os.WriteString()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span></code></pre></div>
+<h3 id="ファイルの内容すべてを読み込む">ファイルの内容すべてを読み込む</h3>
+
+<p>io/ioutilパッケージの <code>ReadAll</code> メソッドを使用すると，ファイルの内容すべてを読み込むことができる．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Reader</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="nf">Read</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">ReadAll</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
+<p>ReadAllの引数に与える <code>io.Reader</code> は， <code>Read</code> メソッドを持つインタフェースと定義されている．
+そのため，通常通りオープンしたファイルをそのまま渡すことができる．</p>
+
+<p>例</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read all contents by ioutil.ReadAll(): %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span></code></pre></div>
+<h2 id="バッファありのファイルi-o">バッファありのファイルI/O</h2>
+
+<p>bufioパッケージのメソッドを使用すると，読み書きの際に内部でバッファを使ってくれる．
+そのため，そのままデータを読み書きするよりも効率的に処理を行うことができる．</p>
+
+<p>ファイルI/Oに使えそうなものは次の3種類．</p>
+
+<ul>
+<li>bufio.Reader</li>
+<li>bufio.Scanner</li>
+<li>bufio.Writer</li>
+</ul>
+
+<h3 id="bufio-reader">bufio.Reader</h3>
+
+<p>基本的な使い方は通常のファイルと似ているが，いくつか便利なメソッドが定義されている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">reader</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="nx">buffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1">// basic Read method
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">buffer</span><span class="p">))</span>
+
+<span class="c1">// ReadBytes reads until delimiter found.
+</span><span class="c1">// Read contents is slice of bytes.
+</span><span class="c1">// In this example, read until first &#39;\n&#39; character found.
+</span><span class="c1"></span><span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span>
+
+<span class="c1">// ReadString reads until delimiter found.
+</span><span class="c1">// Read contents is string.
+</span><span class="c1">// In this example, read until first &#39;\n&#39; character found.
+</span><span class="c1"></span><span class="nx">str</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">ReadString</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nx">str</span><span class="p">)</span></code></pre></div>
+<h3 id="bufio-scanner">bufio.Scanner</h3>
+
+<p>bufio.Readerと似ているが，こちらは改行区切りのテキストを扱う時に便利なものになっている．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">scanner</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewScanner</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Scan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">scanner</span><span class="p">.</span><span class="nf">Text</span><span class="p">())</span>
+<span class="p">}</span></code></pre></div>
+<p><code>Text</code> メソッドを呼ぶと，改行文字まで（＝1行分の文字）を返してくれる．</p>
+
+<p><code>Scan</code> が <code>true</code> の間は，まだ読んでいない行があるということを示している．
+なので， <code>Scan</code> が <code>false</code> になるまでループを回してあげれば結果的にファイルの内容すべてを読むことができる．</p>
+
+<h3 id="bufio-writer">bufio.Writer</h3>
+
+<p>Readerと同様，io.Writerと似ている．
+注意しなければならない点として，最後に <code>Writer.Flush</code> を呼び出す必要がある点がある．
+これを呼び出さないと正常に書き込みされないので注意する．</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span> <span class="mo">0600</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+<span class="nx">writer</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+
+<span class="nx">byteData</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hello world\n&#34;</span><span class="p">)</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">writer</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">byteData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+
+<span class="nx">stringData</span> <span class="o">:=</span> <span class="s">&#34;Write string :)&#34;</span>
+<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">writer</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">stringData</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+
+<span class="nx">writer</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span></code></pre></div>
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="https://godoc.org/os">os - GoDoc</a></li>
+<li><a href="https://godoc.org/io">io - GoDoc</a></li>
+<li><a href="https://godoc.org/io/ioutil">ioutil - GoDoc</a></li>
+</ul>
+]]></content>
+		</item>
+		
+	</channel>
 </rss>

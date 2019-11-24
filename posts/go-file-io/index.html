@@ -1,492 +1,84 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html lang="en-us">
 
-<html>
-    <head>
-        <script type="application/ld+json">
-    {
-        "@context" : "http://schema.org",
-        "@type" : "BlogPosting",
-        "mainEntityOfPage": {
-             "@type": "WebPage",
-             "@id": "https://www.mas9612.net/"
-        },
-        "articleSection" : "posts",
-        "name" : "GoでのファイルI/O",
-        "headline" : "GoでのファイルI/O",
-        "description" : "GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読",
-        "inLanguage" : "en",
-        "author" : "Masato Yamazaki",
-        "creator" : "Masato Yamazaki",
-        "publisher": "Masato Yamazaki",
-        "accountablePerson" : "Masato Yamazaki",
-        "copyrightHolder" : "Masato Yamazaki",
-        "copyrightYear" : "2019",
-        "datePublished": "2019-01-13 00:00:00 &#43;0900 JST",
-        "dateModified" : "2019-01-13 00:00:00 &#43;0900 JST",
-        "url" : "https://www.mas9612.net/posts/go-file-io/",
-        "wordCount" : "1645",
-        "keywords" : [ "Blog" ]
-    }
-    </script>
-        
-            
-                <title>GoでのファイルI/O</title>
-            
-        
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.54.0" />
-        
-
-
-        
-        
-            
-                <meta name="description" content="About Programming, Computer, Technology...">
-            
-        
-
-        <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="GoでのファイルI/O"/>
-<meta name="twitter:description" content="GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読"/>
-<meta name="twitter:site" content="@mas9612"/>
-
-        <meta property="og:title" content="GoでのファイルI/O" />
-<meta property="og:description" content="GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.mas9612.net/posts/go-file-io/" />
-<meta property="article:published_time" content="2019-01-13T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2019-04-14T23:28:02&#43;09:00"/>
-
-        <meta property="og:image" content="https://www.mas9612.net//images/logo.png">
-        <meta property="og:image:type" content="image/png">
-        <meta property="og:image:width" content="512">
-        <meta property="og:image:height" content="512">
-        
 <meta itemprop="name" content="GoでのファイルI/O">
 <meta itemprop="description" content="GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読">
 
 
 <meta itemprop="datePublished" content="2019-01-13T00:00:00&#43;09:00" />
-<meta itemprop="dateModified" content="2019-04-14T23:28:02&#43;09:00" />
+<meta itemprop="dateModified" content="2019-01-13T00:00:00&#43;09:00" />
 <meta itemprop="wordCount" content="1645">
 
 
 
 <meta itemprop="keywords" content="" />
+<meta property="og:title" content="GoでのファイルI/O" />
+<meta property="og:description" content="GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mas9612.net/posts/go-file-io/" />
+<meta property="article:published_time" content="2019-01-13T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-01-13T00:00:00&#43;09:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GoでのファイルI/O"/>
+<meta name="twitter:description" content="GoでのファイルI/Oについて，改めてまとめた． いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる． ファイルオープン 読"/>
 
-        
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
 
-        
-            
-        
-
-        
-        
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
-            <link rel="stylesheet" href="https://www.mas9612.net/css/main.css">
-            <link rel="stylesheet" href="https://www.mas9612.net/css/add-on.css">
-            <link rel="stylesheet" href="https://www.mas9612.net/css/academicons.min.css">
-            <link rel="stylesheet" href="https://www.mas9612.net/css/hatena.css">
-            <link rel="stylesheet" href="https://www.mas9612.net/css/custom.css">
-        
-
-        
-
-
-  
-    
-    <link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
-  
-
-
-      
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-134133452-1', 'auto');
+	<title>GoでのファイルI/O</title>
+	<link rel="stylesheet" href="https://www.mas9612.net/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
 	
-	ga('send', 'pageview');
-}
-</script>
-
-    </head>
-    <body>
-
-      
-      <div id="wrapper">
-
-    
-    
-<header id="header">
-    
-      <h1><a href="https://www.mas9612.net/">mas9612&#39;s note</a></h1>
-    
-
-    <nav class="links">
-        <ul>
-            
-                <li>
-                    <a href="https://www.mas9612.net/">
-                            <i class="fa fa-home">&nbsp;</i>Home
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://www.mas9612.net/about/">
-                            <i class="fa fa-id-card-o">&nbsp;</i>About
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://www.mas9612.net/posts/">
-                            <i class="fa fa-newspaper-o">&nbsp;</i>Blog
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://www.mas9612.net/tags/">
-                            <i class="fa fa-sitemap">&nbsp;</i>Tags
-                    </a>
-                </li>
-            
-        </ul>
-    </nav>
-    <nav class="main">
-        <ul>
-            
-            <li id="share-nav" class="share-menu" style="display:none;">
-                <a class="fa-share-alt" href="#share-menu">Share</a>
-            </li>
-            
-            <li class="search">
-                <a class="fa-search" href="#search">Search</a>
-                <form id="search" method="get" action="//google.com/search">
-                    <input type="text" name="q" placeholder="Search" />
-                    <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
-                </form>
-            </li>
-            <li class="menu">
-                <a class="fa-bars" href="#menu">Menu</a>
-            </li>
-        </ul>
-    </nav>
-</header>
-
-
-<section id="menu">
-
-    
-        <section>
-            <form class="search" method="get" action="//google.com/search">
-                <input type="text" name="q" placeholder="Search" />
-                <input type="hidden" name="as_sitesearch" value="https://www.mas9612.net/">
-            </form>
-        </section>
-
-    
-        <section>
-            <ul class="links">
-                
-                    <li>
-                        <a href="https://www.mas9612.net/">
-                            <h3>
-                                <i class="fa fa-home">&nbsp;</i>Home
-                            </h3>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="https://www.mas9612.net/about/">
-                            <h3>
-                                <i class="fa fa-id-card-o">&nbsp;</i>About
-                            </h3>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="https://www.mas9612.net/posts/">
-                            <h3>
-                                <i class="fa fa-newspaper-o">&nbsp;</i>Blog
-                            </h3>
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="https://www.mas9612.net/tags/">
-                            <h3>
-                                <i class="fa fa-sitemap">&nbsp;</i>Tags
-                            </h3>
-                        </a>
-                    </li>
-                
-            </ul>
-        </section>
-
-    
-        <section class="recent-posts">
-            <div class="mini-posts">
-                <header>
-                    <h3>Recent Posts</h3>
-                </header>
-                
-
-                
-                    
-                
-
-                
-                        <article class="mini-post">
-                            <header>
-                                <h3><a href="https://www.mas9612.net/posts/golang-bufio-writer/">Goのbufio.Writerについて</a></h3>
-                                
-                                <time class="published" datetime=
-                                    '2019-07-10'>
-                                    July 10, 2019</time>
-                            </header>
-                            
-
-                        </article>
-                
-                        <article class="mini-post">
-                            <header>
-                                <h3><a href="https://www.mas9612.net/posts/dive-into-tcp-http/">TCPについて学ぶ - HTTP通信の流れを見てみる</a></h3>
-                                
-                                <time class="published" datetime=
-                                    '2019-05-15'>
-                                    May 15, 2019</time>
-                            </header>
-                            
-
-                        </article>
-                
-                        <article class="mini-post">
-                            <header>
-                                <h3><a href="https://www.mas9612.net/posts/authserver/">雑なオレオレOAuth Serverを書いた</a></h3>
-                                
-                                <time class="published" datetime=
-                                    '2019-04-21'>
-                                    April 21, 2019</time>
-                            </header>
-                            
-
-                        </article>
-                
-                        <article class="mini-post">
-                            <header>
-                                <h3><a href="https://www.mas9612.net/posts/linux-process/">Linuxのプロセスについて</a></h3>
-                                
-                                <time class="published" datetime=
-                                    '2019-04-13'>
-                                    April 13, 2019</time>
-                            </header>
-                            
-
-                        </article>
-                
-                        <article class="mini-post">
-                            <header>
-                                <h3><a href="https://www.mas9612.net/posts/linux-loadavg/">Linuxのロードアベレージについて</a></h3>
-                                
-                                <time class="published" datetime=
-                                    '2019-04-02'>
-                                    April 2, 2019</time>
-                            </header>
-                            
-
-                        </article>
-                
-
-                
-                    <a href=
-                        
-                            /posts/
-                        
-                        class="button">View more posts</a>
-                
-            </div>
-        </section>
-
-    
-        
-</section>
-
-    <section id="share-menu">
-    <section id="social-share-nav">
-        <ul class="links">
-            <header>
-                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
-            </header>
-            
-
-
-<li>
-  <a href="//b.hatena.ne.jp/entry/https://www.mas9612.net/posts/go-file-io/" target="_blank" class="share-btn hatena">
-    <i class="fa fa-hatena"></i>
-    <p>はてなブログ</p>
-    </a>
-</li>
-
-
-
-
-<li>
-  <a href="//twitter.com/share?url=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f&amp;text=Go%e3%81%a7%e3%81%ae%e3%83%95%e3%82%a1%e3%82%a4%e3%83%abI%2fO&amp;via=mas9612" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-    </a>
-</li>
-
-
-
-
-
-
-
-
-<li>
-  <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-    </a>
-</li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li>
-  <a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-  </a>
-</li>
-
-
-        </ul>
-    </section>
-</section>
-
-    
-    <div id="main">
-        
-        
-        <article class="post">
-  <header>
-    <div class="title">
-        
-            <h1><a href="https://www.mas9612.net/posts/go-file-io/">GoでのファイルI/O</a></h1>
-            
-        
-        
-    </div>
-    <div class="meta">
-        
-
-        <time class="published"
-            datetime='2019-01-13'>
-            January 13, 2019</time>
-        <span class="author"></span>
-        
-            <p>4 minute read</p>
-        
-        
-    </div>
-</header>
-
-
-  
-    <section id="social-share">
-      <ul class="icons">
-        
-
-
-<li>
-  <a href="//b.hatena.ne.jp/entry/https://www.mas9612.net/posts/go-file-io/" target="_blank" class="share-btn hatena">
-    <i class="fa fa-hatena"></i>
-    <p>はてなブログ</p>
-    </a>
-</li>
-
-
-
-
-<li>
-  <a href="//twitter.com/share?url=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f&amp;text=Go%e3%81%a7%e3%81%ae%e3%83%95%e3%82%a1%e3%82%a4%e3%83%abI%2fO&amp;via=mas9612" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-    </a>
-</li>
-
-
-
-
-
-
-
-
-<li>
-  <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-    </a>
-</li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li>
-  <a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fwww.mas9612.net%2fposts%2fgo-file-io%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-  </a>
-</li>
-
-
-      </ul>
-    </section>
-  
-
-  
-
-  <div id="content">
-    
+	<link rel="stylesheet" href="https://www.mas9612.net/css/custom.css">
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.mas9612.net/">mas9612&#39;s note</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://www.mas9612.net/about/">About Me</a>
+				<a href="https://www.mas9612.net/posts/">Blog</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/mas9612" target="_blank" rel="noopener me" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/mas9612" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.mas9612.net/about/">About Me</a></li>
+			<li><a href="https://www.mas9612.net/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner thin animated fadeIn faster">
+		<h1>GoでのファイルI/O</h1>
+		<div class="content">
+			
 
 <p>GoでのファイルI/Oについて，改めてまとめた．
 いろいろな方法があるので，それぞれどういったものかを確認しながらまとめる．</p>
 
-<h2 id="ファイルオープン">ファイルオープン</h2>
+<h2 id="ファイルオープン">ファイルオープン<a href="#ファイルオープン" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <p>読み書きを行う前に，まずファイルオープンしないとどうにもならないのでそこから．
 osパッケージを見ると，2つのファイルオープンメソッドがあることがわかる．</p>
@@ -496,7 +88,7 @@ osパッケージを見ると，2つのファイルオープンメソッドが�
 <li><code>os.OpenFile</code></li>
 </ul>
 
-<h3 id="os-open">os.Open</h3>
+<h3 id="os-open">os.Open<a href="#os-open" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
 <p>引数に与えられた名前のファイルを <strong>読み取り専用</strong> でオープンする．
 そのため，もしファイルが存在しなければエラーとなる（ <code>*PathError</code> が返却される）</p>
@@ -516,7 +108,7 @@ osパッケージを見ると，2つのファイルオープンメソッドが�
 このメソッドに <code>os.Open</code> から返却されたエラーを渡すと，ファイルが存在しないために発生したエラーかどうかを教えてくれる．
 <code>os.IsNotExist</code> の返り値が <code>true</code> なら，ファイルが存在しないという意味になる．</p>
 
-<h3 id="os-openfile">os.OpenFile</h3>
+<h3 id="os-openfile">os.OpenFile<a href="#os-openfile" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">OpenFile</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">flag</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">perm</span> <span class="nx">FileMode</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">File</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span></code></pre></div>
 <p>引数に与えられた名前のファイルを，指定したモード，パーミッションでオープンする．
 <code>flag</code> の指定方法次第で，追記モードや，存在しない場合に作成する，等が可能になる．</p>
@@ -529,11 +121,11 @@ osパッケージを見ると，2つのファイルオープンメソッドが�
     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span></code></pre></div>
-<h2 id="おそらく-最も基本となる方法">（おそらく）最も基本となる方法</h2>
+<h2 id="おそらく-最も基本となる方法">（おそらく）最も基本となる方法<a href="#おそらく-最も基本となる方法" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <p>ファイルをオープンし，バイト型のスライスを使ってデータの読み書きを行う方法．</p>
 
-<h3 id="read">Read</h3>
+<h3 id="read">Read<a href="#read" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>前提として，ファイルからの読み取りができるモードでオープンされている必要がある．</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
@@ -550,7 +142,7 @@ osパッケージを見ると，2つのファイルオープンメソッドが�
 <span class="p">}</span>
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes read by *File.Read()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;file content: %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">buffer</span><span class="p">))</span></code></pre></div>
-<h3 id="write">Write</h3>
+<h3 id="write">Write<a href="#write" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>前提として，ファイルに書き込みができるモードでオープンされている必要がある．</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// os.OpenFile attempts to open given file as given mode and permission.
@@ -577,7 +169,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written by os.WriteString()\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span></code></pre></div>
-<h3 id="ファイルの内容すべてを読み込む">ファイルの内容すべてを読み込む</h3>
+<h3 id="ファイルの内容すべてを読み込む">ファイルの内容すべてを読み込む<a href="#ファイルの内容すべてを読み込む" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>io/ioutilパッケージの <code>ReadAll</code> メソッドを使用すると，ファイルの内容すべてを読み込むことができる．</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Reader</span> <span class="kd">interface</span> <span class="p">{</span>
@@ -600,7 +192,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read all contents by ioutil.ReadAll(): %s\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">bytes</span><span class="p">))</span></code></pre></div>
-<h2 id="バッファありのファイルi-o">バッファありのファイルI/O</h2>
+<h2 id="バッファありのファイルi-o">バッファありのファイルI/O<a href="#バッファありのファイルi-o" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <p>bufioパッケージのメソッドを使用すると，読み書きの際に内部でバッファを使ってくれる．
 そのため，そのままデータを読み書きするよりも効率的に処理を行うことができる．</p>
@@ -613,7 +205,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
 <li>bufio.Writer</li>
 </ul>
 
-<h3 id="bufio-reader">bufio.Reader</h3>
+<h3 id="bufio-reader">bufio.Reader<a href="#bufio-reader" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>基本的な使い方は通常のファイルと似ているが，いくつか便利なメソッドが定義されている．</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">reader</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
@@ -641,7 +233,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;content: %s\n&#34;</span><span class="p">,</span> <span class="nx">str</span><span class="p">)</span></code></pre></div>
-<h3 id="bufio-scanner">bufio.Scanner</h3>
+<h3 id="bufio-scanner">bufio.Scanner<a href="#bufio-scanner" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>bufio.Readerと似ているが，こちらは改行区切りのテキストを扱う時に便利なものになっている．</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;newfile.txt&#34;</span><span class="p">)</span>
@@ -657,7 +249,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
 <p><code>Scan</code> が <code>true</code> の間は，まだ読んでいない行があるということを示している．
 なので， <code>Scan</code> が <code>false</code> になるまでループを回してあげれば結果的にファイルの内容すべてを読むことができる．</p>
 
-<h3 id="bufio-writer">bufio.Writer</h3>
+<h3 id="bufio-writer">bufio.Writer<a href="#bufio-writer" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 
 <p>Readerと同様，io.Writerと似ている．
 注意しなければならない点として，最後に <code>Writer.Flush</code> を呼び出す必要がある点がある．
@@ -685,7 +277,7 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
 <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d bytes written\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
 
 <span class="nx">writer</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span></code></pre></div>
-<h2 id="references">References</h2>
+<h2 id="references">References<a href="#references" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <ul>
 <li><a href="https://godoc.org/os">os - GoDoc</a></li>
@@ -693,335 +285,40 @@ stringの書き込みには <code>WriteString</code> メソッドを使用する
 <li><a href="https://godoc.org/io/ioutil">ioutil - GoDoc</a></li>
 </ul>
 
-  </div>
+		</div>
+	</main>
 
-  <footer>
-    <ul class="stats">
-  <li class="categories">
-    <ul>
-        
-    </ul>
-  </li>
-  <li class="tags">
-    <ul>
-        
-    </ul>
-  </li>
-</ul>
+    <footer id="site-footer" class="section-inner thin animated fadeIn faster">
+        <p>&copy; 2019 <a href="https://www.mas9612.net/">Masato Yamazaki</a></p>
+        <p>
+            Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.mas9612.net/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+        </p>
+    </footer>
 
-  </footer>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 
-</article>
 
-    <article class="post">
-        <div id="disqus_thread"></div>
+
+	<script src="https://www.mas9612.net/js/bundle.min.490e43e5af6db5906f28afa49a4e16bf9f626b758e3fca92f146b870eb94bb37.js" integrity="sha256-SQ5D5a9ttZBvKK+kmk4Wv59ia3WOP8qS8Ua4cOuUuzc=" crossorigin="anonymous"></script>
+	
 <script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "mas9612s-note" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134133452-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    </article>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-<ul class="actions pagination">
-    
-        <li><a href="https://www.mas9612.net/posts/k8s-auth/"
-                class="button big previous">Kubernetes Authentication</a></li>
-    
+</body>
 
-    
-        <li><a href="https://www.mas9612.net/posts/chroot-basic/"
-                class="button big next">chrootの基礎</a></li>
-    
-</ul>
-
-
-    </div>
-    
-<section id="sidebar">
-
-  
-  <section id="intro">
-    
-    
-    
-      <header>
-        <h2>mas9612&#39;s note</h2>
-        <p>About Programming, Computer, Technology...</p>
-      </header>
-    
-    
-      <ul class="icons">
-        
-          
-    <li><a href="https://www.mas9612.net/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fa fa-rss"></a></li>
-
-
-        
-        
-  <li><a href="//github.com/mas9612" target="_blank" title="GitHub" class="fa fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <li><a href="//facebook.com/mas9612" target="_blank" title="Facebook" class="fa fa-facebook"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <li><a href="//twitter.com/mas9612" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <li><a href="mailto:mas9612@gmail.com" title="Email" class="fa fa-envelope"></a></li>
-
-
-      </ul>
-    
-  </section>
-
-  
-  <section class="recent-posts">
-    <div class="mini-posts">
-      <header>
-        <h3>Recent Posts</h3>
-      </header>
-      <div class="posts-container">
-        
-
-        
-          
-        
-
-        
-          <article class="mini-post">
-            <header>
-              <h3>
-                <a href="https://www.mas9612.net/posts/golang-bufio-writer/">Goのbufio.Writerについて</a>
-              </h3>
-              
-              <time class="published" datetime='2019-07-10'>
-                July 10, 2019
-              </time>
-            </header>
-            
-
-          </article>
-        
-          <article class="mini-post">
-            <header>
-              <h3>
-                <a href="https://www.mas9612.net/posts/dive-into-tcp-http/">TCPについて学ぶ - HTTP通信の流れを見てみる</a>
-              </h3>
-              
-              <time class="published" datetime='2019-05-15'>
-                May 15, 2019
-              </time>
-            </header>
-            
-
-          </article>
-        
-          <article class="mini-post">
-            <header>
-              <h3>
-                <a href="https://www.mas9612.net/posts/authserver/">雑なオレオレOAuth Serverを書いた</a>
-              </h3>
-              
-              <time class="published" datetime='2019-04-21'>
-                April 21, 2019
-              </time>
-            </header>
-            
-
-          </article>
-        
-          <article class="mini-post">
-            <header>
-              <h3>
-                <a href="https://www.mas9612.net/posts/linux-process/">Linuxのプロセスについて</a>
-              </h3>
-              
-              <time class="published" datetime='2019-04-13'>
-                April 13, 2019
-              </time>
-            </header>
-            
-
-          </article>
-        
-          <article class="mini-post">
-            <header>
-              <h3>
-                <a href="https://www.mas9612.net/posts/linux-loadavg/">Linuxのロードアベレージについて</a>
-              </h3>
-              
-              <time class="published" datetime='2019-04-02'>
-                April 2, 2019
-              </time>
-            </header>
-            
-
-          </article>
-        
-      </div>
-
-      
-        <a href=
-          
-            /posts/
-          
-        class="button">View more posts</a>
-      
-    </div>
-  </section>
-
-  
-  
-  
-
-  
-  
-
-  
-  <section id="footer">
-    
-    <p class="copyright">
-      
-        &copy; 2019
-        
-          mas9612&#39;s note
-        
-      .
-      Powered by <a href="//gohugo.io" target="_blank">Hugo</a>
-    </p>
-  </section>
-</section>
-
-    </div>
-    <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
-    
-
-    
-      
-    
-
-    
-      
-      
-      
-        <script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
-        
-        
-        
-        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
-        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
-        <script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/css.min.js"></script>
-        <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-      
-    
-    
-    
-      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
-      <script src="https://www.mas9612.net/js/util.js"></script>
-      <script src="https://www.mas9612.net/js/main.js"></script>
-      <script src="https://www.mas9612.net/js/backToTop.js"></script>
-    
-
-    
-
-    
-    <script>hljs.initHighlightingOnLoad();</script>
-      <script src="//yihui.name/js/math-code.js"></script>
-<script async
-src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-
-  </body>
 </html>
-
